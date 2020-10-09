@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'dotenv-safe/config';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
@@ -10,9 +11,7 @@ import { UserResolver } from './resolvers/user';
 const main = async () => {
   await createConnection({
     type: 'postgres',
-    database: 'karnivaldev',
-    username: 'postgres',
-    password: 'postgres',
+    url: process.env.DATABASE_URL,
     synchronize: true,
     entities: [User],
     logging: true,
@@ -28,8 +27,8 @@ const main = async () => {
 
   apolloServer.applyMiddleware({ app });
 
-  app.listen(4000, () => {
-    console.log('Server started on port 4000');
+  app.listen(parseInt(process.env.PORT), () => {
+    console.log(`Server started on port ${process.env.PORT}`);
   });
 };
 
