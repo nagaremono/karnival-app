@@ -1,9 +1,18 @@
 import { User } from '../entities/User';
-import { Arg, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import argon2 from 'argon2';
 import { getConnection } from 'typeorm';
 import { RegisterInput } from './RegisterInput';
 import { validateRegister } from '../utils/validateRegister';
+import { MyContext } from 'src/types';
 
 @ObjectType()
 class FieldError {
@@ -25,8 +34,20 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: MyContext) {
+    if (!req.session.userId) {
+      return null;
+    }
+
+    return await User.findOne(req.session.userId);
+  }
+
   @Mutation(() => UserResponse)
-  async register(@Arg('input') input: RegisterInput): Promise<UserResponse> {
+  async register(
+    @Arg('input') input: RegisterInput,
+    @Ctx() { req }: MyContext
+  ): Promise<UserResponse> {
     const errors = validateRegister(input);
 
     if (errors) {
@@ -63,6 +84,49 @@ export class UserResolver {
         };
       }
     }
+
+    req.session.userId = user.id;
+
+    return { user };
+  }
+
+  @Mutation(() => UserResponse)
+  async login(
+    @Arg('usernameOrEmail') usernameOrEmail: string,
+    @Arg('password') password: string,
+    @Ctx() { req }: MyContext
+  ): Promise<UserResponse> {
+    const user = await User.findOne(
+      usernameOrEmail.includes('@')
+        ? { where: { email: usernameOrEmail } }
+        : { where: { username: usernameOrEmail } }
+    );
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: 'usernameOrEmail',
+            message: 'Account with that username or email is not found',
+          },
+        ],
+      };
+    }
+
+    const isValid = await argon2.verify(user.password, password);
+
+    if (!isValid) {
+      return {
+        errors: [
+          {
+            field: 'password',
+            message: 'Invalid password',
+          },
+        ],
+      };
+    }
+
+    req.session.userId = user.id;
 
     return { user };
   }
