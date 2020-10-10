@@ -2,8 +2,11 @@ import { Formik, Form } from 'formik';
 import AppBar from '../components/AppBar';
 import InputField from '../components/InputField';
 import { Button, Box, Flex } from '@chakra-ui/core';
+import { useRegisterMutation } from '../generated/graphql';
+import { withApollo } from '../utils/withApollo';
 
 const Register: React.FC = () => {
+  const [register] = useRegisterMutation();
   return (
     <>
       <AppBar />
@@ -14,7 +17,10 @@ const Register: React.FC = () => {
           confirmpassword: '',
           email: '',
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={async (values) => {
+          const response = await register({ variables: values });
+          console.log(response);
+        }}
       >
         {({ isSubmitting }) => (
           <Box w="600px" mx="auto">
@@ -62,4 +68,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default withApollo({ ssr: false })(Register);
