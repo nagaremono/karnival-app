@@ -4,8 +4,11 @@ import InputField from '../components/InputField';
 import { Button, Box, Flex } from '@chakra-ui/core';
 import { useRegisterMutation } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
+import { toErrorMap } from '../utils/toErrorMap';
+import { useRouter } from 'next/router';
 
 const Register: React.FC = () => {
+  const router = useRouter();
   const [register] = useRegisterMutation();
   return (
     <>
@@ -17,9 +20,14 @@ const Register: React.FC = () => {
           confirmpassword: '',
           email: '',
         }}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { setErrors }) => {
           const response = await register({ variables: values });
-          console.log(response);
+
+          if (response.data?.register.errors) {
+            setErrors(toErrorMap(response.data.register.errors));
+          } else if (response.data?.register.user) {
+            router.push('/');
+          }
         }}
       >
         {({ isSubmitting }) => (

@@ -22,7 +22,7 @@ export const validateRegister = (input: RegisterInput) => {
   if (input.password !== input.confirmpassword) {
     return [
       {
-        field: 'password',
+        field: 'confirmpassword',
         message: 'Password does not match',
       },
     ];
