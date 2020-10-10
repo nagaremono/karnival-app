@@ -1,4 +1,3 @@
-import React from 'react';
 import { Formik, Form } from 'formik';
 import AppBar from '../components/AppBar';
 import InputField from '../components/InputField';
