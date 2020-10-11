@@ -1,10 +1,13 @@
-import { Flex, Heading, Link } from '@chakra-ui/core';
+import { Button, Flex, Heading, Link } from '@chakra-ui/core';
 import React from 'react';
-import { useMeQuery } from '../generated/graphql';
+import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
+import { useApolloClient } from '@apollo/client';
 
 const AppBar = () => {
+  const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const { data, loading } = useMeQuery();
+  const apolloClient = useApolloClient();
 
   return (
     <header>
@@ -36,9 +39,22 @@ const AppBar = () => {
             <Link color="#f3f3f3" fontSize="1.5rem">
               {data.me.username}
             </Link>
-            <Link color="#f3f3f3" fontSize="1.3rem">
+            <Button
+              onClick={async () => {
+                await logout();
+                await apolloClient.resetStore();
+              }}
+              isLoading={logoutLoading}
+              fontSize="1.2rem"
+              border="2px solid #000"
+              _hover={{
+                border: '2px solid #fff',
+                backgroundColor: '#000',
+                color: '#f3f3f3',
+              }}
+            >
               Logout
-            </Link>
+            </Button>
           </Flex>
         )}
       </Flex>
