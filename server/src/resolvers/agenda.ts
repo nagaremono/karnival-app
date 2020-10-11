@@ -7,8 +7,10 @@ import {
   Mutation,
   Query,
   Resolver,
+  UseMiddleware,
 } from 'type-graphql';
 import { MyContext } from 'src/types';
+import { isAuth } from '../middlewares/isAuth';
 
 @InputType()
 class AgendaInput {
@@ -33,6 +35,7 @@ export class AgendaResolver {
   }
 
   @Mutation(() => Agenda)
+  @UseMiddleware(isAuth)
   async createAgenda(
     @Arg('input') input: AgendaInput,
     @Ctx() { req }: MyContext
