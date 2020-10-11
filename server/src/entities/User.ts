@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Agenda } from './Agenda';
 
 @ObjectType()
 @Entity()
@@ -33,4 +35,8 @@ export class User extends BaseEntity {
 
   @Column({ unique: true })
   password!: string;
+
+  @Field(() => [Agenda])
+  @OneToMany(() => Agenda, (agenda) => agenda.organizer)
+  agendas: Agenda[];
 }

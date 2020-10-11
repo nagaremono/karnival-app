@@ -13,13 +13,15 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import { MyContext } from './types';
 import cors from 'cors';
+import { Agenda } from './entities/Agenda';
+import { AgendaResolver } from './resolvers/agenda';
 
 const main = async () => {
   await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: true,
-    entities: [User],
+    entities: [User, Agenda],
     logging: true,
   });
 
@@ -53,7 +55,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver, AgendaResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext => <MyContext>{ req, res },
