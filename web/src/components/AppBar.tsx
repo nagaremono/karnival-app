@@ -1,6 +1,7 @@
 import { Flex, Heading, Link } from '@chakra-ui/core';
 import React from 'react';
 import { useMeQuery } from '../generated/graphql';
+import NextLink from 'next/link';
 
 const AppBar = () => {
   const { data, loading } = useMeQuery();
@@ -15,16 +16,20 @@ const AppBar = () => {
           alignItems="center"
           as="span"
         >
-          Karnival App
+          <NextLink href="/">Karnival App</NextLink>
         </Heading>
         {!data?.me || loading ? (
           <Flex justifyContent="space-evenly" alignItems="center" w="15%">
-            <Link color="#f3f3f3" fontSize="1.4rem">
-              Register
-            </Link>
-            <Link color="#f3f3f3" fontSize="1.4rem">
-              Login
-            </Link>
+            <NextLink href="/register">
+              <Link color="#f3f3f3" fontSize="1.4rem">
+                Register
+              </Link>
+            </NextLink>
+            <NextLink href="login">
+              <Link color="#f3f3f3" fontSize="1.4rem">
+                Login
+              </Link>
+            </NextLink>
           </Flex>
         ) : (
           <Flex justifyContent="space-evenly" alignItems="center" w="15%">
