@@ -62,6 +62,11 @@ export type RegisterInput = {
   confirmpassword: Scalars['String'];
 };
 
+export type UserFragmentFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'username' | 'id'>
+);
+
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
@@ -74,7 +79,7 @@ export type LoginMutation = (
     { __typename?: 'UserResponse' }
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'id'>
+      & UserFragmentFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -96,7 +101,7 @@ export type RegisterMutation = (
     { __typename?: 'UserResponse' }
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & UserFragmentFragment
     )>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -111,17 +116,21 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'id'>
+    & UserFragmentFragment
   )> }
 );
 
-
+export const UserFragmentFragmentDoc = gql`
+    fragment UserFragment on User {
+  username
+  id
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
     user {
-      username
-      id
+      ...UserFragment
     }
     errors {
       field
@@ -129,7 +138,7 @@ export const LoginDocument = gql`
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -160,8 +169,7 @@ export const RegisterDocument = gql`
     mutation Register($username: String!, $password: String!, $confirmpassword: String!, $email: String!) {
   register(input: {username: $username, password: $password, confirmpassword: $confirmpassword, email: $email}) {
     user {
-      id
-      username
+      ...UserFragment
     }
     errors {
       field
@@ -169,7 +177,7 @@ export const RegisterDocument = gql`
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -201,11 +209,10 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const MeDocument = gql`
     query Me {
   me {
-    username
-    id
+    ...UserFragment
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __useMeQuery__

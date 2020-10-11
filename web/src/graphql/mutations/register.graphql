@@ -13,8 +13,7 @@ mutation Register(
     }
   ) {
     user {
-      id
-      username
+      ...UserFragment
     }
     errors {
       field
