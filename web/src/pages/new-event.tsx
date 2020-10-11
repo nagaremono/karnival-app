@@ -5,9 +5,11 @@ import { Button, Box, Flex } from '@chakra-ui/core';
 import { useCreateAgendaMutation } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 import { useRouter } from 'next/router';
+import { useIsAuth } from '../utils/useIsAuth';
 
 const Register: React.FC = () => {
   const router = useRouter();
+  useIsAuth();
   const [createAgenda] = useCreateAgendaMutation();
   return (
     <>
@@ -19,12 +21,14 @@ const Register: React.FC = () => {
           startTime: '',
           endTime: '',
         }}
-        onSubmit={async (values, { setErrors }) => {
-          const response = await createAgenda({ variables: { input: values } });
+        onSubmit={async (values) => {
+          const { errors } = await createAgenda({
+            variables: { input: values },
+          });
 
-          console.log(response);
-
-          router.push('/');
+          if (!errors) {
+            router.push('/');
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -34,11 +38,13 @@ const Register: React.FC = () => {
                 name="name"
                 placeholder="Event name"
                 label="Event Name"
+                required
               />
               <InputField
                 name="description"
                 placeholder="Event description"
                 label="Description"
+                required
                 textarea
               />
               <InputField
@@ -46,12 +52,14 @@ const Register: React.FC = () => {
                 placeholder="Start time"
                 label="Event Start"
                 type="datetime-local"
+                required
               />
               <InputField
                 name="endTime"
                 placeholder="End Time"
                 label="Event End"
                 type="datetime-local"
+                required
               />
               <Flex justify="center">
                 <Button
