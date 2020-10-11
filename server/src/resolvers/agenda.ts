@@ -24,7 +24,7 @@ class AgendaInput {
   startTime!: Date;
 
   @Field()
-  endtTime!: Date;
+  endTime!: Date;
 }
 
 @Resolver()

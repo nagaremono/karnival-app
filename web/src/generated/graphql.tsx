@@ -9,12 +9,15 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
 
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   me?: Maybe<User>;
+  agendas?: Maybe<Array<Agenda>>;
 };
 
 export type User = {
@@ -24,6 +27,20 @@ export type User = {
   updatedAt: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
+  agendas: Array<Agenda>;
+};
+
+export type Agenda = {
+  __typename?: 'Agenda';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+  startTime: Scalars['String'];
+  endTime: Scalars['String'];
+  organizer: User;
+  organizerId: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -31,6 +48,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createAgenda: Agenda;
 };
 
 
@@ -42,6 +60,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationCreateAgendaArgs = {
+  input: AgendaInput;
 };
 
 export type UserResponse = {
@@ -63,9 +86,30 @@ export type RegisterInput = {
   confirmpassword: Scalars['String'];
 };
 
+export type AgendaInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
+};
+
+
 export type UserFragmentFragment = (
   { __typename?: 'User' }
   & Pick<User, 'username' | 'id'>
+);
+
+export type CreateAgendaMutationVariables = Exact<{
+  input: AgendaInput;
+}>;
+
+
+export type CreateAgendaMutation = (
+  { __typename?: 'Mutation' }
+  & { createAgenda: (
+    { __typename?: 'Agenda' }
+    & Pick<Agenda, 'name' | 'description' | 'startTime' | 'endTime'>
+  ) }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -135,6 +179,41 @@ export const UserFragmentFragmentDoc = gql`
   id
 }
     `;
+export const CreateAgendaDocument = gql`
+    mutation CreateAgenda($input: AgendaInput!) {
+  createAgenda(input: $input) {
+    name
+    description
+    startTime
+    endTime
+  }
+}
+    `;
+export type CreateAgendaMutationFn = Apollo.MutationFunction<CreateAgendaMutation, CreateAgendaMutationVariables>;
+
+/**
+ * __useCreateAgendaMutation__
+ *
+ * To run a mutation, you first call `useCreateAgendaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAgendaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAgendaMutation, { data, loading, error }] = useCreateAgendaMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateAgendaMutation(baseOptions?: Apollo.MutationHookOptions<CreateAgendaMutation, CreateAgendaMutationVariables>) {
+        return Apollo.useMutation<CreateAgendaMutation, CreateAgendaMutationVariables>(CreateAgendaDocument, baseOptions);
+      }
+export type CreateAgendaMutationHookResult = ReturnType<typeof useCreateAgendaMutation>;
+export type CreateAgendaMutationResult = Apollo.MutationResult<CreateAgendaMutation>;
+export type CreateAgendaMutationOptions = Apollo.BaseMutationOptions<CreateAgendaMutation, CreateAgendaMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {

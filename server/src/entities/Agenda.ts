@@ -31,7 +31,7 @@ export class Agenda extends BaseEntity {
 
   @Field(() => String)
   @Column({ type: 'timestamp' })
-  endtTime!: Date;
+  endTime!: Date;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.agendas)
