@@ -12,7 +12,8 @@ import argon2 from 'argon2';
 import { getConnection } from 'typeorm';
 import { RegisterInput } from './RegisterInput';
 import { validateRegister } from '../utils/validateRegister';
-import { MyContext } from 'src/types';
+import { MyContext } from '../types';
+import { COOKIE_NAME } from '../constants';
 
 @ObjectType()
 class FieldError {
@@ -129,5 +130,16 @@ export class UserResolver {
     req.session.userId = user.id;
 
     return { user };
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: MyContext): Promise<Boolean> {
+    return new Promise((resolve) => {
+      req.session.destroy((err) => {
+        console.log('logout error', err);
+        res.clearCookie(COOKIE_NAME);
+        return err ? resolve(false) : resolve(true);
+      });
+    });
   }
 }
