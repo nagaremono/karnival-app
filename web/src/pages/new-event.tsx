@@ -20,6 +20,7 @@ const Register: React.FC = () => {
           description: '',
           startTime: '',
           endTime: '',
+          venue: '',
         }}
         onSubmit={async (values) => {
           const { errors } = await createAgenda({
@@ -46,6 +47,12 @@ const Register: React.FC = () => {
                 label="Description"
                 required
                 textarea
+              />
+              <InputField
+                name="venue"
+                placeholder="Event venue"
+                label="Event Venue"
+                required
               />
               <InputField
                 name="startTime"
