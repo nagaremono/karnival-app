@@ -4,6 +4,7 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -63,8 +64,24 @@ export class AgendaResolver {
   }
 
   @Query(() => [Agenda], { nullable: true })
-  async agendas(): Promise<Agenda[]> {
-    return Agenda.find({ relations: ['organizer'] });
+  async agendas(
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+  ): Promise<Agenda[]> {
+    const actualLimit = Math.min(10, limit);
+    const qb = getConnection()
+      .getRepository(Agenda)
+      .createQueryBuilder('agenda')
+      .orderBy('agenda."startTime"', 'ASC')
+      .take(actualLimit);
+
+    if (cursor) {
+      qb.where('agenda."startTime" > :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    return await qb.getMany();
   }
 
   @Mutation(() => Agenda)
