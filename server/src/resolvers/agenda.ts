@@ -85,7 +85,7 @@ export class AgendaResolver {
 
     if (cursor) {
       qb.where('agenda."startTime" > :cursor', {
-        cursor: new Date(parseInt(cursor)),
+        cursor: new Date(cursor),
       });
     }
 

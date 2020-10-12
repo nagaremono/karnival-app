@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  Button,
   Divider,
   Flex,
   Grid,
@@ -13,9 +14,9 @@ import { useAgendasQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 
 const Index = () => {
-  const { data, error, loading } = useAgendasQuery({
+  const { data, error, loading, fetchMore, variables } = useAgendasQuery({
     variables: {
-      limit: 50,
+      limit: 4,
       cursor: null,
     },
     notifyOnNetworkStatusChange: true,
@@ -24,7 +25,6 @@ const Index = () => {
   if (!loading && !data) {
     return (
       <div>
-        <div>you got query failed for some reason</div>
         <div>{error?.message}</div>
       </div>
     );
@@ -126,6 +126,27 @@ const Index = () => {
             ))}
           </Grid>
         )}
+        {data ? (
+          <Flex my={4} justifyContent="center">
+            <Button
+              isLoading={loading}
+              onClick={() => {
+                console.log(
+                  data!.agendas![data!.agendas!.length - 1].startTime
+                );
+                fetchMore({
+                  variables: {
+                    limit: variables?.limit,
+                    cursor: data!.agendas![data!.agendas!.length - 1].startTime,
+                  },
+                });
+              }}
+              variantColor="green"
+            >
+              More Events
+            </Button>
+          </Flex>
+        ) : null}
       </Box>
     </>
   );
