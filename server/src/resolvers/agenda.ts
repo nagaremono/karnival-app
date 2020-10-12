@@ -3,17 +3,20 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Int,
   Mutation,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from 'type-graphql';
 import { MyContext } from 'src/types';
 import { isAuth } from '../middlewares/isAuth';
 import { Participation } from '../entities/Participation';
 import { getConnection } from 'typeorm';
+import { User } from '../entities/User';
 
 @InputType()
 class AgendaInput {
@@ -35,6 +38,11 @@ class AgendaInput {
 
 @Resolver(Agenda)
 export class AgendaResolver {
+  @FieldResolver(() => User)
+  organizer(@Root() agenda: Agenda, @Ctx() { userLoader }: MyContext) {
+    return userLoader.load(agenda.organizerId);
+  }
+
   @Query(() => Agenda)
   async agenda(@Arg('agendaId') agendaId: number) {
     const agenda = await getConnection()

@@ -11,11 +11,12 @@ import { UserResolver } from './resolvers/user';
 import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
-import { MyContext } from './types';
 import cors from 'cors';
 import { Agenda } from './entities/Agenda';
 import { AgendaResolver } from './resolvers/agenda';
 import { Participation } from './entities/Participation';
+import { createUserLoader } from './utils/createUserLoader';
+import { MyContext } from './types';
 
 const main = async () => {
   await createConnection({
@@ -59,7 +60,8 @@ const main = async () => {
       resolvers: [HelloResolver, UserResolver, AgendaResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => <MyContext>{ req, res },
+    context: ({ req, res }): MyContext =>
+      <MyContext>{ req, res, userLoader: createUserLoader() },
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
