@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Participation } from './Participation';
 import { User } from './User';
 
 @ObjectType()
@@ -24,6 +26,14 @@ export class Agenda extends BaseEntity {
   @Field(() => String)
   @Column()
   description!: string;
+
+  @Field(() => String)
+  @Column()
+  venue!: string;
+
+  @Field(() => [Participation])
+  @OneToMany(() => Participation, (participation) => participation.agenda)
+  participation: Participation[];
 
   @Field(() => String)
   @Column({ type: 'timestamp' })

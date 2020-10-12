@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Agenda } from './Agenda';
+import { Participation } from './Participation';
 
 @ObjectType()
 @Entity()
@@ -39,4 +40,8 @@ export class User extends BaseEntity {
   @Field(() => [Agenda])
   @OneToMany(() => Agenda, (agenda) => agenda.organizer)
   agendas: Agenda[];
+
+  @Field(() => [Participation])
+  @OneToMany(() => Participation, (participation) => participation.user)
+  participation: Participation[];
 }

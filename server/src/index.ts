@@ -15,13 +15,14 @@ import { MyContext } from './types';
 import cors from 'cors';
 import { Agenda } from './entities/Agenda';
 import { AgendaResolver } from './resolvers/agenda';
+import { Participation } from './entities/Participation';
 
 const main = async () => {
   await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: true,
-    entities: [User, Agenda],
+    entities: [Agenda, User, Participation],
     logging: true,
   });
 
