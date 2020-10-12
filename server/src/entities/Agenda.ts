@@ -35,12 +35,12 @@ export class Agenda extends BaseEntity {
   @OneToMany(() => Participation, (participation) => participation.agenda)
   participation: Participation[];
 
-  @Field(() => String)
-  @Column({ type: 'timestamp' })
+  @Field(() => Date)
+  @Column({ type: 'timestamp with time zone' })
   startTime!: Date;
 
-  @Field(() => String)
-  @Column({ type: 'timestamp' })
+  @Field(() => Date)
+  @Column({ type: 'timestamp with time zone' })
   endTime!: Date;
 
   @Field(() => User)
