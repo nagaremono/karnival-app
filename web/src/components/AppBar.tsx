@@ -11,7 +11,7 @@ const AppBar = () => {
 
   return (
     <header>
-      <Flex justifyContent="space-between" height="100px" bg="#2b2559">
+      <Flex justifyContent="space-between" height="80px" bg="#2b2559">
         <Heading
           ml="4"
           color="#f3f3f3"

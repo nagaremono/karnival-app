@@ -17,7 +17,19 @@ export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   me?: Maybe<User>;
+  agenda: Agenda;
   agendas?: Maybe<Array<Agenda>>;
+};
+
+
+export type QueryAgendaArgs = {
+  agendaId: Scalars['Float'];
+};
+
+
+export type QueryAgendasArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 export type User = {
@@ -28,6 +40,7 @@ export type User = {
   username: Scalars['String'];
   email: Scalars['String'];
   agendas: Array<Agenda>;
+  participation: Array<Participation>;
 };
 
 export type Agenda = {
@@ -35,6 +48,8 @@ export type Agenda = {
   id: Scalars['Int'];
   name: Scalars['String'];
   description: Scalars['String'];
+  venue: Scalars['String'];
+  participation: Array<Participation>;
   startTime: Scalars['String'];
   endTime: Scalars['String'];
   organizer: User;
@@ -43,11 +58,20 @@ export type Agenda = {
   updatedAt: Scalars['String'];
 };
 
+export type Participation = {
+  __typename?: 'Participation';
+  userId: Scalars['Float'];
+  agendaId: Scalars['Float'];
+  user?: Maybe<User>;
+  agenda?: Maybe<Agenda>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  participate: Scalars['Boolean'];
   createAgenda: Agenda;
 };
 
@@ -60,6 +84,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationParticipateArgs = {
+  agendaId: Scalars['Float'];
 };
 
 
@@ -89,6 +118,7 @@ export type RegisterInput = {
 export type AgendaInput = {
   name: Scalars['String'];
   description: Scalars['String'];
+  venue: Scalars['String'];
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
 };
@@ -160,6 +190,24 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
+);
+
+export type AgendasQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AgendasQuery = (
+  { __typename?: 'Query' }
+  & { agendas?: Maybe<Array<(
+    { __typename?: 'Agenda' }
+    & Pick<Agenda, 'name' | 'description' | 'id' | 'startTime' | 'endTime' | 'venue'>
+    & { organizer: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ) }
+  )>> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -323,6 +371,48 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const AgendasDocument = gql`
+    query Agendas($limit: Int!, $cursor: String) {
+  agendas(limit: $limit, cursor: $cursor) {
+    name
+    description
+    id
+    startTime
+    endTime
+    organizer {
+      username
+    }
+    venue
+  }
+}
+    `;
+
+/**
+ * __useAgendasQuery__
+ *
+ * To run a query within a React component, call `useAgendasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAgendasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAgendasQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useAgendasQuery(baseOptions?: Apollo.QueryHookOptions<AgendasQuery, AgendasQueryVariables>) {
+        return Apollo.useQuery<AgendasQuery, AgendasQueryVariables>(AgendasDocument, baseOptions);
+      }
+export function useAgendasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AgendasQuery, AgendasQueryVariables>) {
+          return Apollo.useLazyQuery<AgendasQuery, AgendasQueryVariables>(AgendasDocument, baseOptions);
+        }
+export type AgendasQueryHookResult = ReturnType<typeof useAgendasQuery>;
+export type AgendasLazyQueryHookResult = ReturnType<typeof useAgendasLazyQuery>;
+export type AgendasQueryResult = Apollo.QueryResult<AgendasQuery, AgendasQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
