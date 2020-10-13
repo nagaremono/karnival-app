@@ -29,6 +29,7 @@ const Login: React.FC = () => {
                   me: data?.login.user,
                 },
               });
+              cache.evict({ fieldName: 'agendas:{}' });
             },
           });
 

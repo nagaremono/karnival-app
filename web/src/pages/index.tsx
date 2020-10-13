@@ -1,13 +1,4 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Grid,
-  Heading,
-  Text,
-} from '@chakra-ui/core';
+import { Box, Button, Flex, Grid, Heading, Text } from '@chakra-ui/core';
 import React from 'react';
 import AppBar from '../components/AppBar';
 import EventCard from '../components/EventCard';

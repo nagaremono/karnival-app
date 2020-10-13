@@ -25,6 +25,9 @@ const Register: React.FC = () => {
         onSubmit={async (values) => {
           const { errors } = await createAgenda({
             variables: { input: values },
+            update: (cache) => {
+              cache.evict({ fieldName: 'agendas:{}' });
+            },
           });
 
           if (!errors) {
