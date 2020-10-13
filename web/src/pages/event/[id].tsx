@@ -10,6 +10,7 @@ import {
 import { useRouter } from 'next/router';
 import AppBar from '../../components/AppBar';
 import EventDetailItem from '../../components/EventDetailItem';
+import { ParticipatingStatus } from '../../components/ParticipatingStatus';
 import { useAgendaQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 
@@ -48,6 +49,7 @@ const Event = ({}) => {
           <Heading mb={4} as="h3" textAlign="center">
             {data?.agenda.name}
           </Heading>
+          <ParticipatingStatus agenda={data?.agenda} />
           <Box>
             <EventDetailItem
               title="Event Organizer"

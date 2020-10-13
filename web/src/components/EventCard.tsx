@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client';
 import {
   Box,
   Heading,
@@ -6,26 +5,13 @@ import {
   Divider,
   Grid,
   Text,
-  Flex,
-  Button,
   Link,
 } from '@chakra-ui/core';
 import React from 'react';
-import {
-  MeQuery,
-  useCancelParticipateMutation,
-  useParticipateMutation,
-} from '../generated/graphql';
 import NextLink from 'next/link';
+import { ParticipatingStatus } from './ParticipatingStatus';
 
 const EventCard = ({ agenda, router }: any) => {
-  const [participate, { loading }] = useParticipateMutation();
-  const [
-    cancelParticipate,
-    { loading: cancelLoading },
-  ] = useCancelParticipateMutation();
-
-  const link = `/event/${agenda.id}`;
   return (
     <Box
       border="5px solid #2b2559"
@@ -33,7 +19,12 @@ const EventCard = ({ agenda, router }: any) => {
       p={4}
       backgroundColor="#EFECCA"
     >
-      <NextLink href={link}>
+      <NextLink
+        href={{
+          pathname: '/event/[id]',
+          query: { id: agenda.id.toString() },
+        }}
+      >
         <Link>
           <Heading mb={2}>{agenda.name}</Heading>
         </Link>
@@ -64,105 +55,7 @@ const EventCard = ({ agenda, router }: any) => {
           })}
         </Text>
       </Grid>
-      <Flex mt={2} justifyContent="flex-end">
-        {agenda.isParticipating ? (
-          <>
-            <Badge
-              display="flex"
-              alignItems="center"
-              px="10px"
-              fontSize="1rem"
-              variantColor="green"
-              mx={2}
-            >
-              Participating
-            </Badge>
-            <Button
-              isLoading={cancelLoading}
-              mx={2}
-              variantColor="red"
-              onClick={async () => {
-                const response = await cancelParticipate({
-                  variables: { agendaId: agenda.id },
-                  update: (cache) => {
-                    const meData: MeQuery | null = cache.readQuery({
-                      query: gql`
-                        query Me {
-                          me {
-                            username
-                            id
-                          }
-                        }
-                      `,
-                    });
-
-                    if (!meData?.me) {
-                      return;
-                    } else {
-                      cache.writeFragment({
-                        id: 'Agenda:' + agenda.id,
-                        fragment: gql`
-                          fragment _ on Agenda {
-                            isParticipating
-                          }
-                        `,
-                        data: { isParticipating: false },
-                      });
-                    }
-                  },
-                });
-
-                if (!response.data?.cancelParticipate) {
-                  router.replace('/login?next=' + router.pathname);
-                }
-              }}
-            >
-              Cancel
-            </Button>
-          </>
-        ) : (
-          <Button
-            onClick={async () => {
-              const response = await participate({
-                variables: { agendaId: agenda.id },
-                update: (cache) => {
-                  const meData: MeQuery | null = cache.readQuery({
-                    query: gql`
-                      query Me {
-                        me {
-                          username
-                          id
-                        }
-                      }
-                    `,
-                  });
-
-                  if (!meData?.me) {
-                    return;
-                  } else {
-                    cache.writeFragment({
-                      id: 'Agenda:' + agenda.id,
-                      fragment: gql`
-                        fragment _ on Agenda {
-                          isParticipating
-                        }
-                      `,
-                      data: { isParticipating: true },
-                    });
-                  }
-                },
-              });
-
-              if (!response.data?.participate) {
-                router.replace('/login?next=' + router.pathname);
-              }
-            }}
-            isLoading={loading}
-          >
-            Participate
-          </Button>
-        )}
-      </Flex>
+      <ParticipatingStatus agenda={agenda} />
     </Box>
   );
 };
