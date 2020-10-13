@@ -8,6 +8,7 @@ import {
   Text,
   Flex,
   Button,
+  Link,
 } from '@chakra-ui/core';
 import React from 'react';
 import {
@@ -15,6 +16,7 @@ import {
   useCancelParticipateMutation,
   useParticipateMutation,
 } from '../generated/graphql';
+import NextLink from 'next/link';
 
 const EventCard = ({ agenda, router }: any) => {
   const [participate, { loading }] = useParticipateMutation();
@@ -22,6 +24,8 @@ const EventCard = ({ agenda, router }: any) => {
     cancelParticipate,
     { loading: cancelLoading },
   ] = useCancelParticipateMutation();
+
+  const link = `/event/${agenda.id}`;
   return (
     <Box
       border="5px solid #2b2559"
@@ -29,7 +33,12 @@ const EventCard = ({ agenda, router }: any) => {
       p={4}
       backgroundColor="#EFECCA"
     >
-      <Heading mb={2}>{agenda.name}</Heading>
+      <NextLink href={link}>
+        <Link>
+          <Heading mb={2}>{agenda.name}</Heading>
+        </Link>
+      </NextLink>
+
       <Text mb={2} as="span" fontSize="1.2rem">
         Organized by{' '}
         <Badge fontSize="1.3rem">{agenda.organizer.username}</Badge>

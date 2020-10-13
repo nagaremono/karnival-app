@@ -219,6 +219,30 @@ export type RegisterMutation = (
   ) }
 );
 
+export type AgendaQueryVariables = Exact<{
+  agendaId: Scalars['Int'];
+}>;
+
+
+export type AgendaQuery = (
+  { __typename?: 'Query' }
+  & { agenda: (
+    { __typename?: 'Agenda' }
+    & Pick<Agenda, 'id' | 'name' | 'description' | 'startTime' | 'endTime' | 'isParticipating'>
+    & { organizer: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), participation: Array<(
+      { __typename?: 'Participation' }
+      & Pick<Participation, 'userId'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      )> }
+    )> }
+  ) }
+);
+
 export type AgendasQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
@@ -458,6 +482,53 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const AgendaDocument = gql`
+    query Agenda($agendaId: Int!) {
+  agenda(agendaId: $agendaId) {
+    id
+    name
+    description
+    startTime
+    endTime
+    organizer {
+      username
+    }
+    participation {
+      userId
+      user {
+        username
+      }
+    }
+    isParticipating
+  }
+}
+    `;
+
+/**
+ * __useAgendaQuery__
+ *
+ * To run a query within a React component, call `useAgendaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAgendaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAgendaQuery({
+ *   variables: {
+ *      agendaId: // value for 'agendaId'
+ *   },
+ * });
+ */
+export function useAgendaQuery(baseOptions?: Apollo.QueryHookOptions<AgendaQuery, AgendaQueryVariables>) {
+        return Apollo.useQuery<AgendaQuery, AgendaQueryVariables>(AgendaDocument, baseOptions);
+      }
+export function useAgendaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AgendaQuery, AgendaQueryVariables>) {
+          return Apollo.useLazyQuery<AgendaQuery, AgendaQueryVariables>(AgendaDocument, baseOptions);
+        }
+export type AgendaQueryHookResult = ReturnType<typeof useAgendaQuery>;
+export type AgendaLazyQueryHookResult = ReturnType<typeof useAgendaLazyQuery>;
+export type AgendaQueryResult = Apollo.QueryResult<AgendaQuery, AgendaQueryVariables>;
 export const AgendasDocument = gql`
     query Agendas($limit: Int!, $cursor: String) {
   agendas(limit: $limit, cursor: $cursor) {
