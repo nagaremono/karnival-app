@@ -79,7 +79,7 @@ export class AgendaResolver {
   }
 
   @Query(() => Agenda)
-  async agenda(@Arg('agendaId') agendaId: number) {
+  async agenda(@Arg('agendaId', () => Int) agendaId: number) {
     const agenda = await getConnection()
       .getRepository(Agenda)
       .createQueryBuilder('agenda')
@@ -95,7 +95,7 @@ export class AgendaResolver {
 
   @Mutation(() => Boolean)
   async participate(
-    @Arg('agendaId') agendaId: number,
+    @Arg('agendaId', () => Int) agendaId: number,
     @Ctx() { req }: MyContext
   ) {
     await Participation.create({
