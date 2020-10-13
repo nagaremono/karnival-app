@@ -11,8 +11,9 @@ import {
 import React from 'react';
 import AppBar from '../components/AppBar';
 import EventCard from '../components/EventCard';
-import { useAgendasQuery, useMeQuery } from '../generated/graphql';
+import { useAgendasQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
+import { useRouter } from 'next/router';
 
 const Index = () => {
   const { data, error, loading, fetchMore, variables } = useAgendasQuery({
@@ -22,15 +23,7 @@ const Index = () => {
     },
     notifyOnNetworkStatusChange: true,
   });
-  const { data: meData, loading: meLoading } = useMeQuery();
-
-  const isAuth = () => {
-    if (!meData?.me && !meLoading) {
-      return false;
-    }
-
-    return true;
-  };
+  const router = useRouter();
 
   if (!loading && !data) {
     return (
@@ -99,7 +92,7 @@ const Index = () => {
         ) : (
           <Grid templateColumns="repeat(2, 1fr)" gap={8} p={4}>
             {data?.agendas?.map((agenda) => (
-              <EventCard isAuth={isAuth} key={agenda.id} agenda={agenda} />
+              <EventCard router={router} key={agenda.id} agenda={agenda} />
             ))}
           </Grid>
         )}

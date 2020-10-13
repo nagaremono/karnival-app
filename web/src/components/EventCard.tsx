@@ -9,20 +9,19 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/core';
-import { useRouter } from 'next/router';
 import React from 'react';
 import {
+  MeQuery,
   useCancelParticipateMutation,
   useParticipateMutation,
 } from '../generated/graphql';
 
-const EventCard = ({ agenda, isAuth }: any) => {
+const EventCard = ({ agenda, router }: any) => {
   const [participate, { loading }] = useParticipateMutation();
   const [
     cancelParticipate,
     { loading: cancelLoading },
   ] = useCancelParticipateMutation();
-  const router = useRouter();
   return (
     <Box
       border="5px solid #2b2559"
@@ -74,10 +73,23 @@ const EventCard = ({ agenda, isAuth }: any) => {
               mx={2}
               variantColor="red"
               onClick={async () => {
-                if (isAuth()) {
-                  await cancelParticipate({
-                    variables: { agendaId: agenda.id },
-                    update: (cache) => {
+                const response = await cancelParticipate({
+                  variables: { agendaId: agenda.id },
+                  update: (cache) => {
+                    const meData: MeQuery | null = cache.readQuery({
+                      query: gql`
+                        query Me {
+                          me {
+                            username
+                            id
+                          }
+                        }
+                      `,
+                    });
+
+                    if (!meData?.me) {
+                      return;
+                    } else {
                       cache.writeFragment({
                         id: 'Agenda:' + agenda.id,
                         fragment: gql`
@@ -87,9 +99,11 @@ const EventCard = ({ agenda, isAuth }: any) => {
                         `,
                         data: { isParticipating: false },
                       });
-                    },
-                  });
-                } else {
+                    }
+                  },
+                });
+
+                if (!response.data?.cancelParticipate) {
                   router.replace('/login?next=' + router.pathname);
                 }
               }}
@@ -100,10 +114,23 @@ const EventCard = ({ agenda, isAuth }: any) => {
         ) : (
           <Button
             onClick={async () => {
-              if (isAuth()) {
-                await participate({
-                  variables: { agendaId: agenda.id },
-                  update: (cache) => {
+              const response = await participate({
+                variables: { agendaId: agenda.id },
+                update: (cache) => {
+                  const meData: MeQuery | null = cache.readQuery({
+                    query: gql`
+                      query Me {
+                        me {
+                          username
+                          id
+                        }
+                      }
+                    `,
+                  });
+
+                  if (!meData?.me) {
+                    return;
+                  } else {
                     cache.writeFragment({
                       id: 'Agenda:' + agenda.id,
                       fragment: gql`
@@ -113,9 +140,11 @@ const EventCard = ({ agenda, isAuth }: any) => {
                       `,
                       data: { isParticipating: true },
                     });
-                  },
-                });
-              } else {
+                  }
+                },
+              });
+
+              if (!response.data?.participate) {
                 router.replace('/login?next=' + router.pathname);
               }
             }}
