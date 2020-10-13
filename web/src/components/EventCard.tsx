@@ -9,9 +9,10 @@ import {
   Button,
 } from '@chakra-ui/core';
 import React from 'react';
+import { useParticipateMutation } from '../generated/graphql';
 
 const EventCard = ({ agenda }: any) => {
-  console.log(agenda);
+  const [participate, { data, loading }] = useParticipateMutation();
   return (
     <Box
       border="5px solid #2b2559"
@@ -63,7 +64,14 @@ const EventCard = ({ agenda }: any) => {
             </Button>
           </>
         ) : (
-          <Button>Participate</Button>
+          <Button
+            onClick={async () => {
+              await participate({ variables: { agendaId: agenda.id } });
+            }}
+            isLoading={loading}
+          >
+            Participate
+          </Button>
         )}
       </Flex>
     </Box>

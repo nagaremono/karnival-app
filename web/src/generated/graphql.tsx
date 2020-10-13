@@ -23,7 +23,7 @@ export type Query = {
 
 
 export type QueryAgendaArgs = {
-  agendaId: Scalars['Float'];
+  agendaId: Scalars['Int'];
 };
 
 
@@ -96,7 +96,7 @@ export type MutationCancelParticipateArgs = {
 
 
 export type MutationParticipateArgs = {
-  agendaId: Scalars['Float'];
+  agendaId: Scalars['Int'];
 };
 
 
@@ -175,6 +175,16 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
+);
+
+export type ParticipateMutationVariables = Exact<{
+  agendaId: Scalars['Int'];
+}>;
+
+
+export type ParticipateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'participate'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -337,6 +347,36 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const ParticipateDocument = gql`
+    mutation Participate($agendaId: Int!) {
+  participate(agendaId: $agendaId)
+}
+    `;
+export type ParticipateMutationFn = Apollo.MutationFunction<ParticipateMutation, ParticipateMutationVariables>;
+
+/**
+ * __useParticipateMutation__
+ *
+ * To run a mutation, you first call `useParticipateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useParticipateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [participateMutation, { data, loading, error }] = useParticipateMutation({
+ *   variables: {
+ *      agendaId: // value for 'agendaId'
+ *   },
+ * });
+ */
+export function useParticipateMutation(baseOptions?: Apollo.MutationHookOptions<ParticipateMutation, ParticipateMutationVariables>) {
+        return Apollo.useMutation<ParticipateMutation, ParticipateMutationVariables>(ParticipateDocument, baseOptions);
+      }
+export type ParticipateMutationHookResult = ReturnType<typeof useParticipateMutation>;
+export type ParticipateMutationResult = Apollo.MutationResult<ParticipateMutation>;
+export type ParticipateMutationOptions = Apollo.BaseMutationOptions<ParticipateMutation, ParticipateMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($username: String!, $password: String!, $confirmpassword: String!, $email: String!) {
   register(input: {username: $username, password: $password, confirmpassword: $confirmpassword, email: $email}) {
