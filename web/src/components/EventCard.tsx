@@ -11,10 +11,17 @@ import {
 } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useParticipateMutation } from '../generated/graphql';
+import {
+  useCancelParticipateMutation,
+  useParticipateMutation,
+} from '../generated/graphql';
 
 const EventCard = ({ agenda, isAuth }: any) => {
-  const [participate, { data, loading, error }] = useParticipateMutation();
+  const [participate, { loading }] = useParticipateMutation();
+  const [
+    cancelParticipate,
+    { loading: cancelLoading },
+  ] = useCancelParticipateMutation();
   const router = useRouter();
   return (
     <Box
@@ -62,7 +69,31 @@ const EventCard = ({ agenda, isAuth }: any) => {
             >
               Participating
             </Badge>
-            <Button mx={2} variantColor="red">
+            <Button
+              isLoading={cancelLoading}
+              mx={2}
+              variantColor="red"
+              onClick={async () => {
+                if (isAuth()) {
+                  await cancelParticipate({
+                    variables: { agendaId: agenda.id },
+                    update: (cache) => {
+                      cache.writeFragment({
+                        id: 'Agenda:' + agenda.id,
+                        fragment: gql`
+                          fragment _ on Agenda {
+                            isParticipating
+                          }
+                        `,
+                        data: { isParticipating: false },
+                      });
+                    },
+                  });
+                } else {
+                  router.replace('/login?next=' + router.pathname);
+                }
+              }}
+            >
               Cancel
             </Button>
           </>

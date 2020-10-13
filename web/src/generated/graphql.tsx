@@ -136,6 +136,16 @@ export type UserFragmentFragment = (
   & Pick<User, 'username' | 'id'>
 );
 
+export type CancelParticipateMutationVariables = Exact<{
+  agendaId: Scalars['Int'];
+}>;
+
+
+export type CancelParticipateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'cancelParticipate'>
+);
+
 export type CreateAgendaMutationVariables = Exact<{
   input: AgendaInput;
 }>;
@@ -244,6 +254,36 @@ export const UserFragmentFragmentDoc = gql`
   id
 }
     `;
+export const CancelParticipateDocument = gql`
+    mutation CancelParticipate($agendaId: Int!) {
+  cancelParticipate(agendaId: $agendaId)
+}
+    `;
+export type CancelParticipateMutationFn = Apollo.MutationFunction<CancelParticipateMutation, CancelParticipateMutationVariables>;
+
+/**
+ * __useCancelParticipateMutation__
+ *
+ * To run a mutation, you first call `useCancelParticipateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelParticipateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelParticipateMutation, { data, loading, error }] = useCancelParticipateMutation({
+ *   variables: {
+ *      agendaId: // value for 'agendaId'
+ *   },
+ * });
+ */
+export function useCancelParticipateMutation(baseOptions?: Apollo.MutationHookOptions<CancelParticipateMutation, CancelParticipateMutationVariables>) {
+        return Apollo.useMutation<CancelParticipateMutation, CancelParticipateMutationVariables>(CancelParticipateDocument, baseOptions);
+      }
+export type CancelParticipateMutationHookResult = ReturnType<typeof useCancelParticipateMutation>;
+export type CancelParticipateMutationResult = Apollo.MutationResult<CancelParticipateMutation>;
+export type CancelParticipateMutationOptions = Apollo.BaseMutationOptions<CancelParticipateMutation, CancelParticipateMutationVariables>;
 export const CreateAgendaDocument = gql`
     mutation CreateAgenda($input: AgendaInput!) {
   createAgenda(input: $input) {

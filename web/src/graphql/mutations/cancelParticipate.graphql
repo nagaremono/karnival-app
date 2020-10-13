@@ -1,0 +1,3 @@
+mutation CancelParticipate($agendaId: Int!) {
+  cancelParticipate(agendaId: $agendaId)
+}
