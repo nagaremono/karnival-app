@@ -50,12 +50,13 @@ export type Agenda = {
   description: Scalars['String'];
   venue: Scalars['String'];
   participation: Array<Participation>;
-  startTime: Scalars['String'];
-  endTime: Scalars['String'];
+  startTime: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
   organizer: User;
   organizerId: Scalars['Int'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+  isParticipating: Scalars['Boolean'];
 };
 
 export type Participation = {
@@ -66,11 +67,13 @@ export type Participation = {
   agenda?: Maybe<Agenda>;
 };
 
+
 export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  cancelParticipate: Scalars['Boolean'];
   participate: Scalars['Boolean'];
   createAgenda: Agenda;
 };
@@ -84,6 +87,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationCancelParticipateArgs = {
+  agendaId: Scalars['Int'];
 };
 
 
@@ -122,7 +130,6 @@ export type AgendaInput = {
   startTime: Scalars['DateTime'];
   endTime: Scalars['DateTime'];
 };
-
 
 export type UserFragmentFragment = (
   { __typename?: 'User' }
@@ -202,7 +209,7 @@ export type AgendasQuery = (
   { __typename?: 'Query' }
   & { agendas?: Maybe<Array<(
     { __typename?: 'Agenda' }
-    & Pick<Agenda, 'name' | 'description' | 'id' | 'startTime' | 'endTime' | 'venue'>
+    & Pick<Agenda, 'name' | 'description' | 'id' | 'startTime' | 'endTime' | 'venue' | 'isParticipating'>
     & { organizer: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -383,6 +390,7 @@ export const AgendasDocument = gql`
       username
     }
     venue
+    isParticipating
   }
 }
     `;

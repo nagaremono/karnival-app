@@ -9,5 +9,6 @@ query Agendas($limit: Int!, $cursor: String) {
       username
     }
     venue
+    isParticipating
   }
 }
