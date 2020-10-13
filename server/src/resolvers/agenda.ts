@@ -56,6 +56,28 @@ export class AgendaResolver {
     return participation ? true : false;
   }
 
+  @Mutation(() => Boolean)
+  async cancelParticipate(
+    @Arg('agendaId', () => Int) agendaId: number,
+    @Ctx() { req }: MyContext
+  ) {
+    if (!req.session.userId) {
+      return false;
+    }
+
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Participation)
+      .where('"userId" = :userId and "agendaId" = :agendaId', {
+        userId: req.session.userId,
+        agendaId,
+      })
+      .execute();
+
+    return true;
+  }
+
   @Query(() => Agenda)
   async agenda(@Arg('agendaId') agendaId: number) {
     const agenda = await getConnection()
