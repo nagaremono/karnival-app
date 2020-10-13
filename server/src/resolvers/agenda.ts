@@ -43,6 +43,19 @@ export class AgendaResolver {
     return userLoader.load(agenda.organizerId);
   }
 
+  @FieldResolver(() => Boolean)
+  async isParticipating(@Root() agenda: Agenda, @Ctx() { req }: MyContext) {
+    if (!req.session.userId) {
+      return false;
+    }
+
+    const participation = await Participation.findOne({
+      where: { userId: req.session.userId, agendaId: agenda.id },
+    });
+
+    return participation ? true : false;
+  }
+
   @Query(() => Agenda)
   async agenda(@Arg('agendaId') agendaId: number) {
     const agenda = await getConnection()
