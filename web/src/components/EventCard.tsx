@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client';
 import {
   Box,
   Heading,
@@ -8,11 +9,13 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/core';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useParticipateMutation } from '../generated/graphql';
 
-const EventCard = ({ agenda }: any) => {
-  const [participate, { data, loading }] = useParticipateMutation();
+const EventCard = ({ agenda, isAuth }: any) => {
+  const [participate, { data, loading, error }] = useParticipateMutation();
+  const router = useRouter();
   return (
     <Box
       border="5px solid #2b2559"
@@ -66,7 +69,24 @@ const EventCard = ({ agenda }: any) => {
         ) : (
           <Button
             onClick={async () => {
-              await participate({ variables: { agendaId: agenda.id } });
+              if (isAuth()) {
+                await participate({
+                  variables: { agendaId: agenda.id },
+                  update: (cache) => {
+                    cache.writeFragment({
+                      id: 'Agenda:' + agenda.id,
+                      fragment: gql`
+                        fragment _ on Agenda {
+                          isParticipating
+                        }
+                      `,
+                      data: { isParticipating: true },
+                    });
+                  },
+                });
+              } else {
+                router.replace('/login?next=' + router.pathname);
+              }
             }}
             isLoading={loading}
           >

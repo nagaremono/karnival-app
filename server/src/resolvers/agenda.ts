@@ -98,6 +98,10 @@ export class AgendaResolver {
     @Arg('agendaId', () => Int) agendaId: number,
     @Ctx() { req }: MyContext
   ) {
+    if (!req.session.userId) {
+      return false;
+    }
+
     await Participation.create({
       agendaId,
       userId: req.session.userId,

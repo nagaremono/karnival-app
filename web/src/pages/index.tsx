@@ -11,7 +11,7 @@ import {
 import React from 'react';
 import AppBar from '../components/AppBar';
 import EventCard from '../components/EventCard';
-import { useAgendasQuery } from '../generated/graphql';
+import { useAgendasQuery, useMeQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 
 const Index = () => {
@@ -22,6 +22,15 @@ const Index = () => {
     },
     notifyOnNetworkStatusChange: true,
   });
+  const { data: meData, loading: meLoading } = useMeQuery();
+
+  const isAuth = () => {
+    if (!meData?.me && !meLoading) {
+      return false;
+    }
+
+    return true;
+  };
 
   if (!loading && !data) {
     return (
@@ -90,7 +99,7 @@ const Index = () => {
         ) : (
           <Grid templateColumns="repeat(2, 1fr)" gap={8} p={4}>
             {data?.agendas?.map((agenda) => (
-              <EventCard key={agenda.id} agenda={agenda} />
+              <EventCard isAuth={isAuth} key={agenda.id} agenda={agenda} />
             ))}
           </Grid>
         )}
