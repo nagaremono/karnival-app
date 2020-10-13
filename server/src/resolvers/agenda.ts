@@ -142,4 +142,16 @@ export class AgendaResolver {
       organizerId: req.session.userId,
     }).save();
   }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteAgenda(
+    @Arg('agendaId', () => Int) agendaId: number,
+    @Ctx() { req }: MyContext
+  ): Promise<Boolean> {
+    await Participation.delete({ agendaId });
+    await Agenda.delete({ id: agendaId, organizerId: req.session.userId });
+
+    return true;
+  }
 }

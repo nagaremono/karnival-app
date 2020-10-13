@@ -1,6 +1,7 @@
 query Agenda($agendaId: Int!) {
   agenda(agendaId: $agendaId) {
     id
+    organizerId
     name
     description
     startTime

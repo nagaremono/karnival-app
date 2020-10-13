@@ -6,10 +6,12 @@ import {
   Grid,
   Text,
   Link,
+  Flex,
 } from '@chakra-ui/core';
 import React from 'react';
 import NextLink from 'next/link';
 import { ParticipatingStatus } from './ParticipatingStatus';
+import EditDeleteButtons from './EditDeleteButtons';
 
 const EventCard = ({ agenda, router }: any) => {
   return (
@@ -34,6 +36,12 @@ const EventCard = ({ agenda, router }: any) => {
         Organized by{' '}
         <Badge fontSize="1.3rem">{agenda.organizer.username}</Badge>
       </Text>
+      <Flex justifyContent="flex-end">
+        <EditDeleteButtons
+          agendaId={agenda.id}
+          organizerId={agenda.organizerId}
+        />
+      </Flex>
       <Divider borderWidth="3px" />
       <Grid mt={4} gap={4} templateColumns="repeat(2, 1fr)">
         <Text fontSize="1.5rem" gridColumn="1 / -1">

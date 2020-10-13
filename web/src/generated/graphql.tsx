@@ -76,6 +76,7 @@ export type Mutation = {
   cancelParticipate: Scalars['Boolean'];
   participate: Scalars['Boolean'];
   createAgenda: Agenda;
+  deleteAgenda: Scalars['Boolean'];
 };
 
 
@@ -102,6 +103,11 @@ export type MutationParticipateArgs = {
 
 export type MutationCreateAgendaArgs = {
   input: AgendaInput;
+};
+
+
+export type MutationDeleteAgendaArgs = {
+  agendaId: Scalars['Int'];
 };
 
 export type UserResponse = {
@@ -157,6 +163,16 @@ export type CreateAgendaMutation = (
     { __typename?: 'Agenda' }
     & Pick<Agenda, 'name' | 'description' | 'startTime' | 'endTime'>
   ) }
+);
+
+export type DeleteAgendaMutationVariables = Exact<{
+  agendaId: Scalars['Int'];
+}>;
+
+
+export type DeleteAgendaMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteAgenda'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -228,7 +244,7 @@ export type AgendaQuery = (
   { __typename?: 'Query' }
   & { agenda: (
     { __typename?: 'Agenda' }
-    & Pick<Agenda, 'id' | 'name' | 'description' | 'startTime' | 'endTime' | 'isParticipating'>
+    & Pick<Agenda, 'id' | 'organizerId' | 'name' | 'description' | 'startTime' | 'endTime' | 'isParticipating'>
     & { organizer: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -253,7 +269,7 @@ export type AgendasQuery = (
   { __typename?: 'Query' }
   & { agendas?: Maybe<Array<(
     { __typename?: 'Agenda' }
-    & Pick<Agenda, 'name' | 'description' | 'id' | 'startTime' | 'endTime' | 'venue' | 'isParticipating'>
+    & Pick<Agenda, 'name' | 'description' | 'organizerId' | 'id' | 'startTime' | 'endTime' | 'venue' | 'isParticipating'>
     & { organizer: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -343,6 +359,36 @@ export function useCreateAgendaMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateAgendaMutationHookResult = ReturnType<typeof useCreateAgendaMutation>;
 export type CreateAgendaMutationResult = Apollo.MutationResult<CreateAgendaMutation>;
 export type CreateAgendaMutationOptions = Apollo.BaseMutationOptions<CreateAgendaMutation, CreateAgendaMutationVariables>;
+export const DeleteAgendaDocument = gql`
+    mutation DeleteAgenda($agendaId: Int!) {
+  deleteAgenda(agendaId: $agendaId)
+}
+    `;
+export type DeleteAgendaMutationFn = Apollo.MutationFunction<DeleteAgendaMutation, DeleteAgendaMutationVariables>;
+
+/**
+ * __useDeleteAgendaMutation__
+ *
+ * To run a mutation, you first call `useDeleteAgendaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAgendaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAgendaMutation, { data, loading, error }] = useDeleteAgendaMutation({
+ *   variables: {
+ *      agendaId: // value for 'agendaId'
+ *   },
+ * });
+ */
+export function useDeleteAgendaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAgendaMutation, DeleteAgendaMutationVariables>) {
+        return Apollo.useMutation<DeleteAgendaMutation, DeleteAgendaMutationVariables>(DeleteAgendaDocument, baseOptions);
+      }
+export type DeleteAgendaMutationHookResult = ReturnType<typeof useDeleteAgendaMutation>;
+export type DeleteAgendaMutationResult = Apollo.MutationResult<DeleteAgendaMutation>;
+export type DeleteAgendaMutationOptions = Apollo.BaseMutationOptions<DeleteAgendaMutation, DeleteAgendaMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
@@ -486,6 +532,7 @@ export const AgendaDocument = gql`
     query Agenda($agendaId: Int!) {
   agenda(agendaId: $agendaId) {
     id
+    organizerId
     name
     description
     startTime
@@ -534,6 +581,7 @@ export const AgendasDocument = gql`
   agendas(limit: $limit, cursor: $cursor) {
     name
     description
+    organizerId
     id
     startTime
     endTime
