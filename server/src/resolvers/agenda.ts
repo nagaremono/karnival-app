@@ -131,6 +131,27 @@ export class AgendaResolver {
     return await qb.getMany();
   }
 
+  @Mutation(() => Agenda, { nullable: true })
+  @UseMiddleware(isAuth)
+  async updateAgenda(
+    @Arg('agendaId', () => Int) agendaId: number,
+    @Arg('input') input: AgendaInput,
+    @Ctx() { req }: MyContext
+  ): Promise<Agenda | null> {
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(Agenda)
+      .set({ ...input })
+      .where('id = :agendaId and "organizerId" = :userId', {
+        agendaId,
+        userId: req.session.userId,
+      })
+      .returning('*')
+      .execute();
+
+    return result.raw[0];
+  }
+
   @Mutation(() => Agenda)
   @UseMiddleware(isAuth)
   async createAgenda(

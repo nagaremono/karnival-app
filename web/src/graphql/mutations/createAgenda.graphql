@@ -4,5 +4,6 @@ mutation CreateAgenda($input: AgendaInput!) {
     description
     startTime
     endTime
+    venue
   }
 }

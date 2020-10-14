@@ -3,6 +3,7 @@ query Agenda($agendaId: Int!) {
     id
     organizerId
     name
+    venue
     description
     startTime
     endTime

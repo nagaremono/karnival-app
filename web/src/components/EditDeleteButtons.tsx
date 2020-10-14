@@ -1,6 +1,7 @@
-import { Flex, IconButton } from '@chakra-ui/core';
+import { Flex, IconButton, Link } from '@chakra-ui/core';
 import React from 'react';
 import { useDeleteAgendaMutation, useMeQuery } from '../generated/graphql';
+import NextLink from 'next/link';
 
 interface EditDeleteButtonsProps {
   agendaId: number;
@@ -34,12 +35,17 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
               });
             }}
           />
-          <IconButton
-            size="md"
-            fontSize="1.6rem"
-            aria-label="Edit Event"
-            icon="edit"
-          />{' '}
+          <NextLink
+            href={{ pathname: '/event/edit/[id]', query: { id: agendaId } }}
+          >
+            <IconButton
+              as={Link}
+              size="md"
+              fontSize="1.6rem"
+              aria-label="Edit Event"
+              icon="edit"
+            />
+          </NextLink>
         </>
       ) : null}
     </Flex>

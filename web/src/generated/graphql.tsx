@@ -75,6 +75,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   cancelParticipate: Scalars['Boolean'];
   participate: Scalars['Boolean'];
+  updateAgenda?: Maybe<Agenda>;
   createAgenda: Agenda;
   deleteAgenda: Scalars['Boolean'];
 };
@@ -97,6 +98,12 @@ export type MutationCancelParticipateArgs = {
 
 
 export type MutationParticipateArgs = {
+  agendaId: Scalars['Int'];
+};
+
+
+export type MutationUpdateAgendaArgs = {
+  input: AgendaInput;
   agendaId: Scalars['Int'];
 };
 
@@ -161,7 +168,7 @@ export type CreateAgendaMutation = (
   { __typename?: 'Mutation' }
   & { createAgenda: (
     { __typename?: 'Agenda' }
-    & Pick<Agenda, 'name' | 'description' | 'startTime' | 'endTime'>
+    & Pick<Agenda, 'name' | 'description' | 'startTime' | 'endTime' | 'venue'>
   ) }
 );
 
@@ -235,6 +242,20 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateAgendaMutationVariables = Exact<{
+  agendaId: Scalars['Int'];
+  input: AgendaInput;
+}>;
+
+
+export type UpdateAgendaMutation = (
+  { __typename?: 'Mutation' }
+  & { updateAgenda?: Maybe<(
+    { __typename?: 'Agenda' }
+    & Pick<Agenda, 'name' | 'description' | 'venue' | 'endTime' | 'startTime'>
+  )> }
+);
+
 export type AgendaQueryVariables = Exact<{
   agendaId: Scalars['Int'];
 }>;
@@ -244,7 +265,7 @@ export type AgendaQuery = (
   { __typename?: 'Query' }
   & { agenda: (
     { __typename?: 'Agenda' }
-    & Pick<Agenda, 'id' | 'organizerId' | 'name' | 'description' | 'startTime' | 'endTime' | 'isParticipating'>
+    & Pick<Agenda, 'id' | 'organizerId' | 'name' | 'venue' | 'description' | 'startTime' | 'endTime' | 'isParticipating'>
     & { organizer: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -331,6 +352,7 @@ export const CreateAgendaDocument = gql`
     description
     startTime
     endTime
+    venue
   }
 }
     `;
@@ -528,12 +550,50 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateAgendaDocument = gql`
+    mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {
+  updateAgenda(agendaId: $agendaId, input: $input) {
+    name
+    description
+    venue
+    endTime
+    startTime
+  }
+}
+    `;
+export type UpdateAgendaMutationFn = Apollo.MutationFunction<UpdateAgendaMutation, UpdateAgendaMutationVariables>;
+
+/**
+ * __useUpdateAgendaMutation__
+ *
+ * To run a mutation, you first call `useUpdateAgendaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAgendaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAgendaMutation, { data, loading, error }] = useUpdateAgendaMutation({
+ *   variables: {
+ *      agendaId: // value for 'agendaId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateAgendaMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAgendaMutation, UpdateAgendaMutationVariables>) {
+        return Apollo.useMutation<UpdateAgendaMutation, UpdateAgendaMutationVariables>(UpdateAgendaDocument, baseOptions);
+      }
+export type UpdateAgendaMutationHookResult = ReturnType<typeof useUpdateAgendaMutation>;
+export type UpdateAgendaMutationResult = Apollo.MutationResult<UpdateAgendaMutation>;
+export type UpdateAgendaMutationOptions = Apollo.BaseMutationOptions<UpdateAgendaMutation, UpdateAgendaMutationVariables>;
 export const AgendaDocument = gql`
     query Agenda($agendaId: Int!) {
   agenda(agendaId: $agendaId) {
     id
     organizerId
     name
+    venue
     description
     startTime
     endTime

@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Icon, IconButton, Link } from '@chakra-ui/core';
+import { Button, Flex, Heading, Icon, Link, Text } from '@chakra-ui/core';
 import React from 'react';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
@@ -38,9 +38,9 @@ const AppBar = () => {
           </Flex>
         ) : (
           <Flex justifyContent="space-evenly" alignItems="center" w="25%">
-            <Link color="#f3f3f3" fontSize="1.5rem">
-              {data.me.username}
-            </Link>
+            <Text fontWeight="bold" as="span" color="#f3f3f3" fontSize="1.5rem">
+              {data?.me.username}
+            </Text>
             <NextLink href="/new-event">
               <Link
                 display="flex"
