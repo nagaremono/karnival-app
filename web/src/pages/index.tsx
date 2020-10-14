@@ -5,6 +5,7 @@ import EventCard from '../components/EventCard';
 import { useAgendasQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 import { useRouter } from 'next/router';
+import Footer from '../components/Footer';
 
 const Index = () => {
   const { data, error, loading, fetchMore, variables } = useAgendasQuery({
@@ -109,6 +110,7 @@ const Index = () => {
           </Flex>
         ) : null}
       </Box>
+      <Footer />
     </>
   );
 };
