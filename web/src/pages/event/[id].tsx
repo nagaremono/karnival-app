@@ -13,6 +13,7 @@ import EventDetailItem from '../../components/EventDetailItem';
 import { ParticipatingStatus } from '../../components/ParticipatingStatus';
 import { useAgendaQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
+import EditDeleteButtons from '../../components/EditDeleteButtons';
 
 const Event = ({}) => {
   const router = useRouter();
@@ -59,6 +60,7 @@ const Event = ({}) => {
               title="Event Description"
               text={data?.agenda.description}
             />
+            <EventDetailItem title="Event Venue" text={data?.agenda.venue} />
             <EventDetailItem
               title="Event Start"
               text={
@@ -75,6 +77,12 @@ const Event = ({}) => {
                 }) + ' WIB'
               }
             />
+            <Flex justifyContent="flex-end">
+              <EditDeleteButtons
+                agendaId={data?.agenda.id as number}
+                organizerId={data?.agenda.organizerId as number}
+              />
+            </Flex>
           </Box>
         </Box>
         <Box

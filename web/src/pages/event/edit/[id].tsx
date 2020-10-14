@@ -69,7 +69,7 @@ const EditEvent = () => {
           }}
         >
           {({ isSubmitting }) => (
-            <Box w="600px" mx="auto">
+            <Box w="40%" minW="300px" mx="auto">
               <Form>
                 <InputField
                   name="name"

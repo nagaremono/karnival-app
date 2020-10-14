@@ -2,6 +2,7 @@ import { Flex, IconButton, Link } from '@chakra-ui/core';
 import React from 'react';
 import { useDeleteAgendaMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 interface EditDeleteButtonsProps {
   agendaId: number;
@@ -14,6 +15,7 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
 }) => {
   const { data } = useMeQuery();
   const [deleteAgenda] = useDeleteAgendaMutation();
+  const router = useRouter();
 
   console.log(organizerId, agendaId);
 
@@ -33,6 +35,9 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
                   cache.evict({ id: 'Agenda:' + agendaId });
                 },
               });
+              if (router.asPath !== '/') {
+                router.push('/');
+              }
             }}
           />
           <NextLink

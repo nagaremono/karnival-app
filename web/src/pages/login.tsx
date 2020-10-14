@@ -43,7 +43,7 @@ const Login: React.FC = () => {
         }}
       >
         {({ isSubmitting }) => (
-          <Box w="600px" mx="auto">
+          <Box w="30%" minW="300px" mx="auto">
             <Form>
               <InputField
                 name="usernameOrEmail"
