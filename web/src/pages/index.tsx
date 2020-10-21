@@ -74,15 +74,24 @@ const Index = () => {
         borderRight="3px solid #FF934F"
         borderLeft="3px solid #FF934F"
         my={8}
-        px={6}
-        w="75%"
+        px={[4, 6, 8, 10]}
+        w={['90%', '80%']}
         mx="auto"
       >
         <Heading mb={4}>Upcoming Events and Gatherings</Heading>
         {!data && loading ? (
           <Box>Loading...</Box>
         ) : (
-          <Grid templateColumns="repeat(2, 1fr)" gap={8} p={4}>
+          <Grid
+            templateColumns={[
+              'minmax(0, 1fr)',
+              'minmax(0, 1fr)',
+              'repeat(2, minmax(0, 1fr))',
+              'repeat(2, minmax(0, 1fr))',
+            ]}
+            gap={[6, 8]}
+            alignItems="start"
+          >
             {data?.agendas?.map((agenda) => (
               <EventCard router={router} key={agenda.id} agenda={agenda} />
             ))}

@@ -28,7 +28,9 @@ const EventCard = ({ agenda, router }: any) => {
         }}
       >
         <Link>
-          <Heading mb={2}>{agenda.name}</Heading>
+          <Heading fontSize="1.7rem" mb={2}>
+            {agenda.name}
+          </Heading>
         </Link>
       </NextLink>
 
@@ -36,27 +38,25 @@ const EventCard = ({ agenda, router }: any) => {
         Organized by{' '}
         <Badge fontSize="1.3rem">{agenda.organizer.username}</Badge>
       </Text>
-      <Flex justifyContent="flex-end">
-        <EditDeleteButtons
-          agendaId={agenda.id}
-          organizerId={agenda.organizerId}
-        />
-      </Flex>
+      <EditDeleteButtons
+        agendaId={agenda.id}
+        organizerId={agenda.organizerId}
+      />
       <Divider borderWidth="3px" />
-      <Grid mt={4} gap={4} templateColumns="repeat(2, 1fr)">
-        <Text fontSize="1.5rem" gridColumn="1 / -1">
-          {agenda.description}
+      <Grid mt={4} gap={2} templateColumns="repeat(2, minmax(0, 1fr))">
+        <Text fontSize="1.2rem" gridColumn="1 / -1">
+          {agenda.description.slice(0, 150) + '...'}
         </Text>
-        <Text fontSize="1.5rem" gridColumn="1 / -1">
+        <Text fontSize="1.2rem" gridColumn="1 / -1">
           Venue: {agenda.venue}
         </Text>
-        <Text fontSize="1.4rem">
+        <Text fontSize="1.1rem">
           Start:{' '}
           {new Date(agenda.startTime).toLocaleString('id-ID', {
             timeZone: 'Asia/Jakarta',
           })}
         </Text>
-        <Text fontSize="1.4rem">
+        <Text fontSize="1.1rem">
           End:{' '}
           {new Date(agenda.endTime).toLocaleString('id-ID', {
             timeZone: 'Asia/Jakarta',

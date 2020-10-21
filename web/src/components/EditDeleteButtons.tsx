@@ -20,11 +20,12 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   console.log(organizerId, agendaId);
 
   return (
-    <Flex width="20%" justifyContent="space-evenly">
+    <Flex mt={2} width="100%" justifyContent="flex-end">
       {data?.me?.id === organizerId ? (
         <>
           <IconButton
             size="md"
+            mr={2}
             fontSize="1.6rem"
             aria-label="Delete Event"
             icon="delete"
@@ -45,6 +46,7 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
           >
             <IconButton
               as={Link}
+              mr={2}
               size="md"
               fontSize="1.6rem"
               aria-label="Edit Event"
