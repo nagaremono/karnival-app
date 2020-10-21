@@ -42,7 +42,7 @@ const Register: React.FC = () => {
         }}
       >
         {({ isSubmitting }) => (
-          <Box w="30%" minW="300px" mx="auto">
+          <Box w={['80%', '60%', '40%', '25%']} mx="auto">
             <Form>
               <InputField
                 name="username"
