@@ -5,11 +5,13 @@ const Footer = () => {
   return (
     <Flex
       alignItems="center"
+      alignContent="space-evenly"
       justifyContent="space-between"
-      px={4}
+      wrap={['wrap']}
+      p={4}
       mt={12}
       backgroundColor="#2b2559"
-      height="100px"
+      height={['200px', '100px']}
       as="footer"
     >
       <Text mx={4} fontSize="1.3rem" color="#f3f3f3">
