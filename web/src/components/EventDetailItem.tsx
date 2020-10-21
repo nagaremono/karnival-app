@@ -9,12 +9,10 @@ type EventDetailItemProps = {
 const EventDetailItem: React.FC<EventDetailItemProps> = ({ title, text }) => {
   return (
     <Box mb={4}>
-      <Heading fontSize="1.6rem" as="h4">
+      <Heading fontSize="1.3rem" as="h4">
         {title}
       </Heading>
-      <Text fontSize="1.4rem" pl={4}>
-        {text}
-      </Text>
+      <Text fontSize="1.1rem">{text}</Text>
     </Box>
   );
 };

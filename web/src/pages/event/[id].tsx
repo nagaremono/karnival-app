@@ -37,20 +37,26 @@ const Event = ({}) => {
   return (
     <>
       <AppBar />
-      <Heading mt={6} mb={10} w="75%" mx="auto">
+      <Heading mt={6} mb={10} w={['90%', '80%']} mx="auto">
         Event Details
       </Heading>
-      <Flex mx="auto" w="75%" justifyContent="space-evenly">
+      <Flex
+        mx="auto"
+        w={['90%', '80%']}
+        wrap={['wrap']}
+        justifyContent="space-evenly"
+      >
         <Box
           boxShadow="0px 0px 14px 1px #2B2559"
-          p={6}
+          p={4}
           border="5px solid #7785AC"
-          width="60%"
+          width={['90%', '80%', '50%']}
+          mb={6}
         >
-          <Heading mb={4} as="h3" textAlign="center">
+          <Heading mb={4} as="h3" fontSize="1.8rem" textAlign="center">
             {data?.agenda.name}
           </Heading>
-          <ParticipatingStatus agenda={data?.agenda} />
+          <ParticipatingStatus mb={2} agenda={data?.agenda} />
           <Box>
             <EventDetailItem
               title="Event Organizer"
@@ -77,28 +83,27 @@ const Event = ({}) => {
                 }) + ' WIB'
               }
             />
-            <Flex justifyContent="flex-end">
-              <EditDeleteButtons
-                agendaId={data?.agenda.id as number}
-                organizerId={data?.agenda.organizerId as number}
-              />
-            </Flex>
+            <EditDeleteButtons
+              agendaId={data?.agenda.id as number}
+              organizerId={data?.agenda.organizerId as number}
+            />
           </Box>
         </Box>
         <Box
-          width="30%"
+          width={['90%', '80%', '30%']}
           p={4}
+          mb={6}
           boxShadow="0px 0px 14px 1px #2B2559"
           border="3px solid #A5E6BA"
           height="max-content"
         >
-          <Heading as="h3" mb={2}>
+          <Heading w="100%" as="h3" mb={2} fontSize="1.8rem">
             Participants
           </Heading>
           <List spacing={2}>
             {data?.agenda.participation.map((p) => {
               return (
-                <ListItem key={p.userId} pl={4} fontSize="1.3rem">
+                <ListItem key={p.userId} pl={4} fontSize="1.2rem">
                   <ListIcon icon="at-sign" />
                   {p.user!.username}
                 </ListItem>
