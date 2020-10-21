@@ -38,17 +38,17 @@ const Index = () => {
         position="relative"
       >
         <Flex
-          w="75%"
+          width={['100%', '80%']}
           flexDirection="column"
-          h="25%"
-          justifyContent="center"
-          p={6}
+          h="50%"
+          justifyContent="space-evenly"
+          p={4}
           border="5px solid #72e1d1"
         >
-          <Heading w="max-content" as="h1" fontSize="3.5rem">
+          <Heading as="h1" textAlign="center" fontSize="3rem">
             Welcome to Karnival
           </Heading>
-          <Text fontSize="1.5rem" w="max-content">
+          <Text color="#fff" textAlign="center" fontSize="1.5rem">
             Find events and gatherings near you!
           </Text>
         </Flex>
