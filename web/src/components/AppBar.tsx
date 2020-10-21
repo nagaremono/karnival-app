@@ -1,4 +1,15 @@
-import { Button, Flex, Heading, Icon, Link, Text } from '@chakra-ui/core';
+import {
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from '@chakra-ui/core';
 import React from 'react';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
@@ -13,7 +24,12 @@ const AppBar = () => {
 
   return (
     <header>
-      <Flex justifyContent="space-between" height="80px" bg="#2b2559">
+      <Flex
+        justifyContent="space-between"
+        height="80px"
+        bg="#2b2559"
+        alignItems="center"
+      >
         <Heading
           ml="4"
           color="#f3f3f3"
@@ -24,53 +40,59 @@ const AppBar = () => {
           <NextLink href="/">Karnival App</NextLink>
         </Heading>
         {!data?.me || loading ? (
-          <Flex justifyContent="space-evenly" alignItems="center" w="15%">
-            <NextLink href="/register">
-              <Link color="#f3f3f3" fontSize="1.4rem">
-                Register
-              </Link>
-            </NextLink>
-            <NextLink href="login">
-              <Link color="#f3f3f3" fontSize="1.4rem">
-                Login
-              </Link>
-            </NextLink>
-          </Flex>
+          <Menu>
+            <MenuButton mr="4" fontSize="1.2rem" as={Button}>
+              Login
+            </MenuButton>
+            <MenuList>
+              <NextLink href="/register">
+                <MenuItem>
+                  <Link color="#000">Register</Link>
+                </MenuItem>
+              </NextLink>
+              <NextLink href="login">
+                <MenuItem>
+                  <Link color="#000">Login</Link>
+                </MenuItem>
+              </NextLink>
+            </MenuList>
+          </Menu>
         ) : (
-          <Flex justifyContent="space-evenly" alignItems="center" w="25%">
-            <Text fontWeight="bold" as="span" color="#f3f3f3" fontSize="1.5rem">
-              {data?.me.username}
-            </Text>
-            <NextLink href="/new-event">
-              <Link
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                color="#f3f3f3"
-                fontSize={'1.2rem'}
-                py={2}
-              >
-                <Icon aria-label="Post new event" mx={2} name="add" />
-                Post new event
-              </Link>
-            </NextLink>
-            <Button
-              onClick={async () => {
-                await logout();
-                await apolloClient.resetStore();
-              }}
-              isLoading={logoutLoading}
-              fontSize="1.2rem"
-              border="2px solid #000"
-              _hover={{
-                border: '2px solid #fff',
-                backgroundColor: '#000',
-                color: '#f3f3f3',
-              }}
-            >
-              Logout
-            </Button>
-          </Flex>
+          <>
+            <Menu>
+              <MenuButton as={Button} fontSize="1.2rem" mr="4">
+                {data?.me.username}
+              </MenuButton>
+              <MenuList>
+                <NextLink href="/new-event">
+                  <MenuItem>
+                    <Link
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      color="#000"
+                      fontSize={'1.2rem'}
+                      py={2}
+                    >
+                      <Icon aria-label="Post new event" mx={2} name="add" />
+                      Post new event
+                    </Link>
+                  </MenuItem>
+                </NextLink>
+                <MenuItem
+                  display="flex"
+                  justifyContent="center"
+                  fontSize="1.2rem"
+                  onClick={async () => {
+                    await logout();
+                    await apolloClient.resetStore();
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </>
         )}
       </Flex>
     </header>
