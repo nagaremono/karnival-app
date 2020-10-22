@@ -102,9 +102,6 @@ const Index = () => {
             <Button
               isLoading={loading}
               onClick={() => {
-                console.log(
-                  data!.agendas![data!.agendas!.length - 1].startTime
-                );
                 fetchMore({
                   variables: {
                     limit: variables?.limit,
