@@ -17,8 +17,6 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   const [deleteAgenda] = useDeleteAgendaMutation();
   const router = useRouter();
 
-  console.log(organizerId, agendaId);
-
   return (
     <Flex mt={2} width="100%" justifyContent="flex-end">
       {data?.me?.id === organizerId ? (

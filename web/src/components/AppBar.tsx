@@ -85,6 +85,7 @@ const AppBar = () => {
                   fontSize="1.2rem"
                   onClick={async () => {
                     await logout();
+                    await apolloClient.cache.reset();
                     await apolloClient.resetStore();
                   }}
                 >
