@@ -1,21 +1,39 @@
-import { gql } from '@apollo/client';
 import { Flex, Badge, Button } from '@chakra-ui/core';
 import { useRouter } from 'next/router';
 import React from 'react';
 import {
-  useParticipateMutation,
-  useCancelParticipateMutation,
-  MeQuery,
+  useMeQuery,
+  useToggleParticipationMutation,
 } from '../generated/graphql';
 
 export const ParticipatingStatus = ({ agenda }: any) => {
-  const [participate, { loading }] = useParticipateMutation();
-  const [
-    cancelParticipate,
-    { loading: cancelLoading },
-  ] = useCancelParticipateMutation();
+  const { data: meData } = useMeQuery();
+
+  const [toggleParticipation, { loading }] = useToggleParticipationMutation({
+    variables: {
+      agendaId: agenda?.id,
+      isParticipating: agenda?.isParticipating,
+    },
+    update: (cache, { data }) => {
+      if (!meData?.me) {
+        router.replace('/login?next=' + router.asPath);
+      }
+
+      if (!data?.toggleParticipation) return;
+
+      cache.modify({
+        id: cache.identify(agenda),
+        fields: {
+          isParticipating(current) {
+            return !current;
+          },
+        },
+      });
+    },
+  });
 
   const router = useRouter();
+
   return (
     <Flex mt={2} justifyContent="flex-end">
       {agenda?.isParticipating ? (
@@ -31,87 +49,16 @@ export const ParticipatingStatus = ({ agenda }: any) => {
             Participating
           </Badge>
           <Button
-            isLoading={cancelLoading}
+            isLoading={loading}
             mx={2}
             variantColor="red"
-            onClick={async () => {
-              const response = await cancelParticipate({
-                variables: { agendaId: agenda.id },
-                update: (cache) => {
-                  const meData: MeQuery | null = cache.readQuery({
-                    query: gql`
-                      query Me {
-                        me {
-                          username
-                          id
-                        }
-                      }
-                    `,
-                  });
-
-                  if (!meData?.me) {
-                    return;
-                  } else {
-                    cache.writeFragment({
-                      id: 'Agenda:' + agenda.id,
-                      fragment: gql`
-                        fragment _ on Agenda {
-                          isParticipating
-                        }
-                      `,
-                      data: { isParticipating: false },
-                    });
-                  }
-                },
-              });
-
-              if (!response.data?.cancelParticipate) {
-                router.replace('/login?next=' + router.asPath);
-              }
-            }}
+            onClick={() => toggleParticipation()}
           >
             Cancel
           </Button>
         </>
       ) : (
-        <Button
-          onClick={async () => {
-            const response = await participate({
-              variables: { agendaId: agenda.id },
-              update: (cache) => {
-                const meData: MeQuery | null = cache.readQuery({
-                  query: gql`
-                    query Me {
-                      me {
-                        username
-                        id
-                      }
-                    }
-                  `,
-                });
-
-                if (!meData?.me) {
-                  return;
-                } else {
-                  cache.writeFragment({
-                    id: 'Agenda:' + agenda.id,
-                    fragment: gql`
-                      fragment _ on Agenda {
-                        isParticipating
-                      }
-                    `,
-                    data: { isParticipating: true },
-                  });
-                }
-              },
-            });
-
-            if (!response.data?.participate) {
-              router.replace('/login?next=' + router.asPath);
-            }
-          }}
-          isLoading={loading}
-        >
+        <Button onClick={async () => toggleParticipation()} isLoading={loading}>
           Participate
         </Button>
       )}

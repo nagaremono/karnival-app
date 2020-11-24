@@ -17,9 +17,7 @@ import { useApolloClient } from '@apollo/client';
 
 const AppBar = () => {
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
-  const { data, loading } = useMeQuery({
-    skip: typeof window === 'undefined',
-  });
+  const { data, loading } = useMeQuery({});
   const apolloClient = useApolloClient();
 
   return (

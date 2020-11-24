@@ -1,3 +1,0 @@
-mutation Participate($agendaId: Int!) {
-  participate(agendaId: $agendaId)
-}

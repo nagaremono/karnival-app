@@ -57,23 +57,31 @@ export class AgendaResolver {
   }
 
   @Mutation(() => Boolean)
-  async cancelParticipate(
+  async toggleParticipation(
     @Arg('agendaId', () => Int) agendaId: number,
+    @Arg('isParticipating') isParticipating: boolean,
     @Ctx() { req }: MyContext
   ) {
     if (!req.session.userId) {
       return false;
     }
 
-    await getConnection()
-      .createQueryBuilder()
-      .delete()
-      .from(Participation)
-      .where('"userId" = :userId and "agendaId" = :agendaId', {
-        userId: req.session.userId,
+    if (isParticipating) {
+      await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(Participation)
+        .where('"userId" = :userId and "agendaId" = :agendaId', {
+          userId: req.session.userId,
+          agendaId,
+        })
+        .execute();
+    } else {
+      await Participation.create({
         agendaId,
-      })
-      .execute();
+        userId: req.session.userId,
+      }).save();
+    }
 
     return true;
   }
@@ -91,23 +99,6 @@ export class AgendaResolver {
       .getOne();
 
     return agenda;
-  }
-
-  @Mutation(() => Boolean)
-  async participate(
-    @Arg('agendaId', () => Int) agendaId: number,
-    @Ctx() { req }: MyContext
-  ) {
-    if (!req.session.userId) {
-      return false;
-    }
-
-    await Participation.create({
-      agendaId,
-      userId: req.session.userId,
-    }).save();
-
-    return true;
   }
 
   @Query(() => [Agenda], { nullable: true })

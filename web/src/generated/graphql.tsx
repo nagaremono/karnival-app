@@ -73,8 +73,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
-  cancelParticipate: Scalars['Boolean'];
-  participate: Scalars['Boolean'];
+  toggleParticipation: Scalars['Boolean'];
   updateAgenda?: Maybe<Agenda>;
   createAgenda: Agenda;
   deleteAgenda: Scalars['Boolean'];
@@ -92,12 +91,8 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationCancelParticipateArgs = {
-  agendaId: Scalars['Int'];
-};
-
-
-export type MutationParticipateArgs = {
+export type MutationToggleParticipationArgs = {
+  isParticipating: Scalars['Boolean'];
   agendaId: Scalars['Int'];
 };
 
@@ -147,16 +142,6 @@ export type AgendaInput = {
 export type UserFragmentFragment = (
   { __typename?: 'User' }
   & Pick<User, 'username' | 'id'>
-);
-
-export type CancelParticipateMutationVariables = Exact<{
-  agendaId: Scalars['Int'];
-}>;
-
-
-export type CancelParticipateMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'cancelParticipate'>
 );
 
 export type CreateAgendaMutationVariables = Exact<{
@@ -210,16 +195,6 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
-export type ParticipateMutationVariables = Exact<{
-  agendaId: Scalars['Int'];
-}>;
-
-
-export type ParticipateMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'participate'>
-);
-
 export type RegisterMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -240,6 +215,17 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
+);
+
+export type ToggleParticipationMutationVariables = Exact<{
+  agendaId: Scalars['Int'];
+  isParticipating: Scalars['Boolean'];
+}>;
+
+
+export type ToggleParticipationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'toggleParticipation'>
 );
 
 export type UpdateAgendaMutationVariables = Exact<{
@@ -315,36 +301,6 @@ export const UserFragmentFragmentDoc = gql`
   id
 }
     `;
-export const CancelParticipateDocument = gql`
-    mutation CancelParticipate($agendaId: Int!) {
-  cancelParticipate(agendaId: $agendaId)
-}
-    `;
-export type CancelParticipateMutationFn = Apollo.MutationFunction<CancelParticipateMutation, CancelParticipateMutationVariables>;
-
-/**
- * __useCancelParticipateMutation__
- *
- * To run a mutation, you first call `useCancelParticipateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCancelParticipateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [cancelParticipateMutation, { data, loading, error }] = useCancelParticipateMutation({
- *   variables: {
- *      agendaId: // value for 'agendaId'
- *   },
- * });
- */
-export function useCancelParticipateMutation(baseOptions?: Apollo.MutationHookOptions<CancelParticipateMutation, CancelParticipateMutationVariables>) {
-        return Apollo.useMutation<CancelParticipateMutation, CancelParticipateMutationVariables>(CancelParticipateDocument, baseOptions);
-      }
-export type CancelParticipateMutationHookResult = ReturnType<typeof useCancelParticipateMutation>;
-export type CancelParticipateMutationResult = Apollo.MutationResult<CancelParticipateMutation>;
-export type CancelParticipateMutationOptions = Apollo.BaseMutationOptions<CancelParticipateMutation, CancelParticipateMutationVariables>;
 export const CreateAgendaDocument = gql`
     mutation CreateAgenda($input: AgendaInput!) {
   createAgenda(input: $input) {
@@ -479,36 +435,6 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const ParticipateDocument = gql`
-    mutation Participate($agendaId: Int!) {
-  participate(agendaId: $agendaId)
-}
-    `;
-export type ParticipateMutationFn = Apollo.MutationFunction<ParticipateMutation, ParticipateMutationVariables>;
-
-/**
- * __useParticipateMutation__
- *
- * To run a mutation, you first call `useParticipateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useParticipateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [participateMutation, { data, loading, error }] = useParticipateMutation({
- *   variables: {
- *      agendaId: // value for 'agendaId'
- *   },
- * });
- */
-export function useParticipateMutation(baseOptions?: Apollo.MutationHookOptions<ParticipateMutation, ParticipateMutationVariables>) {
-        return Apollo.useMutation<ParticipateMutation, ParticipateMutationVariables>(ParticipateDocument, baseOptions);
-      }
-export type ParticipateMutationHookResult = ReturnType<typeof useParticipateMutation>;
-export type ParticipateMutationResult = Apollo.MutationResult<ParticipateMutation>;
-export type ParticipateMutationOptions = Apollo.BaseMutationOptions<ParticipateMutation, ParticipateMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($username: String!, $password: String!, $confirmpassword: String!, $email: String!) {
   register(input: {username: $username, password: $password, confirmpassword: $confirmpassword, email: $email}) {
@@ -550,6 +476,37 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const ToggleParticipationDocument = gql`
+    mutation toggleParticipation($agendaId: Int!, $isParticipating: Boolean!) {
+  toggleParticipation(agendaId: $agendaId, isParticipating: $isParticipating)
+}
+    `;
+export type ToggleParticipationMutationFn = Apollo.MutationFunction<ToggleParticipationMutation, ToggleParticipationMutationVariables>;
+
+/**
+ * __useToggleParticipationMutation__
+ *
+ * To run a mutation, you first call `useToggleParticipationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleParticipationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleParticipationMutation, { data, loading, error }] = useToggleParticipationMutation({
+ *   variables: {
+ *      agendaId: // value for 'agendaId'
+ *      isParticipating: // value for 'isParticipating'
+ *   },
+ * });
+ */
+export function useToggleParticipationMutation(baseOptions?: Apollo.MutationHookOptions<ToggleParticipationMutation, ToggleParticipationMutationVariables>) {
+        return Apollo.useMutation<ToggleParticipationMutation, ToggleParticipationMutationVariables>(ToggleParticipationDocument, baseOptions);
+      }
+export type ToggleParticipationMutationHookResult = ReturnType<typeof useToggleParticipationMutation>;
+export type ToggleParticipationMutationResult = Apollo.MutationResult<ToggleParticipationMutation>;
+export type ToggleParticipationMutationOptions = Apollo.BaseMutationOptions<ToggleParticipationMutation, ToggleParticipationMutationVariables>;
 export const UpdateAgendaDocument = gql`
     mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {
   updateAgenda(agendaId: $agendaId, input: $input) {
