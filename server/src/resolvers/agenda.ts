@@ -44,13 +44,17 @@ export class AgendaResolver {
   }
 
   @FieldResolver(() => Boolean)
-  async isParticipating(@Root() agenda: Agenda, @Ctx() { req }: MyContext) {
+  async isParticipating(
+    @Root() agenda: Agenda,
+    @Ctx() { participationLoader, req }: MyContext
+  ) {
     if (!req.session.userId) {
       return false;
     }
 
-    const participation = await Participation.findOne({
-      where: { userId: req.session.userId, agendaId: agenda.id },
+    const participation = await participationLoader.load({
+      userId: req.session.userId,
+      agendaId: agenda.id,
     });
 
     return participation ? true : false;

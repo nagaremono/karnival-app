@@ -17,6 +17,7 @@ import { AgendaResolver } from './resolvers/agenda';
 import { Participation } from './entities/Participation';
 import { createUserLoader } from './utils/createUserLoader';
 import { MyContext } from './types';
+import { createParticipationLoader } from './utils/createParticipationLoader';
 
 const main = async () => {
   await createConnection({
@@ -61,7 +62,12 @@ const main = async () => {
       validate: false,
     }),
     context: ({ req, res }): MyContext =>
-      <MyContext>{ req, res, userLoader: createUserLoader() },
+      <MyContext>{
+        req,
+        res,
+        userLoader: createUserLoader(),
+        participationLoader: createParticipationLoader(),
+      },
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
