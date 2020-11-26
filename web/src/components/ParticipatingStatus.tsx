@@ -27,6 +27,9 @@ export const ParticipatingStatus = ({ agenda }: any) => {
           isParticipating(current) {
             return !current;
           },
+          participation(current, { DELETE }) {
+            return DELETE;
+          },
         },
       });
     },
