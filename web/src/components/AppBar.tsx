@@ -9,7 +9,7 @@ import {
   MenuItem,
   MenuList,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import React from 'react';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';

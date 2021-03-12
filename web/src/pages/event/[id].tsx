@@ -6,7 +6,7 @@ import {
   ListIcon,
   ListItem,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import AppBar from '../../components/AppBar';
 import EventDetailItem from '../../components/EventDetailItem';
@@ -14,6 +14,7 @@ import { ParticipatingStatus } from '../../components/ParticipatingStatus';
 import { useAgendaQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 import EditDeleteButtons from '../../components/EditDeleteButtons';
+import { AtSignIcon } from '@chakra-ui/icons';
 
 const Event = ({}) => {
   const router = useRouter();
@@ -104,7 +105,7 @@ const Event = ({}) => {
             {data?.agenda.participation.map((p) => {
               return (
                 <ListItem key={p.userId} pl={4} fontSize="1.2rem">
-                  <ListIcon icon="at-sign" />
+                  <ListIcon as={AtSignIcon} />
                   {p.user!.username}
                 </ListItem>
               );

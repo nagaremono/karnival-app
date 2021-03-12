@@ -7,7 +7,7 @@ import {
   Text,
   Link,
   Flex,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 import { ParticipatingStatus } from './ParticipatingStatus';

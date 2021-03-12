@@ -1,4 +1,4 @@
-import { ThemeProvider, CSSReset } from '@chakra-ui/core';
+import { ChakraProvider } from '@chakra-ui/react';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import Head from 'next/head';
@@ -18,10 +18,9 @@ function MyApp({ Component, pageProps }: any) {
       <Head>
         <link rel="stylesheet" type="text/css" href="/nprogress.css" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CSSReset />
+      <ChakraProvider resetCSS theme={theme}>
         <Component {...pageProps} />
-      </ThemeProvider>
+      </ChakraProvider>
     </>
   );
 }

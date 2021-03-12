@@ -1,7 +1,7 @@
 import { Formik, Form } from 'formik';
 import AppBar from '../components/AppBar';
 import InputField from '../components/InputField';
-import { Button, Box, Flex } from '@chakra-ui/core';
+import { Button, Box, Flex } from '@chakra-ui/react';
 import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 import { toErrorMap } from '../utils/toErrorMap';

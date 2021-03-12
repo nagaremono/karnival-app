@@ -1,4 +1,4 @@
-import { Flex, Badge, Button } from '@chakra-ui/core';
+import { Flex, Badge, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import {
@@ -46,7 +46,7 @@ export const ParticipatingStatus = ({ agenda }: any) => {
             alignItems="center"
             px="10px"
             fontSize="1rem"
-            variantColor="green"
+            colorScheme="green"
             mx={2}
           >
             Participating
@@ -54,7 +54,7 @@ export const ParticipatingStatus = ({ agenda }: any) => {
           <Button
             isLoading={loading}
             mx={2}
-            variantColor="red"
+            colorScheme="red"
             onClick={() => toggleParticipation()}
           >
             Cancel

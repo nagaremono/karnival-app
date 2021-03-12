@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Button, Flex } from '@chakra-ui/core';
+import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import {

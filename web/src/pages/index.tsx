@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Heading, Text } from '@chakra-ui/core';
+import { Box, Button, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 import AppBar from '../components/AppBar';
 import EventCard from '../components/EventCard';
@@ -109,7 +109,7 @@ const Index = () => {
                   },
                 });
               }}
-              variantColor="green"
+              colorScheme="green"
             >
               More Events
             </Button>
