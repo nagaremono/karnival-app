@@ -48,7 +48,7 @@ const AppBar = () => {
                   <Link color="#000">Register</Link>
                 </MenuItem>
               </NextLink>
-              <NextLink href="login">
+              <NextLink href="/login">
                 <MenuItem>
                   <Link color="#000">Login</Link>
                 </MenuItem>
