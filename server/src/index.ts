@@ -23,9 +23,9 @@ const main = async () => {
   await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    synchronize: true,
+    synchronize: !__prod__,
     entities: [Agenda, User, Participation],
-    logging: true,
+    logging: !__prod__,
   });
 
   const app = express();
