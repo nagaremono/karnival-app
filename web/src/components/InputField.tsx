@@ -8,7 +8,9 @@ import {
 import { useField } from 'formik';
 import React from 'react';
 
-type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type InputFieldProps = React.InputHTMLAttributes<
+  HTMLInputElement & HTMLTextAreaElement
+> & {
   name: string;
   label: string;
   textarea?: boolean;
@@ -22,22 +24,26 @@ const InputField: React.FC<InputFieldProps> = ({
   size: _,
   ...props
 }) => {
-  let InputTextorTextArea = Input;
-
-  if (textarea) {
-    InputTextorTextArea = Textarea;
-  }
-
   const [field, { error }] = useField(props);
+
   return (
     <FormControl mt={6} isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <InputTextorTextArea
-        {...field}
-        {...props}
-        id={field.name}
-        placeholder={placeholder}
-      />
+      {textarea ? (
+        <Textarea
+          {...field}
+          {...props}
+          id={field.name}
+          placeholder={placeholder}
+        />
+      ) : (
+        <Input
+          {...field}
+          {...props}
+          id={field.name}
+          placeholder={placeholder}
+        />
+      )}
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
