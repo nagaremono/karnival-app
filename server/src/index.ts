@@ -20,15 +20,13 @@ import { MyContext } from './types';
 import { createParticipationLoader } from './utils/createParticipationLoader';
 
 const main = async () => {
-  const connection = await createConnection({
+  await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
     synchronize: !__prod__,
     entities: [Agenda, User, Participation],
     logging: !__prod__,
   });
-
-  await connection.runMigrations();
 
   const app = express();
 
