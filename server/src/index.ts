@@ -51,6 +51,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: 'lax',
         secure: __prod__,
+        domain: __prod__ ? '.guruhedi.com' : undefined,
       },
       saveUninitialized: false,
     })
