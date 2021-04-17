@@ -6,27 +6,18 @@ import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
 import { createConnection } from 'typeorm';
-import { User } from './entities/User';
 import { UserResolver } from './resolvers/user';
 import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
-import { Agenda } from './entities/Agenda';
 import { AgendaResolver } from './resolvers/agenda';
-import { Participation } from './entities/Participation';
 import { createUserLoader } from './utils/createUserLoader';
 import { MyContext } from './types';
 import { createParticipationLoader } from './utils/createParticipationLoader';
 
 const main = async () => {
-  await createConnection({
-    type: 'postgres',
-    url: process.env.DATABASE_URL,
-    synchronize: !__prod__,
-    entities: [Agenda, User, Participation],
-    logging: !__prod__,
-  });
+  await createConnection();
 
   const app = express();
 
