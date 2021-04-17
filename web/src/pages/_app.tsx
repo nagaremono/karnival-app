@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }: any) {
     <>
       <Head>
         <link rel="stylesheet" type="text/css" href="/nprogress.css" />
+        <title>Karnival</title>
       </Head>
       <ChakraProvider resetCSS theme={theme}>
         <Component {...pageProps} />
