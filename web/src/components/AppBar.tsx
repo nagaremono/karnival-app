@@ -14,6 +14,7 @@ import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
+import { AddIcon } from '@chakra-ui/icons';
 
 const AppBar = () => {
   const [logout] = useLogoutMutation();
@@ -73,7 +74,7 @@ const AppBar = () => {
                       fontSize={'1.2rem'}
                       py={2}
                     >
-                      <Icon aria-label="Post new event" mx={2} name="add" />
+                      <AddIcon aria-label="Post new event" mx={2} />
                       Post new event
                     </Link>
                   </MenuItem>
