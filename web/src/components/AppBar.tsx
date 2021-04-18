@@ -8,17 +8,18 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 
 const AppBar = () => {
-  const [logout, { loading: logoutLoading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const { data, loading } = useMeQuery({});
   const apolloClient = useApolloClient();
+  const router = useRouter();
 
   return (
     <header>
@@ -85,6 +86,9 @@ const AppBar = () => {
                     await logout();
                     await apolloClient.cache.reset();
                     await apolloClient.resetStore();
+                    typeof router.query.next === 'string'
+                      ? router.push(router.query.next)
+                      : router.push('/');
                   }}
                 >
                   Logout
