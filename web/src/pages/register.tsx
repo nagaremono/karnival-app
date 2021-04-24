@@ -6,6 +6,14 @@ import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
+import * as Yup from 'yup'
+
+const registerSchema = Yup.object().shape({
+  username: Yup.string().min(4, 'Longer than 4 characters please'),
+  email: Yup.string().email('Enter valid email please'),
+  password: Yup.string().min(5, 'I can guess a password that short'),
+  confirmpassword: Yup.string().equals([Yup.ref('password')], 'Passwords does not match')
+})
 
 const Register: React.FC = () => {
   const router = useRouter();
@@ -20,6 +28,7 @@ const Register: React.FC = () => {
           confirmpassword: '',
           email: '',
         }}
+        validationSchema={registerSchema}
         onSubmit={async (values, { setErrors }) => {
           const response = await register({
             variables: values,
