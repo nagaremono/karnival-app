@@ -37,7 +37,7 @@ const AppBar = () => {
           alignItems="center"
           as="span"
         >
-          <NextLink href="/">Karnival App</NextLink>
+          <NextLink href="/">Karnival</NextLink>
         </Heading>
         {!data?.me || loading ? (
           <Menu>
