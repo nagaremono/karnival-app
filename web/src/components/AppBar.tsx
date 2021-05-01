@@ -1,26 +1,21 @@
+import { AddIcon } from '@chakra-ui/icons';
 import {
   Button,
   Flex,
   Heading,
-  Icon,
   Link,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
-import React from 'react';
-import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { useApolloClient } from '@apollo/client';
-import { AddIcon } from '@chakra-ui/icons';
+import React from 'react';
+import { useMeQuery } from '../generated/graphql';
+import { LogOutButton } from './LogOutButton';
 
 const AppBar = () => {
-  const [logout] = useLogoutMutation();
   const { data, loading } = useMeQuery({});
-  const apolloClient = useApolloClient();
-  const router = useRouter();
 
   return (
     <header>
@@ -79,21 +74,7 @@ const AppBar = () => {
                     </Link>
                   </MenuItem>
                 </NextLink>
-                <MenuItem
-                  display="flex"
-                  justifyContent="center"
-                  fontSize="1.2rem"
-                  onClick={async () => {
-                    await logout();
-                    await apolloClient.cache.reset();
-                    await apolloClient.resetStore();
-                    typeof router.query.next === 'string'
-                      ? router.push(router.query.next)
-                      : router.push('/');
-                  }}
-                >
-                  Logout
-                </MenuItem>
+                <LogOutButton />
               </MenuList>
             </Menu>
           </>
