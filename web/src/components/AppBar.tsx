@@ -66,32 +66,55 @@ const AppBar = () => {
                   <DrawerCloseButton />
                   <DrawerHeader>{data?.me?.username}</DrawerHeader>
                   <DrawerBody>
-                    {!data?.me || loading ? (
-                      <>
-                        <Button
-                          onClick={() => router.push('/register')}
-                          variant="link"
-                        >
-                          Register
-                        </Button>
-                        <Button
-                          onClick={() => router.push('/login')}
-                          variant="link"
-                        >
-                          Login
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button
-                          onClick={() => router.push('/new-event')}
-                          variant="link"
-                        >
-                          Post new event
-                        </Button>
-                        <LogOutButton onClick={onClose} variant="link" />
-                      </>
-                    )}
+                    <Flex
+                      height={16}
+                      my={4}
+                      flexDirection="column"
+                      alignItems="flex-end"
+                      justifyContent="space-between"
+                    >
+                      {!data?.me || loading ? (
+                        <>
+                          <Button
+                            onClick={() => router.push('/register')}
+                            variant="link"
+                            size="lg"
+                            fontSize="1.3rem"
+                            colorScheme="gray"
+                          >
+                            Register
+                          </Button>
+                          <Button
+                            onClick={() => router.push('/login')}
+                            variant="link"
+                            size="lg"
+                            fontSize="1.3rem"
+                            colorScheme="gray"
+                          >
+                            Login
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            onClick={() => router.push('/new-event')}
+                            variant="link"
+                            size="lg"
+                            fontSize="1.3rem"
+                            colorScheme="gray"
+                          >
+                            Post new event
+                          </Button>
+                          <LogOutButton
+                            onClick={onClose}
+                            variant="link"
+                            size="lg"
+                            fontSize="1.3rem"
+                            colorScheme="gray"
+                          />
+                        </>
+                      )}
+                    </Flex>
                   </DrawerBody>
                 </DrawerContent>
               </DrawerOverlay>
