@@ -5,5 +5,7 @@ declare namespace NodeJS {
     SESSION_SECRET: string;
     ORIGIN: string;
     REDIS_URL: string;
+    GITHUB_CLIENT_SECRETS: string;
+    GITHUB_CLIENT_ID: string;
   }
 }
