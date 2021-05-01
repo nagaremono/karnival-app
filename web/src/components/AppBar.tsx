@@ -117,6 +117,7 @@ const AppBar = () => {
                   variant="outline"
                   color="white"
                   onClick={() => router.push('/login')}
+                  _hover={{ backgroundColor: '#1f1f1f' }}
                 >
                   Login
                 </Button>
@@ -128,6 +129,7 @@ const AppBar = () => {
                   color="white"
                   onClick={() => router.push('/new-event')}
                   leftIcon={<AiOutlinePlusSquare />}
+                  _hover={{ backgroundColor: '#1f1f1f' }}
                 >
                   New Event
                 </Button>
