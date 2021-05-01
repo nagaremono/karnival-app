@@ -34,8 +34,12 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email!: string;
 
-  @Column({ unique: true })
-  password!: string;
+  @Column({ unique: false, nullable: true })
+  password: string | null;
+
+  @Field(() => String)
+  @Column({ unique: true, nullable: true })
+  githubId: string | null;
 
   @Field(() => [Agenda])
   @OneToMany(() => Agenda, (agenda) => agenda.organizer)

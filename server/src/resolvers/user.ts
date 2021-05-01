@@ -114,7 +114,7 @@ export class UserResolver {
       };
     }
 
-    const isValid = await argon2.verify(user.password, password);
+    const isValid = await argon2.verify(user.password as string, password);
 
     if (!isValid) {
       return {
