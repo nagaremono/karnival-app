@@ -5,7 +5,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
-import { createConnection, In } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { UserResolver } from './resolvers/user';
 import Redis from 'ioredis';
 import session from 'express-session';
@@ -15,9 +15,7 @@ import { AgendaResolver } from './resolvers/agenda';
 import { createUserLoader } from './utils/createUserLoader';
 import { MyContext } from './types';
 import { createParticipationLoader } from './utils/createParticipationLoader';
-import passport from 'passport';
-import { Strategy as GitHubStrategy } from 'passport-github2';
-import { User } from './entities/User';
+import { gitHubAuth } from './middlewares/githubAuth';
 
 const main = async () => {
   await createConnection();
@@ -53,59 +51,7 @@ const main = async () => {
     })
   );
 
-  passport.use(
-    new GitHubStrategy(
-      {
-        clientID: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRETS,
-        callbackURL: `${process.env.SERVER_BASE_URL}/auth/github/callback`,
-        scope: ['user:email'],
-      },
-      async function (_: any, __: any, profile: any, done: any) {
-        const { id, emails, username } = profile;
-
-        const emailList = emails.map((e: any) => e.value);
-
-        const user = await User.findOne({
-          where: [{ email: In(emailList) }, { githubId: id }],
-        });
-
-        if (!user) {
-          const newUser = await User.create({
-            githubId: id,
-            email: emailList[0] || undefined,
-            username: username,
-          }).save();
-
-          return done(null, newUser);
-        }
-
-        if (!user.githubId) {
-          user.githubId = id;
-          await user.save();
-        }
-
-        return done(null, user);
-      }
-    )
-  );
-
-  app.use(passport.initialize());
-
-  app.get(
-    '/auth/github',
-    passport.authenticate('github', { scope: ['user:email'] })
-  );
-
-  app.get(
-    '/auth/github/callback',
-    passport.authenticate('github', { session: false }),
-    (req, res) => {
-      req!.session!.userId = (req.user as any).id;
-
-      res.redirect(process.env.ORIGIN);
-    }
-  );
+  app.use(gitHubAuth);
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
