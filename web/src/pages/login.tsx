@@ -1,15 +1,17 @@
 import { Formik, Form } from 'formik';
 import AppBar from '../components/AppBar';
 import InputField from '../components/InputField';
-import { Button, Box, Flex } from '@chakra-ui/react';
+import { Button, Box, Flex, Divider, Text, Icon, Link } from '@chakra-ui/react';
 import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
+import { AiOutlineGithub } from 'react-icons/ai';
 
 const Login: React.FC = () => {
   const router = useRouter();
   const [login] = useLoginMutation();
+
   return (
     <>
       <AppBar />
@@ -69,6 +71,22 @@ const Login: React.FC = () => {
                 </Button>
               </Flex>
             </Form>
+            <Divider my={4} />
+            <Text as="p" textAlign="center" mb={2}>
+              Or
+            </Text>
+            <Link
+              href={`${
+                process.env.NEXT_PUBLIC_BASE_API_URL as string
+              }/auth/github`}
+            >
+              <Flex alignItems="center" color="#f3f3f3" bg="#1f1f1f" p={4}>
+                <Icon as={AiOutlineGithub} boxSize={8} />
+                <Text ml={2} as="p" verticalAlign="center">
+                  Login with Github
+                </Text>
+              </Flex>
+            </Link>
           </Box>
         )}
       </Formik>
