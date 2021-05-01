@@ -1,21 +1,27 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Flex,
   Heading,
+  IconButton,
   Link,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useMeQuery } from '../generated/graphql';
 import { LogOutButton } from './LogOutButton';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const AppBar = () => {
   const { data, loading } = useMeQuery({});
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef(null);
 
   return (
     <header>
@@ -34,51 +40,57 @@ const AppBar = () => {
         >
           <NextLink href="/">Karnival</NextLink>
         </Heading>
-        {!data?.me || loading ? (
-          <Menu>
-            <MenuButton mr="4" fontSize="1.2rem" as={Button}>
-              Login
-            </MenuButton>
-            <MenuList>
-              <NextLink href="/register">
-                <MenuItem>
-                  <Link color="#000">Register</Link>
-                </MenuItem>
-              </NextLink>
-              <NextLink href="/login">
-                <MenuItem>
-                  <Link color="#000">Login</Link>
-                </MenuItem>
-              </NextLink>
-            </MenuList>
-          </Menu>
-        ) : (
-          <>
-            <Menu>
-              <MenuButton as={Button} fontSize="1.2rem" mr="4">
-                {data?.me.username}
-              </MenuButton>
-              <MenuList>
-                <NextLink href="/new-event">
-                  <MenuItem>
-                    <Link
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      color="#000"
-                      fontSize={'1.2rem'}
-                      py={2}
-                    >
-                      <AddIcon aria-label="Post new event" mx={2} />
-                      Post new event
-                    </Link>
-                  </MenuItem>
-                </NextLink>
-                <LogOutButton />
-              </MenuList>
-            </Menu>
-          </>
-        )}
+        <IconButton
+          aria-label="Drawer Menu Button"
+          icon={<GiHamburgerMenu />}
+          onClick={onOpen}
+          ref={btnRef}
+          mr={4}
+          fontSize="1.5rem"
+        />
+        <Drawer
+          isOpen={isOpen}
+          placement="right"
+          onClose={onClose}
+          finalFocusRef={btnRef}
+          size="xs"
+        >
+          <DrawerOverlay>
+            <DrawerContent>
+              <DrawerCloseButton />
+              <DrawerHeader>{data?.me?.username}</DrawerHeader>
+              <DrawerBody>
+                {!data?.me || loading ? (
+                  <>
+                    <NextLink href="/register">
+                      <Link color="#000">Register</Link>
+                    </NextLink>
+                    <NextLink href="/login">
+                      <Link color="#000">Login</Link>
+                    </NextLink>
+                  </>
+                ) : (
+                  <>
+                    <NextLink href="/new-event">
+                      <Link
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        color="#000"
+                        fontSize={'1.2rem'}
+                        py={2}
+                      >
+                        <AddIcon aria-label="Post new event" mx={2} />
+                        Post new event
+                      </Link>
+                    </NextLink>
+                    <LogOutButton onClick={onClose} />
+                  </>
+                )}
+              </DrawerBody>
+            </DrawerContent>
+          </DrawerOverlay>
+        </Drawer>
       </Flex>
     </header>
   );

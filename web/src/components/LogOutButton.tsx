@@ -1,11 +1,14 @@
 import { useApolloClient } from '@apollo/client';
 import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { FC } from 'react';
 import { useLogoutMutation } from '../generated/graphql';
 
-export const LogOutButton = () => {
+interface LogOutButtonProps {
+  onClick?: () => void;
+}
+
+export const LogOutButton: FC<LogOutButtonProps> = ({ onClick }) => {
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const router = useRouter();
@@ -21,6 +24,7 @@ export const LogOutButton = () => {
         typeof router.query.next === 'string'
           ? router.push(router.query.next)
           : router.push('/');
+        onClick && onClick();
       }}
     >
       Logout
