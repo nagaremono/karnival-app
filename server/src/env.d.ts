@@ -7,5 +7,6 @@ declare namespace NodeJS {
     REDIS_URL: string;
     GITHUB_CLIENT_SECRETS: string;
     GITHUB_CLIENT_ID: string;
+    SERVER_BASE_URL: string;
   }
 }

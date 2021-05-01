@@ -58,7 +58,7 @@ const main = async () => {
       {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRETS,
-        callbackURL: 'http://localhost:4000/auth/github/callback',
+        callbackURL: `${process.env.SERVER_BASE_URL}/auth/github/callback`,
         scope: ['user:email'],
       },
       async function (_: any, __: any, profile: any, done: any) {
