@@ -1,5 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
+  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -17,11 +18,13 @@ import React, { useRef } from 'react';
 import { useMeQuery } from '../generated/graphql';
 import { LogOutButton } from './LogOutButton';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { useRouter } from 'next/router';
 
 const AppBar = () => {
   const { data, loading } = useMeQuery({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
+  const router = useRouter();
 
   return (
     <header>
@@ -62,29 +65,28 @@ const AppBar = () => {
               <DrawerBody>
                 {!data?.me || loading ? (
                   <>
-                    <NextLink href="/register">
-                      <Link color="#000">Register</Link>
-                    </NextLink>
-                    <NextLink href="/login">
-                      <Link color="#000">Login</Link>
-                    </NextLink>
+                    <Button
+                      onClick={() => router.push('/register')}
+                      variant="link"
+                    >
+                      Register
+                    </Button>
+                    <Button
+                      onClick={() => router.push('/login')}
+                      variant="link"
+                    >
+                      Login
+                    </Button>
                   </>
                 ) : (
                   <>
-                    <NextLink href="/new-event">
-                      <Link
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        color="#000"
-                        fontSize={'1.2rem'}
-                        py={2}
-                      >
-                        <AddIcon aria-label="Post new event" mx={2} />
-                        Post new event
-                      </Link>
-                    </NextLink>
-                    <LogOutButton onClick={onClose} />
+                    <Button
+                      onClick={() => router.push('/new-event')}
+                      variant="link"
+                    >
+                      Post new event
+                    </Button>
+                    <LogOutButton onClick={onClose} variant="link" />
                   </>
                 )}
               </DrawerBody>

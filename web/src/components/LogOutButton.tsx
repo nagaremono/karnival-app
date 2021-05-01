@@ -6,9 +6,17 @@ import { useLogoutMutation } from '../generated/graphql';
 
 interface LogOutButtonProps {
   onClick?: () => void;
+  variant?:
+    | 'link'
+    | 'outline'
+    | (string & {})
+    | 'ghost'
+    | 'solid'
+    | 'unstyled'
+    | undefined;
 }
 
-export const LogOutButton: FC<LogOutButtonProps> = ({ onClick }) => {
+export const LogOutButton: FC<LogOutButtonProps> = ({ onClick, variant }) => {
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const router = useRouter();
@@ -16,7 +24,7 @@ export const LogOutButton: FC<LogOutButtonProps> = ({ onClick }) => {
     <Button
       display="flex"
       justifyContent="center"
-      fontSize="1.2rem"
+      variant={variant}
       onClick={async () => {
         await logout();
         await apolloClient.cache.reset();
