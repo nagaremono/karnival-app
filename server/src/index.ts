@@ -103,9 +103,7 @@ const main = async () => {
     (req, res) => {
       req!.session!.userId = (req.user as any).id;
 
-      console.log(req.user);
-
-      res.status(200).send({ done: true });
+      res.redirect(process.env.ORIGIN);
     }
   );
 
