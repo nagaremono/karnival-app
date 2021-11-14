@@ -41,6 +41,12 @@ services:
       retries: 3
   redis:
     image: 'redis'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      timeout: 10s
+      interval: 20s
+      start_period: 20s
+      retries: 3
 
 volumes:
   postgres:
