@@ -51,7 +51,7 @@ const main = async () => {
         domain: __prod__ ? '.guruhedi.com' : undefined,
       },
       saveUninitialized: false,
-    })
+    }) as any
   );
 
   // app.use(gitHubAuth);
