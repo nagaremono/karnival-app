@@ -9,7 +9,7 @@ import { createConnection } from 'typeorm';
 import { UserResolver } from './resolvers/user';
 import Redis from 'ioredis';
 import session from 'express-session';
-import connectRedis from 'connect-redis';
+import { RedisStore } from 'connect-redis';
 import cors from 'cors';
 import { AgendaResolver } from './resolvers/agenda';
 import { createUserLoader } from './utils/createUserLoader';
@@ -22,8 +22,11 @@ const main = async () => {
 
   const app = express();
 
-  const RedisStore = connectRedis(session);
-  const redis = new Redis(process.env.REDIS_URL);
+  const redis = new Redis();
+  const redisStore = new RedisStore({
+    client: redis,
+    disableTouch: true,
+  });
 
   app.set('trust proxy', 1);
 
@@ -36,8 +39,8 @@ const main = async () => {
 
   app.use(
     session({
+      store: redisStore,
       name: COOKIE_NAME,
-      store: new RedisStore({ client: redis, disableTouch: true }),
       secret: process.env.SESSION_SECRET,
       resave: false,
       cookie: {
