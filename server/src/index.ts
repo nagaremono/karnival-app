@@ -15,7 +15,7 @@ import { AgendaResolver } from './resolvers/agenda';
 import { createUserLoader } from './utils/createUserLoader';
 import { MyContext } from './types';
 import { createParticipationLoader } from './utils/createParticipationLoader';
-import { gitHubAuth } from './middlewares/githubAuth';
+// import { gitHubAuth } from './middlewares/githubAuth';
 
 const main = async () => {
   await createConnection();
@@ -54,7 +54,7 @@ const main = async () => {
     })
   );
 
-  app.use(gitHubAuth);
+  // app.use(gitHubAuth);
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
