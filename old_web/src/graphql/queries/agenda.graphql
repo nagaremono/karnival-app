@@ -1,0 +1,21 @@
+query Agenda($agendaId: Int!) {
+  agenda(agendaId: $agendaId) {
+    id
+    organizerId
+    name
+    venue
+    description
+    startTime
+    endTime
+    organizer {
+      username
+    }
+    participation {
+      userId
+      user {
+        username
+      }
+    }
+    isParticipating
+  }
+}

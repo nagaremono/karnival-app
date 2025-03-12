@@ -1,0 +1,9 @@
+mutation CreateAgenda($input: AgendaInput!) {
+  createAgenda(input: $input) {
+    name
+    description
+    startTime
+    endTime
+    venue
+  }
+}
