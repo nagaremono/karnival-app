@@ -1,9 +1,0 @@
-mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {
-  updateAgenda(agendaId: $agendaId, input: $input) {
-    name
-    description
-    venue
-    endTime
-    startTime
-  }
-}
