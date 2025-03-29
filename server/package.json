@@ -27,6 +27,7 @@
   "dependencies": {
     "@apollo/server": "^4.11.3",
     "argon2": "^0.27.0",
+    "aws-jwt-verify": "^5.0.0",
     "class-validator": "^0.13.1",
     "cors": "^2.8.5",
     "dataloader": "^2.0.0",
