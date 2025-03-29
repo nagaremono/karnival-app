@@ -1,15 +1,11 @@
 import 'reflect-metadata';
 import 'dotenv-safe/config';
-import { COOKIE_NAME, __prod__ } from './constants';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
 import { createConnection } from 'typeorm';
 import { UserResolver } from './resolvers/user';
-import Redis from 'ioredis';
-import session from 'express-session';
-import { RedisStore } from 'connect-redis';
 import cors from 'cors';
 import { AgendaResolver } from './resolvers/agenda';
 import { createUserLoader } from './utils/createUserLoader';
@@ -22,12 +18,6 @@ const main = async () => {
 
   const app = express();
 
-  const redis = new Redis();
-  const redisStore = new RedisStore({
-    client: redis,
-    disableTouch: true,
-  });
-
   app.set('trust proxy', 1);
 
   app.use(
@@ -35,23 +25,6 @@ const main = async () => {
       credentials: true,
       origin: process.env.ORIGIN,
     })
-  );
-
-  app.use(
-    session({
-      store: redisStore,
-      name: COOKIE_NAME,
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: __prod__,
-        domain: __prod__ ? '.guruhedi.com' : undefined,
-      },
-      saveUninitialized: false,
-    }) as any
   );
 
   // app.use(gitHubAuth);
