@@ -1,17 +1,18 @@
 import 'reflect-metadata';
 import 'dotenv-safe/config';
 import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
 import { createConnection } from 'typeorm';
 import { UserResolver } from './resolvers/user';
 import cors from 'cors';
 import { AgendaResolver } from './resolvers/agenda';
 import { createUserLoader } from './utils/createUserLoader';
-import { MyContext } from './types';
 import { createParticipationLoader } from './utils/createParticipationLoader';
+import { ApolloServer } from '@apollo/server';
+import { buildSchema } from 'type-graphql';
 // import { gitHubAuth } from './middlewares/githubAuth';
+import { expressMiddleware } from '@apollo/server/express4';
+import { MyContext } from './types';
 
 const main = async () => {
   await createConnection();
@@ -27,23 +28,29 @@ const main = async () => {
     })
   );
 
-  // app.use(gitHubAuth);
-
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [HelloResolver, UserResolver, AgendaResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext =>
-      <MyContext>{
-        req,
-        res,
-        userLoader: createUserLoader(),
-        participationLoader: createParticipationLoader(),
-      },
   });
+  await apolloServer.start();
 
-  apolloServer.applyMiddleware({ app, cors: false });
+  // app.use(gitHubAuth);
+
+  app.use(
+    '/graphql',
+    express.json(),
+    expressMiddleware(apolloServer, {
+      context: async ({ req, res }): Promise<MyContext> =>
+        <MyContext>{
+          req,
+          res,
+          userLoader: createUserLoader(),
+          participationLoader: createParticipationLoader(),
+        },
+    })
+  );
 
   app.listen(parseInt(process.env.PORT), () => {
     console.log(`Server started on port ${process.env.PORT}`);
