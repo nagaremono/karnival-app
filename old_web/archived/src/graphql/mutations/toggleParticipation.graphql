@@ -1,3 +1,0 @@
-mutation toggleParticipation($agendaId: Int!, $isParticipating: Boolean!) {
-  toggleParticipation(agendaId: $agendaId, isParticipating: $isParticipating)
-}
