@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from 'type-graphql';
+import { ObjectType, Field, Int, ID } from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -6,7 +6,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Participation } from './Participation';
@@ -15,47 +15,47 @@ import { User } from './User';
 @ObjectType()
 @Entity()
 export class Agenda extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @Field(() => ID)
+  @PrimaryColumn()
+  id: string;
 
   @Field(() => String)
   @Column({ unique: true })
-  name!: string;
+  name: string;
 
   @Field(() => String)
   @Column()
-  description!: string;
+  description: string;
 
   @Field(() => String)
   @Column()
-  venue!: string;
+  venue: string;
 
   @Field(() => [Participation])
   @OneToMany(() => Participation, (participation) => participation.agenda)
-  participation: Participation[];
+  participation?: Participation[];
 
   @Field(() => Date)
-  @Column({ type: 'timestamp with time zone' })
-  startTime!: Date;
+  @Column({ name: 'start_time', type: 'timestamptz' })
+  startTime: Date;
 
   @Field(() => Date)
-  @Column({ type: 'timestamp with time zone' })
-  endTime!: Date;
+  @Column({ name: 'end_time', type: 'timestamptz' })
+  endTime: Date;
+
+  @Field(() => Int)
+  @Column({ name: 'organizer_id' })
+  organizerId: string;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.agendas)
-  organizer: User;
-
-  @Field(() => Int)
-  @Column()
-  organizerId: number;
+  organizer?: User;
 
   @Field(() => String)
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @Field(() => String)
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

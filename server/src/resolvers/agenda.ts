@@ -12,11 +12,11 @@ import {
   Root,
   UseMiddleware,
 } from 'type-graphql';
-import { MyContext } from 'src/types';
+import { MyContext } from '../types';
 import { isAuth } from '../middlewares/isAuth';
 import { Participation } from '../entities/Participation';
-import { getConnection } from 'typeorm';
 import { User } from '../entities/User';
+import dataSource from '../datasource';
 
 @InputType()
 class AgendaInput {
@@ -62,7 +62,7 @@ export class AgendaResolver {
 
   @Mutation(() => Boolean)
   async toggleParticipation(
-    @Arg('agendaId', () => Int) agendaId: number,
+    @Arg('agendaId', () => String) agendaId: string,
     @Arg('isParticipating') isParticipating: boolean,
     @Ctx() { req }: MyContext
   ) {
@@ -71,7 +71,7 @@ export class AgendaResolver {
     }
 
     if (isParticipating) {
-      await getConnection()
+      await dataSource
         .createQueryBuilder()
         .delete()
         .from(Participation)
@@ -92,7 +92,7 @@ export class AgendaResolver {
 
   @Query(() => Agenda)
   async agenda(@Arg('agendaId', () => Int) agendaId: number) {
-    const agenda = await getConnection()
+    const agenda = await dataSource
       .getRepository(Agenda)
       .createQueryBuilder('agenda')
       .leftJoinAndSelect('agenda.organizer', 'organizer')
@@ -111,7 +111,7 @@ export class AgendaResolver {
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null
   ): Promise<Agenda[]> {
     const actualLimit = Math.min(10, limit);
-    const qb = getConnection()
+    const qb = dataSource
       .getRepository(Agenda)
       .createQueryBuilder('agenda')
       .orderBy('agenda."startTime"', 'ASC')
@@ -133,7 +133,7 @@ export class AgendaResolver {
     @Arg('input') input: AgendaInput,
     @Ctx() { req }: MyContext
   ): Promise<Agenda | null> {
-    const result = await getConnection()
+    const result = await dataSource
       .createQueryBuilder()
       .update(Agenda)
       .set({ ...input })
@@ -162,7 +162,7 @@ export class AgendaResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteAgenda(
-    @Arg('agendaId', () => Int) agendaId: number,
+    @Arg('agendaId', () => String) agendaId: string,
     @Ctx() { req }: MyContext
   ): Promise<Boolean> {
     await Participation.delete({ agendaId });

@@ -7,18 +7,18 @@ import { User } from './User';
 @Entity()
 export class Participation extends BaseEntity {
   @Field()
-  @PrimaryColumn()
-  userId: number;
+  @PrimaryColumn({ name: 'user_id' })
+  userId: string;
 
   @Field()
-  @PrimaryColumn()
-  agendaId: number;
-
-  @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.participation, { cascade: true })
-  user: User;
+  @PrimaryColumn({ name: 'agenda_id' })
+  agendaId: string;
 
   @Field(() => Agenda, { nullable: true })
-  @ManyToOne(() => Agenda, (agenda) => agenda.participation, { cascade: true })
-  agenda: Agenda;
+  @ManyToOne(() => Agenda, (agenda) => agenda.participation)
+  agenda?: Agenda;
+
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.participation)
+  user?: User;
 }

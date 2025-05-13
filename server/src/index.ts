@@ -2,20 +2,19 @@ import 'reflect-metadata';
 import 'dotenv-safe/config';
 import express from 'express';
 import { HelloResolver } from './resolvers/hello';
-import { createConnection } from 'typeorm';
-import { UserResolver } from './resolvers/user';
+// import { UserResolver } from './resolvers/user';
 import cors from 'cors';
 import { AgendaResolver } from './resolvers/agenda';
-import { createUserLoader } from './utils/createUserLoader';
+// import { createUserLoader } from './utils/createUserLoader';
 import { createParticipationLoader } from './utils/createParticipationLoader';
 import { ApolloServer } from '@apollo/server';
 import { buildSchema } from 'type-graphql';
-// import { gitHubAuth } from './middlewares/githubAuth';
 import { expressMiddleware } from '@apollo/server/express4';
 import { MyContext } from './types';
+import dataSource from './datasource';
 
 const main = async () => {
-  await createConnection();
+  await dataSource.initialize();
 
   const app = express();
 
@@ -30,7 +29,11 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, AgendaResolver],
+      resolvers: [
+        HelloResolver,
+        // UserResolver,
+        AgendaResolver,
+      ],
       validate: false,
     }),
   });
@@ -46,7 +49,7 @@ const main = async () => {
         <MyContext>{
           req,
           res,
-          userLoader: createUserLoader(),
+          // userLoader: createUserLoader(),
           participationLoader: createParticipationLoader(),
         },
     })

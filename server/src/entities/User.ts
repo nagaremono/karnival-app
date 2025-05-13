@@ -1,11 +1,11 @@
-import { ObjectType, Field, Int } from 'type-graphql';
+import { ObjectType, Field } from 'type-graphql';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Agenda } from './Agenda';
@@ -14,38 +14,31 @@ import { Participation } from './Participation';
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @Field()
+  @PrimaryColumn()
+  id: string;
 
   @Field(() => String)
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 
   @Field(() => String)
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
   updatedAt: Date;
 
   @Field(() => String)
   @Column({ unique: true })
-  username!: string;
+  username: string;
 
   @Field(() => String)
   @Column({ unique: true })
-  email!: string;
-
-  @Column({ unique: false, nullable: true })
-  password?: string;
-
-  @Field(() => String)
-  @Column({ unique: true, nullable: true })
-  githubId?: string;
+  email: string;
 
   @Field(() => [Agenda])
   @OneToMany(() => Agenda, (agenda) => agenda.organizer)
-  agendas: Agenda[];
+  agendas?: Agenda[];
 
   @Field(() => [Participation])
   @OneToMany(() => Participation, (participation) => participation.user)
-  participation: Participation[];
+  participation?: Participation[];
 }
