@@ -57,7 +57,7 @@ export class AgendaResolver {
       agendaId: agenda.id,
     });
 
-    return participation ? true : false;
+    return !!participation;
   }
 
   @Mutation(() => Boolean)
@@ -98,7 +98,7 @@ export class AgendaResolver {
       .leftJoinAndSelect('agenda.organizer', 'organizer')
       .leftJoinAndSelect('agenda.participation', 'participation')
       .leftJoinAndSelect('participation.user', 'user')
-      .where('agenda.id=:agenda_id')
+      .where('agenda.id = :agenda_id')
       .setParameter('agenda_id', agendaId)
       .getOne();
 
@@ -111,14 +111,24 @@ export class AgendaResolver {
     @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
   ): Promise<Agenda[]> {
     const actualLimit = Math.min(10, limit);
-    const qb = dataSource
-      .getRepository(Agenda)
-      .createQueryBuilder('agenda')
-      .orderBy('agenda."startTime"', 'ASC')
+    let qb = dataSource.manager
+      .createQueryBuilder(Agenda, 'agenda')
+      .select([
+        'agenda.id',
+        'agenda.name',
+        'agenda.description',
+        'agenda.venue',
+        'agenda.startTime',
+        'agenda.endTime',
+        'agenda.organizerId',
+        'agenda.createdAt',
+        'agenda.updatedAt',
+      ])
+      .orderBy('agenda.startTime', 'ASC')
       .take(actualLimit);
 
     if (cursor) {
-      qb.where('agenda."startTime" > :cursor', {
+      qb = qb.where('agenda."startTime" > :cursor', {
         cursor: new Date(cursor),
       });
     }
@@ -137,7 +147,7 @@ export class AgendaResolver {
       .createQueryBuilder()
       .update(Agenda)
       .set({ ...input })
-      .where('id = :agendaId and "organizerId" = :userId', {
+      .where('id = :agendaId and organizer_id = :userId', {
         agendaId,
         userId: req.session.userId,
       })
@@ -153,10 +163,10 @@ export class AgendaResolver {
     @Arg('input') input: AgendaInput,
     @Ctx() { req }: MyContext,
   ): Promise<Agenda> {
-    return Agenda.create({
+    return dataSource.manager.save(Agenda, {
       ...input,
       organizerId: req.session.userId,
-    }).save();
+    });
   }
 
   @Mutation(() => Boolean)
@@ -166,7 +176,10 @@ export class AgendaResolver {
     @Ctx() { req }: MyContext,
   ): Promise<boolean> {
     await Participation.delete({ agendaId });
-    await Agenda.delete({ id: agendaId, organizerId: req.session.userId });
+    await dataSource.manager.delete(Agenda, {
+      id: agendaId,
+      organizerId: req.session.userId,
+    });
 
     return true;
   }

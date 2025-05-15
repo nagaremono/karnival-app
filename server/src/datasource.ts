@@ -6,6 +6,7 @@ export const dataSource = new DataSource({
   url: process.env.DATABASE_URL,
   synchronize: false,
   entities: Entities,
+  logging: true,
 });
 
 export default dataSource;

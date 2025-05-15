@@ -1,6 +1,5 @@
-import { ObjectType, Field, Int, ID } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -14,7 +13,7 @@ import { User } from './User';
 
 @ObjectType()
 @Entity()
-export class Agenda extends BaseEntity {
+export class Agenda {
   @Field(() => ID)
   @PrimaryColumn()
   id: string;
@@ -43,7 +42,7 @@ export class Agenda extends BaseEntity {
   @Column({ name: 'end_time', type: 'timestamptz' })
   endTime: Date;
 
-  @Field(() => Int)
+  @Field(() => String)
   @Column({ name: 'organizer_id' })
   organizerId: string;
 
