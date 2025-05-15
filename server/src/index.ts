@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import 'dotenv-safe/config';
 import express from 'express';
 import { HelloResolver } from './resolvers/hello';
-// import { UserResolver } from './resolvers/user';
+import { UserResolver } from './resolvers/user';
 import cors from 'cors';
 import { AgendaResolver } from './resolvers/agenda';
-// import { createUserLoader } from './utils/createUserLoader';
+import { createUserLoader } from './utils/createUserLoader';
 import { createParticipationLoader } from './utils/createParticipationLoader';
 import { ApolloServer } from '@apollo/server';
 import { buildSchema } from 'type-graphql';
@@ -29,17 +29,11 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [
-        HelloResolver,
-        // UserResolver,
-        AgendaResolver,
-      ],
+      resolvers: [HelloResolver, UserResolver, AgendaResolver],
       validate: false,
     }),
   });
   await apolloServer.start();
-
-  // app.use(gitHubAuth);
 
   app.use(
     '/graphql',
@@ -49,7 +43,7 @@ const main = async () => {
         <MyContext>{
           req,
           res,
-          // userLoader: createUserLoader(),
+          userLoader: createUserLoader(),
           participationLoader: createParticipationLoader(),
         },
     }),
