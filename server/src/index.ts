@@ -24,7 +24,7 @@ const main = async () => {
     cors({
       credentials: true,
       origin: process.env.ORIGIN,
-    })
+    }),
   );
 
   const apolloServer = new ApolloServer({
@@ -52,7 +52,7 @@ const main = async () => {
           // userLoader: createUserLoader(),
           participationLoader: createParticipationLoader(),
         },
-    })
+    }),
   );
 
   app.listen(parseInt(process.env.PORT), () => {

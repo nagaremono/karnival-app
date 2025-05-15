@@ -10,3 +10,4 @@ declare namespace NodeJS {
     SERVER_BASE_URL: string;
   }
 }
+

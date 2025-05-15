@@ -14,7 +14,7 @@ export class initial1618678728889 implements MigrationInterface {
         CONSTRAINT "user_pk" PRIMARY KEY ("id"),
         CONSTRAINT "user_username_uq" UNIQUE ("username"),
         CONSTRAINT "user_email_uq" UNIQUE ("email")
-      )`
+      )`,
     );
     await queryRunner.query(
       `CREATE TABLE "agenda" (
@@ -32,7 +32,7 @@ export class initial1618678728889 implements MigrationInterface {
         CONSTRAINT "agenda_user_fk"
           FOREIGN KEY ("organizer_id") REFERENCES "user"("id")
             ON DELETE NO ACTION
-      )`
+      )`,
     );
     await queryRunner.query(
       `CREATE TABLE "participation" (
@@ -45,7 +45,7 @@ export class initial1618678728889 implements MigrationInterface {
         CONSTRAINT "participation_user_fk"
           FOREIGN KEY ("user_id") REFERENCES "user"("id")
             ON DELETE NO ACTION
-      )`
+      )`,
     );
   }
 

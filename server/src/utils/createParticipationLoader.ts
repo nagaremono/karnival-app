@@ -19,7 +19,7 @@ export const createParticipationLoader = () =>
     });
 
     const orderedParticipations = keys.map(
-      (k) => participationMappedById[`${k.agendaId}|${k.userId}`]
+      (k) => participationMappedById[`${k.agendaId}|${k.userId}`],
     );
 
     return orderedParticipations;

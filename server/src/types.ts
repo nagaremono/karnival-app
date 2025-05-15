@@ -3,7 +3,7 @@ import { createParticipationLoader } from './utils/createParticipationLoader';
 import { createUserLoader } from './utils/createUserLoader';
 
 export type MyContext = {
-  req: Request & { session: { userId: any } };
+  req: Request & { session: { userId: string } };
   res: Response;
   userLoader: ReturnType<typeof createUserLoader>;
   participationLoader: ReturnType<typeof createParticipationLoader>;

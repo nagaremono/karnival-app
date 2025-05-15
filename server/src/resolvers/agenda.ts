@@ -46,7 +46,7 @@ export class AgendaResolver {
   @FieldResolver(() => Boolean)
   async isParticipating(
     @Root() agenda: Agenda,
-    @Ctx() { participationLoader, req }: MyContext
+    @Ctx() { participationLoader, req }: MyContext,
   ) {
     if (!req.session.userId) {
       return false;
@@ -64,7 +64,7 @@ export class AgendaResolver {
   async toggleParticipation(
     @Arg('agendaId', () => String) agendaId: string,
     @Arg('isParticipating') isParticipating: boolean,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: MyContext,
   ) {
     if (!req.session.userId) {
       return false;
@@ -108,7 +108,7 @@ export class AgendaResolver {
   @Query(() => [Agenda], { nullable: true })
   async agendas(
     @Arg('limit', () => Int) limit: number,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
   ): Promise<Agenda[]> {
     const actualLimit = Math.min(10, limit);
     const qb = dataSource
@@ -131,7 +131,7 @@ export class AgendaResolver {
   async updateAgenda(
     @Arg('agendaId', () => Int) agendaId: number,
     @Arg('input') input: AgendaInput,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: MyContext,
   ): Promise<Agenda | null> {
     const result = await dataSource
       .createQueryBuilder()
@@ -151,7 +151,7 @@ export class AgendaResolver {
   @UseMiddleware(isAuth)
   async createAgenda(
     @Arg('input') input: AgendaInput,
-    @Ctx() { req }: MyContext
+    @Ctx() { req }: MyContext,
   ): Promise<Agenda> {
     return Agenda.create({
       ...input,
@@ -163,8 +163,8 @@ export class AgendaResolver {
   @UseMiddleware(isAuth)
   async deleteAgenda(
     @Arg('agendaId', () => String) agendaId: string,
-    @Ctx() { req }: MyContext
-  ): Promise<Boolean> {
+    @Ctx() { req }: MyContext,
+  ): Promise<boolean> {
     await Participation.delete({ agendaId });
     await Agenda.delete({ id: agendaId, organizerId: req.session.userId });
 
