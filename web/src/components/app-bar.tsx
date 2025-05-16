@@ -1,7 +1,21 @@
-import { Flex, Heading } from '@chakra-ui/react';
+'use client';
+
+import {
+  Button,
+  CloseButton,
+  Drawer,
+  Flex,
+  Heading,
+  IconButton,
+  Portal,
+} from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useAuth } from 'react-oidc-context';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const AppBar = () => {
+  const auth = useAuth();
+
   return (
     <header>
       <Flex
@@ -10,15 +24,45 @@ const AppBar = () => {
         bg="#2b2559"
         alignItems="center"
       >
-        <Heading
-          ml="4"
-          color="#f3f3f3"
-          display="flex"
-          alignItems="center"
-          as="span"
-        >
+        <Heading ml="4" color="#f3f3f3" display="flex" alignItems="center">
           <NextLink href="/">Karnival</NextLink>
         </Heading>
+        <Drawer.Root size={'sm'}>
+          <Drawer.Trigger asChild mr={4}>
+            <IconButton aria-label="Drawer Menu Button">
+              <GiHamburgerMenu />
+            </IconButton>
+          </Drawer.Trigger>
+          <Portal>
+            <Drawer.Backdrop h={'100vh'} />
+            <Drawer.Positioner h={'100vh'}>
+              <Drawer.Content>
+                <Drawer.Header>
+                  <Drawer.Title />
+                </Drawer.Header>
+                <Drawer.Body></Drawer.Body>
+                <Drawer.Footer>
+                  {!auth.isAuthenticated ? (
+                    <Button
+                      onClick={() => void auth.signinRedirect()}
+                      _hover={{ backgroundColor: '#1f1f1f' }}
+                      loading={auth.isLoading}
+                    >
+                      Register/Login
+                    </Button>
+                  ) : (
+                    <>
+                      <p>{auth.user?.profile['cognito:username'] as string}</p>
+                    </>
+                  )}
+                </Drawer.Footer>
+                <Drawer.CloseTrigger asChild>
+                  <CloseButton size="sm" />
+                </Drawer.CloseTrigger>
+              </Drawer.Content>
+            </Drawer.Positioner>
+          </Portal>
+        </Drawer.Root>
         {/* {shouldDrawerShow ? ( */}
         {/*   <> */}
         {/*     <IconButton */}
@@ -108,9 +152,9 @@ const AppBar = () => {
         {/*   > */}
         {/*     {!data?.me || loading ? ( */}
         {/*       <> */}
-        {/*         <Button onClick={() => router.push('/register')}> */}
-        {/*           Register */}
-        {/*         </Button> */}
+        {/*         <button onclick={() => router.push('/register')}> */}
+        {/*           register */}
+        {/*         </button> */}
         {/*         <Button */}
         {/*           variant="outline" */}
         {/*           color="white" */}

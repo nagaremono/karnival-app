@@ -1,8 +1,9 @@
-import type { Metadata } from 'next';
+import AuthProvider from '@karnival/auth-provider';
+import AppBar from '@karnival/components/app-bar';
+import { Provider as ChakraProvider } from '@karnival/components/chakra-ui/provider';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { Provider } from '@karnival/components/chakra-ui/provider';
-import AppBar from '@karnival/components/AppBar';
+import { Metadata } from 'next';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,10 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider>
-          <AppBar />
-          {children}
-        </Provider>
+        <AuthProvider>
+          <ChakraProvider>
+            <AppBar />
+            {children}
+          </ChakraProvider>
+        </AuthProvider>
       </body>
     </html>
   );
