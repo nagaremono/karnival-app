@@ -1,20 +1,20 @@
-import EventCard, { EventCardProps } from '@karnival/components/event-card';
+import AppBar from '@karnival/components/app-bar';
+import { EventList } from '@karnival/components/event-list';
+import { agendasQuery } from '@karnival/graphql/queries';
+import { QueryClient } from '@tanstack/react-query';
+import { execute } from '@karnival/repository';
 
-export default function Home() {
-  const agenda: EventCardProps['agenda'] = {
-    name: 'Event A',
-    organizer: {
-      username: 'Admin',
-    },
-    description: 'An example event',
-    venue: 'A wonderful venue',
-    startTime: new Date(),
-    endTime: new Date(),
-  };
+export default async function Home() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['agendas'],
+    queryFn: () => execute(agendasQuery, [{}]),
+  });
 
   return (
     <main>
-      <EventCard agenda={agenda} />
+      <AppBar />
+      <EventList />
     </main>
   );
 }

@@ -1,0 +1,63 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Agenda {
+  createdAt: String!
+  description: String!
+  endTime: DateTimeISO!
+  id: ID!
+  isParticipating: Boolean!
+  name: String!
+  organizer: User!
+  organizerId: String!
+  participation: [Participation!]!
+  startTime: DateTimeISO!
+  updatedAt: String!
+  venue: String!
+}
+
+input AgendaInput {
+  description: String!
+  endTime: DateTimeISO!
+  name: String!
+  startTime: DateTimeISO!
+  venue: String!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
+type Mutation {
+  createAgenda(input: AgendaInput!): Agenda!
+  deleteAgenda(agendaId: String!): Boolean!
+  toggleParticipation(agendaId: String!, isParticipating: Boolean!): Boolean!
+  updateAgenda(agendaId: Int!, input: AgendaInput!): Agenda
+}
+
+type Participation {
+  agenda: Agenda
+  agendaId: String!
+  user: User
+  userId: String!
+}
+
+type Query {
+  agenda(agendaId: Int!): Agenda!
+  agendas(cursor: String, limit: Int!): [Agenda!]
+  hello: String!
+  me: User
+}
+
+type User {
+  agendas: [Agenda!]!
+  createdAt: String!
+  email: String!
+  id: String!
+  participation: [Participation!]!
+  updatedAt: String!
+  username: String!
+}
