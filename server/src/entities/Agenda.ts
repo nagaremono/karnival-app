@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
@@ -48,6 +49,7 @@ export class Agenda {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.agendas)
+  @JoinColumn({ name: 'organizer_id' })
   organizer?: User;
 
   @Field(() => String)
