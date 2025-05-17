@@ -13,7 +13,7 @@ import {
   UseMiddleware,
 } from 'type-graphql';
 import { MyContext } from '../types';
-import { isAuth } from '../middlewares/isAuth';
+import { attachIdentity, isAuth } from '../middlewares/isAuth';
 import { Participation } from '../entities/Participation';
 import { User } from '../entities/User';
 import dataSource from '../datasource';
@@ -37,6 +37,7 @@ class AgendaInput {
 }
 
 @Resolver(Agenda)
+@UseMiddleware(attachIdentity)
 export class AgendaResolver {
   @FieldResolver(() => User)
   organizer(@Root() agenda: Agenda, @Ctx() { userLoader }: MyContext) {
@@ -48,12 +49,12 @@ export class AgendaResolver {
     @Root() agenda: Agenda,
     @Ctx() { participationLoader, req }: MyContext,
   ) {
-    if (!req.session.userId) {
+    if (!req.user) {
       return false;
     }
 
     const participation = await participationLoader.load({
-      userId: req.session.userId,
+      userId: req.user.sub,
       agendaId: agenda.id,
     });
 
@@ -66,7 +67,7 @@ export class AgendaResolver {
     @Arg('isParticipating') isParticipating: boolean,
     @Ctx() { req }: MyContext,
   ) {
-    if (!req.session.userId) {
+    if (!req.user.sub) {
       return false;
     }
 
@@ -76,14 +77,14 @@ export class AgendaResolver {
         .delete()
         .from(Participation)
         .where('"userId" = :userId and "agendaId" = :agendaId', {
-          userId: req.session.userId,
+          userId: req.user.sub,
           agendaId,
         })
         .execute();
     } else {
       await Participation.create({
         agendaId,
-        userId: req.session.userId,
+        userId: req.user.sub,
       }).save();
     }
 
@@ -149,7 +150,7 @@ export class AgendaResolver {
       .set({ ...input })
       .where('id = :agendaId and organizer_id = :userId', {
         agendaId,
-        userId: req.session.userId,
+        userId: req.user.sub,
       })
       .returning('*')
       .execute();
@@ -165,7 +166,7 @@ export class AgendaResolver {
   ): Promise<Agenda> {
     return dataSource.manager.save(Agenda, {
       ...input,
-      organizerId: req.session.userId,
+      organizerId: req.user.sub,
     });
   }
 
@@ -178,7 +179,7 @@ export class AgendaResolver {
     await Participation.delete({ agendaId });
     await dataSource.manager.delete(Agenda, {
       id: agendaId,
-      organizerId: req.session.userId,
+      organizerId: req.user.sub,
     });
 
     return true;

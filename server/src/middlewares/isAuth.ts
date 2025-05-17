@@ -9,18 +9,24 @@ const verifier = CognitoJwtVerifier.create({
 });
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
+  if (!context.req.user) {
+    throw new Error('Not Authenticated');
+  }
+
+  return next();
+};
+
+export const attachIdentity: MiddlewareFn<MyContext> = async (
+  { context },
+  next,
+) => {
   const authHeader = context.req.header('authorization');
   if (!authHeader) {
-    throw new Error('Not Authenticated');
+    return next();
   }
   const token = authHeader.split(' ')[1];
-
-  try {
-    const payload = await verifier.verify(token);
-    context.req.user = payload;
-  } catch {
-    throw new Error('Not Authenticated');
-  }
+  const payload = await verifier.verify(token).catch();
+  context.req.user = payload;
 
   return next();
 };
