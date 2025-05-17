@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import 'dotenv-safe/config';
 import express from 'express';
-import { HelloResolver } from './resolvers/hello';
 import { UserResolver } from './resolvers/user';
 import cors from 'cors';
 import { AgendaResolver } from './resolvers/agenda';
@@ -29,7 +28,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, AgendaResolver],
+      resolvers: [UserResolver, AgendaResolver],
       validate: false,
     }),
   });
