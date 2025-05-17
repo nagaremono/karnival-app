@@ -160,7 +160,7 @@ export class AgendaResolver {
 
   @Mutation(() => Agenda)
   @UseMiddleware(isAuth)
-  async createAgenda(
+  createAgenda(
     @Arg('input') input: AgendaInput,
     @Ctx() { req }: MyContext,
   ): Promise<Agenda> {
