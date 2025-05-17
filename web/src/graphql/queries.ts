@@ -1,19 +1,19 @@
-import { graphql } from './gql';
-
-export const agendasQuery = graphql(`
-  query Agendas($limit: Int!, $cursor: String) {
-    agendas(limit: $limit, cursor: $cursor) {
-      name
-      description
-      organizerId
-      id
-      startTime
-      endTime
-      organizer {
-        username
-      }
-      venue
-      isParticipating
-    }
-  }
-`);
+// import { graphql } from './gql';
+//
+// export const agendasQuery = graphql(`
+//   query Agendas($limit: Int!, $cursor: String) {
+//     agendas(limit: $limit, cursor: $cursor) {
+//       name
+//       description
+//       organizerId
+//       id
+//       startTime
+//       endTime
+//       organizer {
+//         username
+//       }
+//       venue
+//       isParticipating
+//     }
+//   }
+// `);

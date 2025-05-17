@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "graphql-generate": "graphql-codegen --config codegen.ts"
+    "graphql-generate": "graphql-codegen --config codegen.ts",
+    "graphql-generate:watch": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.12.0",

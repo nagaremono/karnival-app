@@ -1,5 +1,5 @@
-import { Agenda, TypedDocumentString } from './graphql/graphql';
-import { agendasQuery } from './graphql/queries';
+import { graphql } from './graphql';
+import { TypedDocumentString } from './graphql/graphql';
 
 export async function execute<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
@@ -24,14 +24,29 @@ export async function execute<TResult, TVariables>(
   return response.json() as TResult;
 }
 
-export async function getAgendas(
-  limit?: number,
-  cursor?: number,
-): Promise<Agenda[]> {
+export const agendasQuery = graphql(`
+  query Agendas($limit: Int!, $cursor: String) {
+    agendas(limit: $limit, cursor: $cursor) {
+      id
+      name
+      description
+      organizerId
+      startTime
+      endTime
+      organizer {
+        username
+      }
+      venue
+      isParticipating
+    }
+  }
+`);
+
+export async function getAgendas(limit?: number, cursor?: string) {
   const agendas = await execute(agendasQuery, {
     limit: limit || 10,
     cursor,
   });
 
-  return agendas as Agenda[];
+  return agendas.agendas;
 }

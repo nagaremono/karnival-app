@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -109,6 +110,14 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
+export type AgendasQueryVariables = Exact<{
+  limit: Scalars['Int']['input'];
+  cursor?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type AgendasQuery = { __typename?: 'Query', agendas?: Array<{ __typename?: 'Agenda', id: string, name: string, description: string, organizerId: string, startTime: any, endTime: any, venue: string, isParticipating: boolean, organizer: { __typename?: 'User', username: string } }> | null };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -127,3 +136,21 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+
+export const AgendasDocument = new TypedDocumentString(`
+    query Agendas($limit: Int!, $cursor: String) {
+  agendas(limit: $limit, cursor: $cursor) {
+    id
+    name
+    description
+    organizerId
+    startTime
+    endTime
+    organizer {
+      username
+    }
+    venue
+    isParticipating
+  }
+}
+    `) as unknown as TypedDocumentString<AgendasQuery, AgendasQueryVariables>;
