@@ -44,13 +44,13 @@ const EventCard = ({ agenda }: EventCardProps) => {
       {/* > */}
       {/*   <Link> */}
       <Heading textStyle="xl" mb={2}>
-        {agenda?.name}
+        {agenda.name}
       </Heading>
       {/*   </Link> */}
       {/* </NextLink> */}
 
       <Text mb={2} as="span" textStyle="l">
-        Organized by <Badge size="md">{agenda?.organizer.username}</Badge>
+        Organized by <Badge size="md">{agenda.organizer.username}</Badge>
       </Text>
       {/* <EditDeleteButtons */}
       {/*   agendaId={agenda.id} */}
@@ -64,22 +64,22 @@ const EventCard = ({ agenda }: EventCardProps) => {
         textStyle="md"
       >
         <Text gridColumn="1 / -1">
-          {agenda?.description.slice(0, 150) +
+          {agenda.description.slice(0, 150) +
             (agenda.description.length > 150 ? '...' : '')}
         </Text>
-        <Text gridColumn="1 / -1">Venue: {agenda?.venue}</Text>
-        <Text>
-          Start:{' '}
-          {new Date(agenda?.startTime).toLocaleString('id-ID', {
-            timeZone: 'Asia/Jakarta',
-          })}
-        </Text>
-        <Text>
-          End:{' '}
-          {new Date(agenda?.endTime).toLocaleString('id-ID', {
-            timeZone: 'Asia/Jakarta',
-          })}
-        </Text>
+        <Text gridColumn="1 / -1">Venue: {agenda.venue}</Text>
+        {[agenda.startTime, agenda.endTime].map((time, i) => {
+          return (
+            <Text key={i}>
+              Start:{' '}
+              {new Date(time).toLocaleString('en-US', {
+                timeZone: 'Asia/Jakarta',
+                dateStyle: 'full',
+                timeStyle: 'short',
+              })}
+            </Text>
+          );
+        })}
       </Grid>
       {/* <ParticipatingStatus agenda={agenda} /> */}
     </Box>
