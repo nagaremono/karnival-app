@@ -1,5 +1,11 @@
 import { ObjectType, Field } from 'type-graphql';
-import { BaseEntity, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { Agenda } from './Agenda';
 import { User } from './User';
 
@@ -16,9 +22,15 @@ export class Participation extends BaseEntity {
 
   @Field(() => Agenda, { nullable: true })
   @ManyToOne(() => Agenda, (agenda) => agenda.participation)
+  @JoinColumn({
+    name: 'agenda_id',
+  })
   agenda?: Agenda;
 
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.participation)
+  @JoinColumn({
+    name: 'user_id',
+  })
   user?: User;
 }
