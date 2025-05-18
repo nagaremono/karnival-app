@@ -1,6 +1,10 @@
 import AppBar from '@karnival/components/app-bar';
 import { EventList } from '@karnival/components/event-list';
-import { QueryClient } from '@tanstack/react-query';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 import { getAgendas } from '@karnival/repository';
 
 export default async function Home() {
@@ -13,7 +17,9 @@ export default async function Home() {
   return (
     <main>
       <AppBar />
-      <EventList />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <EventList />
+      </HydrationBoundary>
     </main>
   );
 }
