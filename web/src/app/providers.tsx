@@ -1,12 +1,12 @@
 'use client';
 
-import { Provider as ChakraProvider } from '@karnival/components/chakra-ui/provider';
 import cognitoAuthConfig from '@karnival/cognito-config';
 import {
   isServer,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 import { AuthProvider } from 'react-oidc-context';
 
 function makeQueryClient() {
@@ -29,6 +29,14 @@ function getQueryClient() {
     return browserQueryClient;
   }
 }
+
+const ChakraProvider = dynamic(
+  () =>
+    import('@karnival/components/chakra-ui/provider').then(
+      (mod) => mod.Provider,
+    ),
+  { ssr: false },
+);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
