@@ -5,7 +5,7 @@ export async function execute<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {
-  const response = await fetch('https://graphql.org/graphql/', {
+  const response = await fetch(process.env.NEXT_PUBLIC_GRAPHQL_API || '', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -84,7 +84,6 @@ export type Query = {
   __typename?: 'Query';
   agenda: Agenda;
   agendas?: Maybe<Array<Agenda>>;
-  hello: Scalars['String']['output'];
   me?: Maybe<User>;
 };
 

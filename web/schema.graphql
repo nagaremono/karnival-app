@@ -48,7 +48,6 @@ type Participation {
 type Query {
   agenda(agendaId: Int!): Agenda!
   agendas(cursor: String, limit: Int!): [Agenda!]
-  hello: String!
   me: User
 }
 
