@@ -9,9 +9,15 @@ import { getAgendas } from '@karnival/repository';
 
 export default async function Home() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: ['agendas'],
-    queryFn: () => getAgendas(),
+    queryFn: ({ pageParam }) => getAgendas(10, pageParam),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage) return null;
+      if (lastPage.length < 10) return null;
+      return lastPage ? lastPage[lastPage.length - 1].startTime : null;
+    },
   });
 
   return (

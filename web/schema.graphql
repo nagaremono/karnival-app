@@ -7,7 +7,7 @@ type Agenda {
   createdAt: String!
   description: String!
   endTime: DateTimeISO!
-  id: ID!
+  id: Int!
   isParticipating: Boolean!
   name: String!
   organizer: User!
@@ -33,14 +33,14 @@ scalar DateTimeISO
 
 type Mutation {
   createAgenda(input: AgendaInput!): Agenda!
-  deleteAgenda(agendaId: String!): Boolean!
-  toggleParticipation(agendaId: String!, isParticipating: Boolean!): Boolean!
+  deleteAgenda(agendaId: Int!): Boolean!
+  toggleParticipation(agendaId: Int!, isParticipating: Boolean!): Boolean!
   updateAgenda(agendaId: Int!, input: AgendaInput!): Agenda
 }
 
 type Participation {
   agenda: Agenda
-  agendaId: String!
+  agendaId: Int!
   user: User
   userId: String!
 }

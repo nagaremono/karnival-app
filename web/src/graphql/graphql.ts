@@ -23,7 +23,7 @@ export type Agenda = {
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
   endTime: Scalars['DateTimeISO']['output'];
-  id: Scalars['ID']['output'];
+  id: Scalars['Int']['output'];
   isParticipating: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   organizer: User;
@@ -57,12 +57,12 @@ export type MutationCreateAgendaArgs = {
 
 
 export type MutationDeleteAgendaArgs = {
-  agendaId: Scalars['String']['input'];
+  agendaId: Scalars['Int']['input'];
 };
 
 
 export type MutationToggleParticipationArgs = {
-  agendaId: Scalars['String']['input'];
+  agendaId: Scalars['Int']['input'];
   isParticipating: Scalars['Boolean']['input'];
 };
 
@@ -75,7 +75,7 @@ export type MutationUpdateAgendaArgs = {
 export type Participation = {
   __typename?: 'Participation';
   agenda?: Maybe<Agenda>;
-  agendaId: Scalars['String']['output'];
+  agendaId: Scalars['Int']['output'];
   user?: Maybe<User>;
   userId: Scalars['String']['output'];
 };
@@ -115,7 +115,7 @@ export type AgendasQueryVariables = Exact<{
 }>;
 
 
-export type AgendasQuery = { __typename?: 'Query', agendas?: Array<{ __typename?: 'Agenda', id: string, name: string, description: string, organizerId: string, startTime: any, endTime: any, venue: string, isParticipating: boolean, organizer: { __typename?: 'User', username: string } }> | null };
+export type AgendasQuery = { __typename?: 'Query', agendas?: Array<{ __typename?: 'Agenda', id: number, name: string, description: string, organizerId: string, startTime: any, endTime: any, venue: string, isParticipating: boolean, organizer: { __typename?: 'User', username: string } }> | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String

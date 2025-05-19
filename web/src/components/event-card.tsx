@@ -7,6 +7,7 @@ import {
   Text,
   // Link,
   // Flex,
+  BoxProps,
 } from '@chakra-ui/react';
 import React from 'react';
 // import NextLink from 'next/link';
@@ -24,9 +25,9 @@ export type EventCardProps = {
     startTime: Date;
     endTime: Date;
   };
-};
+} & BoxProps;
 
-const EventCard = ({ agenda }: EventCardProps) => {
+const EventCard = ({ agenda, ...boxProps }: EventCardProps) => {
   return (
     <Box
       borderWidth="5px"
@@ -35,6 +36,7 @@ const EventCard = ({ agenda }: EventCardProps) => {
       boxShadow="md"
       p={4}
       color="#EFECCA"
+      {...boxProps}
     >
       {/* <NextLink */}
       {/*   href={{ */}

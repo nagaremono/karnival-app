@@ -1,4 +1,4 @@
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, Int } from 'type-graphql';
 import {
   BaseEntity,
   Entity,
@@ -16,7 +16,7 @@ export class Participation extends BaseEntity {
   @PrimaryColumn({ name: 'user_id' })
   userId: string;
 
-  @Field()
+  @Field(() => Int)
   @PrimaryColumn({ name: 'agenda_id' })
   agendaId: number;
 

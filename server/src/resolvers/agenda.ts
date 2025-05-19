@@ -109,27 +109,16 @@ export class AgendaResolver {
   @Query(() => [Agenda], { nullable: true })
   async agendas(
     @Arg('limit', () => Int) limit: number,
-    @Arg('cursor', () => String, { nullable: true }) cursor: string | null,
+    @Arg('cursor', () => String, { nullable: true }) cursor: number | null,
   ): Promise<Agenda[]> {
     const actualLimit = Math.min(10, limit);
     let qb = dataSource.manager
       .createQueryBuilder(Agenda, 'agenda')
-      .select([
-        'agenda.id',
-        'agenda.name',
-        'agenda.description',
-        'agenda.venue',
-        'agenda.startTime',
-        'agenda.endTime',
-        'agenda.organizerId',
-        'agenda.createdAt',
-        'agenda.updatedAt',
-      ])
       .orderBy('agenda.startTime', 'ASC')
       .take(actualLimit);
 
     if (cursor) {
-      qb = qb.where('agenda."startTime" > :cursor', {
+      qb = qb.where('agenda.startTime > :cursor', {
         cursor: new Date(cursor),
       });
     }
