@@ -16,15 +16,21 @@ import * as types from './graphql';
  */
 type Documents = {
     "\n  query Agendas($limit: Int!, $cursor: String) {\n    agendas(limit: $limit, cursor: $cursor) {\n      id\n      name\n      description\n      organizerId\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      venue\n      isParticipating\n    }\n  }\n": typeof types.AgendasDocument,
+    "\n  query Agenda($agendaId: Int!) {\n    agenda(agendaId: $agendaId) {\n      id\n      organizerId\n      name\n      venue\n      description\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      participation {\n        userId\n        user {\n          username\n        }\n      }\n      isParticipating\n    }\n  }\n": typeof types.AgendaDocument,
 };
 const documents: Documents = {
     "\n  query Agendas($limit: Int!, $cursor: String) {\n    agendas(limit: $limit, cursor: $cursor) {\n      id\n      name\n      description\n      organizerId\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      venue\n      isParticipating\n    }\n  }\n": types.AgendasDocument,
+    "\n  query Agenda($agendaId: Int!) {\n    agenda(agendaId: $agendaId) {\n      id\n      organizerId\n      name\n      venue\n      description\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      participation {\n        userId\n        user {\n          username\n        }\n      }\n      isParticipating\n    }\n  }\n": types.AgendaDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query Agendas($limit: Int!, $cursor: String) {\n    agendas(limit: $limit, cursor: $cursor) {\n      id\n      name\n      description\n      organizerId\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      venue\n      isParticipating\n    }\n  }\n"): typeof import('./graphql').AgendasDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query Agenda($agendaId: Int!) {\n    agenda(agendaId: $agendaId) {\n      id\n      organizerId\n      name\n      venue\n      description\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      participation {\n        userId\n        user {\n          username\n        }\n      }\n      isParticipating\n    }\n  }\n"): typeof import('./graphql').AgendaDocument;
 
 
 export function graphql(source: string) {

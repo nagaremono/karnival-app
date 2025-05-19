@@ -117,6 +117,13 @@ export type AgendasQueryVariables = Exact<{
 
 export type AgendasQuery = { __typename?: 'Query', agendas?: Array<{ __typename?: 'Agenda', id: number, name: string, description: string, organizerId: string, startTime: any, endTime: any, venue: string, isParticipating: boolean, organizer: { __typename?: 'User', username: string } }> | null };
 
+export type AgendaQueryVariables = Exact<{
+  agendaId: Scalars['Int']['input'];
+}>;
+
+
+export type AgendaQuery = { __typename?: 'Query', agenda: { __typename?: 'Agenda', id: number, organizerId: string, name: string, venue: string, description: string, startTime: any, endTime: any, isParticipating: boolean, organizer: { __typename?: 'User', username: string }, participation: Array<{ __typename?: 'Participation', userId: string, user?: { __typename?: 'User', username: string } | null }> } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -153,3 +160,26 @@ export const AgendasDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AgendasQuery, AgendasQueryVariables>;
+export const AgendaDocument = new TypedDocumentString(`
+    query Agenda($agendaId: Int!) {
+  agenda(agendaId: $agendaId) {
+    id
+    organizerId
+    name
+    venue
+    description
+    startTime
+    endTime
+    organizer {
+      username
+    }
+    participation {
+      userId
+      user {
+        username
+      }
+    }
+    isParticipating
+  }
+}
+    `) as unknown as TypedDocumentString<AgendaQuery, AgendaQueryVariables>;

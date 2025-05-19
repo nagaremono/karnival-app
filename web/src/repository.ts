@@ -22,7 +22,6 @@ export async function execute<TResult, TVariables>(
   }
 
   const json = await response.json();
-
   return json.data as TResult;
 }
 
@@ -51,4 +50,33 @@ export async function getAgendas(limit?: number, cursor?: string) {
   });
 
   return agendas.agendas;
+}
+
+const agendaDetailQuery = graphql(`
+  query Agenda($agendaId: Int!) {
+    agenda(agendaId: $agendaId) {
+      id
+      organizerId
+      name
+      venue
+      description
+      startTime
+      endTime
+      organizer {
+        username
+      }
+      participation {
+        userId
+        user {
+          username
+        }
+      }
+      isParticipating
+    }
+  }
+`);
+
+export async function getAgendaDetail(agendaId: number) {
+  const agenda = await execute(agendaDetailQuery, { agendaId });
+  return agenda.agenda;
 }
