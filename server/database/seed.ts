@@ -36,7 +36,6 @@ async function main() {
       await tx.upsert(
         Agenda,
         {
-          id: faker.string.uuid(),
           name: faker.word.noun({ length: { min: 2, max: 4 } }),
           description: faker.word.words({ count: { min: 5, max: 25 } }),
           venue: faker.location.streetAddress(),
@@ -53,4 +52,10 @@ async function main() {
     }
   });
 }
-main();
+main()
+  .then(() => {
+    console.log('Seed done');
+  })
+  .catch((err) => {
+    console.error(err);
+  });

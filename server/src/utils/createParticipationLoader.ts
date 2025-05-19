@@ -5,7 +5,7 @@ import { In } from 'typeorm';
 
 export const createParticipationLoader = () =>
   new DataLoader<
-    { userId: string; agendaId: string },
+    { userId: string; agendaId: number },
     Participation | null | undefined
   >(async (keys) => {
     const participations = await dataSource.manager.findBy(Participation, {

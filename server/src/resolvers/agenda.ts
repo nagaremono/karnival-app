@@ -63,7 +63,7 @@ export class AgendaResolver {
 
   @Mutation(() => Boolean)
   async toggleParticipation(
-    @Arg('agendaId', () => String) agendaId: string,
+    @Arg('agendaId', () => Int) agendaId: number,
     @Arg('isParticipating') isParticipating: boolean,
     @Ctx() { req }: MyContext,
   ) {
@@ -173,7 +173,7 @@ export class AgendaResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteAgenda(
-    @Arg('agendaId', () => String) agendaId: string,
+    @Arg('agendaId', () => Int) agendaId: number,
     @Ctx() { req }: MyContext,
   ): Promise<boolean> {
     await Participation.delete({ agendaId });

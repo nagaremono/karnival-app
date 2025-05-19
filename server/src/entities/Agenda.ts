@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field, Int } from 'type-graphql';
 import {
   Column,
   CreateDateColumn,
@@ -15,9 +15,9 @@ import { User } from './User';
 @ObjectType()
 @Entity()
 export class Agenda {
-  @Field(() => ID)
+  @Field(() => Int)
   @PrimaryColumn()
-  id: string;
+  id: number;
 
   @Field(() => String)
   @Column({ unique: true })

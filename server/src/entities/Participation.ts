@@ -18,7 +18,7 @@ export class Participation extends BaseEntity {
 
   @Field()
   @PrimaryColumn({ name: 'agenda_id' })
-  agendaId: string;
+  agendaId: number;
 
   @Field(() => Agenda, { nullable: true })
   @ManyToOne(() => Agenda, (agenda) => agenda.participation)

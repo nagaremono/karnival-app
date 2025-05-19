@@ -18,7 +18,7 @@ export class initial1618678728889 implements MigrationInterface {
     );
     await queryRunner.query(
       `CREATE TABLE "agenda" (
-        "id" UUID NOT NULL,
+        "id" SERIAL NOT NULL,
         "name" VARCHAR NOT NULL,
         "description" VARCHAR NOT NULL,
         "venue" VARCHAR NOT NULL,
@@ -37,7 +37,7 @@ export class initial1618678728889 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TABLE "participation" (
         "user_id" UUID NOT NULL,
-        "agenda_id" UUID NOT NULL,
+        "agenda_id" int NOT NULL,
         CONSTRAINT "participation_pk" PRIMARY KEY ("user_id", "agenda_id"),
         CONSTRAINT "participation_agenda_fk"
           FOREIGN KEY ("agenda_id") REFERENCES "agenda"("id")
