@@ -124,6 +124,13 @@ export type AgendaQueryVariables = Exact<{
 
 export type AgendaQuery = { __typename?: 'Query', agenda: { __typename?: 'Agenda', id: number, organizerId: string, name: string, venue: string, description: string, startTime: any, endTime: any, isParticipating: boolean, organizer: { __typename?: 'User', username: string }, participation: Array<{ __typename?: 'Participation', userId: string, user?: { __typename?: 'User', username: string } | null }> } };
 
+export type CreateAgendaMutationVariables = Exact<{
+  input: AgendaInput;
+}>;
+
+
+export type CreateAgendaMutation = { __typename?: 'Mutation', createAgenda: { __typename?: 'Agenda', name: string, description: string, startTime: any, endTime: any, venue: string } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -183,3 +190,14 @@ export const AgendaDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AgendaQuery, AgendaQueryVariables>;
+export const CreateAgendaDocument = new TypedDocumentString(`
+    mutation CreateAgenda($input: AgendaInput!) {
+  createAgenda(input: $input) {
+    name
+    description
+    startTime
+    endTime
+    venue
+  }
+}
+    `) as unknown as TypedDocumentString<CreateAgendaMutation, CreateAgendaMutationVariables>;

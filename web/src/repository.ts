@@ -1,5 +1,5 @@
 import { graphql } from './graphql';
-import { TypedDocumentString } from './graphql/graphql';
+import { AgendaInput, TypedDocumentString } from './graphql/graphql';
 
 export async function execute<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
@@ -79,4 +79,22 @@ const agendaDetailQuery = graphql(`
 export async function getAgendaDetail(agendaId: number) {
   const agenda = await execute(agendaDetailQuery, { agendaId });
   return agenda.agenda;
+}
+
+export const createAgendaMutation = graphql(`
+  mutation CreateAgenda($input: AgendaInput!) {
+    createAgenda(input: $input) {
+      name
+      description
+      startTime
+      endTime
+      venue
+    }
+  }
+`);
+
+export async function createAgenda(input: AgendaInput) {
+  await execute(createAgendaMutation, {
+    input,
+  });
 }

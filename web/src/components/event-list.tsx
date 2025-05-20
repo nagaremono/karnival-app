@@ -1,6 +1,6 @@
 'use client';
 
-import { getAgendas } from '@karnival/repository';
+import { getAgendas } from '@nvl/repository';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import EventCard from './event-card';
 import { Button, Container } from '@chakra-ui/react';

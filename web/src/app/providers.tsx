@@ -1,6 +1,6 @@
 'use client';
 
-import cognitoAuthConfig from '@karnival/cognito-config';
+import cognitoAuthConfig from '@nvl/cognito-config';
 import {
   isServer,
   QueryClient,
@@ -32,7 +32,7 @@ function getQueryClient() {
 
 const ChakraProvider = dynamic(
   () =>
-    import('@karnival/components/chakra-ui/provider').then(
+    import('@nvl/components/chakra-ui/provider').then(
       (mod) => mod.Provider,
     ),
   { ssr: false },

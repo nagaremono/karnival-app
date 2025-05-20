@@ -1,11 +1,11 @@
-import AppBar from '@karnival/components/app-bar';
-import { EventList } from '@karnival/components/event-list';
+import AppBar from '@nvl/components/app-bar';
+import { EventList } from '@nvl/components/event-list';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { getAgendas } from '@karnival/repository';
+import { getAgendas } from '@nvl/repository';
 
 export default async function Home() {
   const queryClient = new QueryClient();

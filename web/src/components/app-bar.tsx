@@ -8,10 +8,12 @@ import {
   Heading,
   IconButton,
   Portal,
+  Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useAuth } from 'react-oidc-context';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import Link from 'next/link';
 
 const AppBar = () => {
   const auth = useAuth();
@@ -25,7 +27,7 @@ const AppBar = () => {
         alignItems="center"
       >
         <Heading ml="4" color="#f3f3f3" display="flex" alignItems="center">
-          <NextLink href="/">Karnival</NextLink>
+          <NextLink href="/">Nvl</NextLink>
         </Heading>
         <Drawer.Root size={'sm'}>
           <Drawer.Trigger asChild mr={4}>
@@ -38,27 +40,36 @@ const AppBar = () => {
             <Drawer.Positioner h={'100vh'}>
               <Drawer.Content>
                 <Drawer.Header>
-                  <Drawer.Title />
-                </Drawer.Header>
-                <Drawer.Body></Drawer.Body>
-                <Drawer.Footer>
-                  {!auth.isAuthenticated ? (
+                  <Drawer.CloseTrigger asChild position="initial">
+                    <CloseButton size="sm" />
+                  </Drawer.CloseTrigger>
+                  <Drawer.Title flex="1">
+                    {auth.isAuthenticated && (
+                      <Text>
+                        {auth.user?.profile['cognito:username'] as string}
+                      </Text>
+                    )}
+                  </Drawer.Title>
+                  {!auth.isAuthenticated && (
                     <Button
                       onClick={() => void auth.signinRedirect()}
-                      _hover={{ backgroundColor: '#1f1f1f' }}
                       loading={auth.isLoading}
+                      position="initial"
                     >
                       Register/Login
                     </Button>
-                  ) : (
-                    <>
-                      <p>{auth.user?.profile['cognito:username'] as string}</p>
-                    </>
                   )}
-                </Drawer.Footer>
-                <Drawer.CloseTrigger asChild>
-                  <CloseButton size="sm" />
-                </Drawer.CloseTrigger>
+                </Drawer.Header>
+                <Drawer.Body display="flex" flexDirection="column" gap={4}>
+                  <Button
+                    asChild
+                    colorPalette={'purple'}
+                    variant="outline"
+                    position="right"
+                  >
+                    <Link href="/events/new">Post an Event</Link>
+                  </Button>
+                </Drawer.Body>
               </Drawer.Content>
             </Drawer.Positioner>
           </Portal>

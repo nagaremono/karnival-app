@@ -1,6 +1,6 @@
 import { Box, Heading, Text, Container, Flex, List } from '@chakra-ui/react';
-import AppBar from '@karnival/components/app-bar';
-import { getAgendaDetail } from '@karnival/repository';
+import AppBar from '@nvl/components/app-bar';
+import { getAgendaDetail } from '@nvl/repository';
 import { FiAtSign } from 'react-icons/fi';
 
 type EventDetailItemProps = {
