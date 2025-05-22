@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Button,
   CloseButton,
@@ -11,12 +9,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useAuth } from 'react-oidc-context';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import Link from 'next/link';
+import { auth } from '@nvl/app/auth';
+import SignInButton from './sign-in-button';
 
-const AppBar = () => {
-  const auth = useAuth();
+const AppBar = async () => {
+  const session = await auth();
 
   return (
     <header>
@@ -44,21 +43,9 @@ const AppBar = () => {
                     <CloseButton size="sm" />
                   </Drawer.CloseTrigger>
                   <Drawer.Title flex="1">
-                    {auth.isAuthenticated && (
-                      <Text>
-                        {auth.user?.profile['cognito:username'] as string}
-                      </Text>
-                    )}
+                    {session && <Text>{session.user?.name}</Text>}
                   </Drawer.Title>
-                  {!auth.isAuthenticated && (
-                    <Button
-                      onClick={() => void auth.signinRedirect()}
-                      loading={auth.isLoading}
-                      position="initial"
-                    >
-                      Register/Login
-                    </Button>
-                  )}
+                  {!session && <SignInButton />}
                 </Drawer.Header>
                 <Drawer.Body display="flex" flexDirection="column" gap={4}>
                   <Button
