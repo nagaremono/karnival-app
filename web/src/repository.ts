@@ -1,9 +1,18 @@
 import { graphql } from './graphql';
 import { AgendaInput, TypedDocumentString } from './graphql/graphql';
 
-export async function execute<TResult, TVariables>(
+type ExecuteOpts = {
+  serverSide: boolean;
+  useCreds: boolean;
+};
+
+export async function execute<
+  TResult,
+  TVariables extends Record<string, unknown>,
+>(
   query: TypedDocumentString<TResult, TVariables>,
-  ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
+  variables?: TVariables,
+  opts?: ExecuteOpts,
 ) {
   const response = await fetch(process.env.NEXT_PUBLIC_GRAPHQL_API || '', {
     method: 'POST',
@@ -15,6 +24,7 @@ export async function execute<TResult, TVariables>(
       query,
       variables,
     }),
+    cache: opts?.serverSide ? 'no-store' : 'force-cache',
   });
 
   if (!response.ok) {
@@ -93,8 +103,8 @@ export const createAgendaMutation = graphql(`
   }
 `);
 
-export async function createAgenda(input: AgendaInput) {
-  await execute(createAgendaMutation, {
+export function createAgenda(input: AgendaInput) {
+  return execute(createAgendaMutation, {
     input,
   });
 }

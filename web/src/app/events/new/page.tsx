@@ -2,6 +2,7 @@
 
 import { Button, Container, Flex, Input, Field } from '@chakra-ui/react';
 import AppBar from '@nvl/components/app-bar';
+import { createAgenda } from '@nvl/repository';
 import { Form, Formik, useField } from 'formik';
 import { HTMLInputTypeAttribute } from 'react';
 
@@ -31,15 +32,25 @@ const InputField: React.FC<InputFieldProps> = ({
   );
 };
 
-// type FormValues = {
-//   name: string;
-//   description: string;
-//   startTime: string;
-//   endTime: string;
-//   venue: string;
-// };
+type FormValues = {
+  name: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  venue: string;
+};
 
 export default function NewEvent() {
+  const onSubmit = async (values: FormValues) => {
+    await createAgenda({
+      name: values.name,
+      description: values.description,
+      startTime: new Date(values.startTime).toISOString(),
+      endTime: new Date(values.endTime).toISOString(),
+      venue: values.venue,
+    });
+  };
+
   return (
     <>
       <AppBar />
@@ -52,9 +63,7 @@ export default function NewEvent() {
             endTime: '',
             venue: '',
           }}
-          onSubmit={async (values: Record<string, unknown>) => {
-            console.log(JSON.stringify(values));
-          }}
+          onSubmit={onSubmit}
         >
           {() => (
             <Form>
@@ -77,11 +86,13 @@ export default function NewEvent() {
                 name="startTime"
                 label="Event Start"
                 placeholder="Starts at..."
+                type="datetime-local"
               />
               <InputField
                 name="endTime"
                 label="Event End"
                 placeholder="Ends at..."
+                type="datetime-local"
               />
               <Flex justify="center">
                 <Button
