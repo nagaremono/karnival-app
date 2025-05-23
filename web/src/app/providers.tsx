@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { SessionProvider } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 // import { AuthProvider } from 'react-oidc-context';
 
@@ -41,9 +42,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider>{children}</ChakraProvider>
-      </QueryClientProvider>
+      <SessionProvider>
+        <QueryClientProvider client={queryClient}>
+          <ChakraProvider>{children}</ChakraProvider>
+        </QueryClientProvider>
+      </SessionProvider>
     </>
   );
 }

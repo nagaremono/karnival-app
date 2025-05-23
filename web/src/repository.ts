@@ -1,9 +1,10 @@
 import { graphql } from './graphql';
 import { AgendaInput, TypedDocumentString } from './graphql/graphql';
+import { UserSession } from './app/auth';
 
 type ExecuteOpts = {
   serverSide: boolean;
-  useCreds: boolean;
+  session?: UserSession | null;
 };
 
 export async function execute<
@@ -103,8 +104,12 @@ export const createAgendaMutation = graphql(`
   }
 `);
 
-export function createAgenda(input: AgendaInput) {
-  return execute(createAgendaMutation, {
-    input,
-  });
+export function createAgenda(input: AgendaInput, session?: UserSession | null) {
+  return execute(
+    createAgendaMutation,
+    {
+      input,
+    },
+    { serverSide: false, session },
+  );
 }

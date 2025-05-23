@@ -4,8 +4,13 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import type { NextAuthOptions } from 'next-auth';
+import type { NextAuthOptions, Session } from 'next-auth';
 import { getServerSession } from 'next-auth';
+
+export type UserSession = {
+  accessToken?: string;
+  idToken?: string;
+} & Session;
 
 export const config = {
   providers: [
@@ -15,8 +20,6 @@ export const config = {
       clientSecret: process.env.COGNITO_CLIENT_SECRET || '',
       region: 'ap-southeast-3',
       client: {
-        client_id: process.env.COGNITO_CLIENT_ID || '',
-        client_secret: process.env.COGNITO_CLIENT_SECRET || '',
         redirect_uris: [process.env.COGNITO_REDIRECT_URI || ''],
         response_types: ['code'],
       },
