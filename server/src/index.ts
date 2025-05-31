@@ -12,7 +12,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { MyContext } from './types';
 import dataSource from './datasource';
 import { toNodeHandler } from 'better-auth/node';
-import { auth } from './auth';
+import { auth } from './lib/auth';
 
 const main = async () => {
   await dataSource.initialize();
@@ -25,9 +25,11 @@ const main = async () => {
     cors({
       credentials: true,
       origin: process.env.ORIGIN,
+      methods: ['GET', 'POST'],
     }),
   );
-  app.use(express.json());
+
+  app.all('/api/auth/*', toNodeHandler(auth));
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -39,6 +41,7 @@ const main = async () => {
 
   app.use(
     '/graphql',
+    express.json(),
     expressMiddleware(apolloServer, {
       context: async ({ req, res }): Promise<MyContext> =>
         <MyContext>{
@@ -49,8 +52,6 @@ const main = async () => {
         },
     }),
   );
-
-  app.all('/api/auth/', toNodeHandler(auth));
 
   app.listen(parseInt(process.env.PORT), () => {
     console.log(`Server started on port ${process.env.PORT}`);
