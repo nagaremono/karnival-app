@@ -7,6 +7,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    allowSignUp: true,
   },
   user: {
     fields: {
@@ -58,4 +59,7 @@ export const auth = betterAuth({
       updatedAt: 'updated_at',
     },
   },
+  trustedOrigins: ['http://localhost:3000'],
+  baseURL: 'http://localhost:4000',
+  basePath: '/api/auth',
 });
