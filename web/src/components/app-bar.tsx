@@ -6,17 +6,12 @@ import {
   Heading,
   IconButton,
   Portal,
-  Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import Link from 'next/link';
-import { auth } from '@nvl/app/auth';
-import SignInButton from './sign-in-button';
 
 const AppBar = async () => {
-  const session = await auth();
-
   return (
     <header>
       <Flex
@@ -42,10 +37,10 @@ const AppBar = async () => {
                   <Drawer.CloseTrigger asChild position="initial">
                     <CloseButton size="sm" />
                   </Drawer.CloseTrigger>
-                  <Drawer.Title flex="1">
-                    {session && <Text>{session.user?.name}</Text>}
-                  </Drawer.Title>
-                  {!session && <SignInButton />}
+                  {/* <Drawer.Title flex="1"> */}
+                  {/*   {session && <Text>{session.user?.name}</Text>} */}
+                  {/* </Drawer.Title> */}
+                  {/* {!session && <SignInButton />} */}
                 </Drawer.Header>
                 <Drawer.Body display="flex" flexDirection="column" gap={4}>
                   <Button

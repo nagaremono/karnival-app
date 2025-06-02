@@ -1,10 +1,10 @@
 import { graphql } from './graphql';
 import { AgendaInput, TypedDocumentString } from './graphql/graphql';
-import { UserSession } from './app/auth';
 
 type ExecuteOpts = {
   serverSide: boolean;
-  session?: UserSession | null;
+  session?: unknown | null;
+  headers?: Record<string, string>;
 };
 
 export async function execute<
@@ -20,6 +20,7 @@ export async function execute<
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/graphql-response+json',
+      ...opts?.headers,
     },
     body: JSON.stringify({
       query,
@@ -104,12 +105,15 @@ export const createAgendaMutation = graphql(`
   }
 `);
 
-export function createAgenda(input: AgendaInput, session?: UserSession | null) {
+export function createAgenda(input: AgendaInput) {
   return execute(
     createAgendaMutation,
     {
       input,
     },
-    { serverSide: false, session },
+    {
+      serverSide: false,
+      headers: { Authorization: `Bearer ` },
+    },
   );
 }

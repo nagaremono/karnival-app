@@ -1,14 +1,11 @@
 'use client';
 
-// import cognitoAuthConfig from '@nvl/cognito-config';
 import {
   isServer,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { SessionProvider } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-// import { AuthProvider } from 'react-oidc-context';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -42,11 +39,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <SessionProvider>
-        <QueryClientProvider client={queryClient}>
-          <ChakraProvider>{children}</ChakraProvider>
-        </QueryClientProvider>
-      </SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>{children}</ChakraProvider>
+      </QueryClientProvider>
     </>
   );
 }
