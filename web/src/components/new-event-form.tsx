@@ -1,35 +1,9 @@
 'use client';
 
-import { Flex, Button, Container, Input, Field } from '@chakra-ui/react';
+import { Flex, Button, Container } from '@chakra-ui/react';
 import { useCreateAgenda } from '@nvl/hooks/use-create-agenda';
-import { Formik, Form, useField } from 'formik';
-import { HTMLInputTypeAttribute } from 'react';
-
-type InputFieldProps = {
-  name: string;
-  label: string;
-  placeholder: string;
-  type?: HTMLInputTypeAttribute;
-};
-
-const InputField: React.FC<InputFieldProps> = ({
-  name,
-  label,
-  placeholder,
-  type,
-}) => {
-  const [field] = useField(name);
-
-  return (
-    <>
-      <Field.Root required>
-        <Field.Label>{label}</Field.Label>
-        <Input placeholder={placeholder} type={type} {...field} />
-        {/* <Field.ErrorText>This field is required</Field.ErrorText> */}
-      </Field.Root>
-    </>
-  );
-};
+import { Formik, Form } from 'formik';
+import InputField from './input-field';
 
 type FormValues = {
   name: string;
