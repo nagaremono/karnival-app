@@ -1,5 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+'use client';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { authClient } from '@nvl/auth/auth-client';
+import { useRouter } from 'next/navigation';
 
 type SignUpParams = {
   username: string;
@@ -8,6 +10,7 @@ type SignUpParams = {
 };
 
 export function useSignUp() {
+  const queryClient = new QueryClient();
   const signUp = async (params: SignUpParams) => {
     const res = await authClient.signUp.email({
       email: params.email,
@@ -22,14 +25,22 @@ export function useSignUp() {
       userId: res.data.user.id,
     };
   };
-  const { mutate, isError, status } = useMutation({
+  const router = useRouter();
+  const { mutate, isError, status, error, reset } = useMutation({
     mutationKey: ['auth'],
     mutationFn: signUp,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['auth'] });
+      router.replace('/');
+    },
+    onError: () => {},
   });
 
   return {
     signUp: mutate,
     isError,
     status,
+    error,
+    reset,
   };
 }
