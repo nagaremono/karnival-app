@@ -1,3 +1,4 @@
+'use client';
 import {
   Button,
   CloseButton,
@@ -6,12 +7,21 @@ import {
   Heading,
   IconButton,
   Portal,
+  Text,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import Link from 'next/link';
+import NextLink from 'next/link';
+import { authClient, useSession } from '@nvl/auth/auth-client';
+import { useRouter } from 'next/navigation';
 
-const AppBar = async () => {
+const AppBar = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const onSignOutClick = async () => {
+    await authClient.signOut();
+    router.replace('/');
+  };
+
   return (
     <header>
       <Flex
@@ -37,10 +47,17 @@ const AppBar = async () => {
                   <Drawer.CloseTrigger asChild position="initial">
                     <CloseButton size="sm" />
                   </Drawer.CloseTrigger>
-                  {/* <Drawer.Title flex="1"> */}
-                  {/*   {session && <Text>{session.user?.name}</Text>} */}
-                  {/* </Drawer.Title> */}
-                  {/* {!session && <SignInButton />} */}
+                  <Drawer.Title flex="1">
+                    {session && <Text>{session.user?.name}</Text>}
+                  </Drawer.Title>
+                  {!session && (
+                    <Button position="initial" asChild>
+                      <NextLink href={'/auth/sign-in'}>Sign In</NextLink>
+                    </Button>
+                  )}
+                  {session && (
+                    <Button onClick={onSignOutClick}>Sign Out</Button>
+                  )}
                 </Drawer.Header>
                 <Drawer.Body display="flex" flexDirection="column" gap={4}>
                   <Button
@@ -49,7 +66,7 @@ const AppBar = async () => {
                     variant="outline"
                     position="right"
                   >
-                    <Link href="/events/new">Post an Event</Link>
+                    <NextLink href="/events/new">Post an Event</NextLink>
                   </Button>
                 </Drawer.Body>
               </Drawer.Content>
