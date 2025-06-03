@@ -4,6 +4,7 @@ import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import InputField from './input-field';
 import { useSignIn } from '@nvl/hooks/use-sign-in';
 import { AuthErrorCode } from '@nvl/types/auth';
+import { useRouter } from 'next/navigation';
 
 type FormValues = {
   email: string;
@@ -33,6 +34,7 @@ function toFormError(error: AuthError): FormikErrors<FormValues> {
 
 export function SignInForm() {
   const { signIn, error } = useSignIn();
+  const router = useRouter();
   const onSubmit = (
     values: FormValues,
     { setErrors }: FormikHelpers<FormValues>,
@@ -40,7 +42,10 @@ export function SignInForm() {
     signIn(values);
     if (error) {
       setErrors(toFormError(error as unknown as AuthError));
+      return;
     }
+
+    router.replace('/');
   };
 
   return (
