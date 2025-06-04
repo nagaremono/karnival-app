@@ -54,7 +54,7 @@ export class AgendaResolver {
     }
 
     const participation = await participationLoader.load({
-      userId: req.user.sub,
+      userId: req.user.id,
       agendaId: agenda.id,
     });
 
@@ -67,7 +67,7 @@ export class AgendaResolver {
     @Arg('isParticipating') isParticipating: boolean,
     @Ctx() { req }: MyContext,
   ) {
-    if (!req.user.sub) {
+    if (!req.user.id) {
       return false;
     }
 
@@ -77,14 +77,14 @@ export class AgendaResolver {
         .delete()
         .from(Participation)
         .where('"userId" = :userId and "agendaId" = :agendaId', {
-          userId: req.user.sub,
+          userId: req.user.id,
           agendaId,
         })
         .execute();
     } else {
       await Participation.create({
         agendaId,
-        userId: req.user.sub,
+        userId: req.user.id,
       }).save();
     }
 
@@ -139,7 +139,7 @@ export class AgendaResolver {
       .set({ ...input })
       .where('id = :agendaId and organizer_id = :userId', {
         agendaId,
-        userId: req.user.sub,
+        userId: req.user.id,
       })
       .returning('*')
       .execute();
@@ -155,7 +155,7 @@ export class AgendaResolver {
   ): Promise<Agenda> {
     return dataSource.manager.save(Agenda, {
       ...input,
-      organizerId: req.user.sub,
+      organizerId: req.user.id,
     });
   }
 
@@ -168,7 +168,7 @@ export class AgendaResolver {
     await Participation.delete({ agendaId });
     await dataSource.manager.delete(Agenda, {
       id: agendaId,
-      organizerId: req.user.sub,
+      organizerId: req.user.id,
     });
 
     return true;

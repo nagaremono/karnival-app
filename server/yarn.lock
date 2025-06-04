@@ -1012,11 +1012,6 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-aws-jwt-verify@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/aws-jwt-verify/-/aws-jwt-verify-5.0.0.tgz#95a70a59dc8cc6c0e7155a8b6500bab4c82d52bc"
-  integrity sha512-FQM5EYEm7AnVJ3oeTpvBZQm7hYnpI067Em1oopHBs7cCNAcw8Aw8NFbojFjkNXifsOzyYe1ks+bg7Q9fMsTZSA==
-
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"

@@ -1,12 +1,7 @@
-import { MyContext } from 'src/types';
+import { fromNodeHeaders } from 'better-auth/node';
+import { auth } from '../lib/auth';
+import { MyContext } from '../types';
 import { MiddlewareFn } from 'type-graphql';
-import { CognitoJwtVerifier } from 'aws-jwt-verify';
-
-const verifier = CognitoJwtVerifier.create({
-  userPoolId: process.env.COGNITO_USER_POOL_ID!,
-  tokenUse: 'access',
-  clientId: process.env.COGNITO_CLIENT_ID!,
-});
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
   if (!context.req.user) {
@@ -20,13 +15,12 @@ export const attachIdentity: MiddlewareFn<MyContext> = async (
   { context },
   next,
 ) => {
-  const authHeader = context.req.header('authorization');
-  if (!authHeader) {
-    return next();
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(context.req.headers),
+  });
+  if (session) {
+    context.req.user = session?.user;
   }
-  const token = authHeader.split(' ')[1];
-  const payload = await verifier.verify(token).catch();
-  context.req.user = payload;
 
   return next();
 };

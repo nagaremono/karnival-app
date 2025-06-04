@@ -7,13 +7,13 @@ import dataSource from '../datasource';
 export class UserResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: MyContext) {
-    if (!req.user.sub) {
+    if (!req.user.id) {
       return null;
     }
 
     return dataSource.manager.getRepository(User).findOne({
       where: {
-        id: req.user.sub,
+        id: req.user.id,
       },
     });
   }
