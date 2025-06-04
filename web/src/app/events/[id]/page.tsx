@@ -27,13 +27,7 @@ type AgendaDetailProps = {
 
 export default async function AgendaDetail({ params }: AgendaDetailProps) {
   const { agendaId } = await params;
-  let fetchErr;
-  let agenda;
-  try {
-    agenda = await getAgendaDetail(Number(agendaId));
-  } catch (err) {
-    fetchErr = err;
-  }
+  const agenda = await getAgendaDetail(Number(agendaId));
 
   if (!agenda) {
     return (
