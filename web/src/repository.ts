@@ -27,6 +27,7 @@ export async function execute<
       variables,
     }),
     cache: opts?.serverSide ? 'no-store' : 'force-cache',
+    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -55,11 +56,19 @@ export const agendasQuery = graphql(`
   }
 `);
 
-export async function getAgendas(limit?: number, cursor?: string) {
-  const agendas = await execute(agendasQuery, {
-    limit: limit || 10,
-    cursor,
-  });
+export async function getAgendas(
+  limit?: number,
+  cursor?: string,
+  serverSide = false,
+) {
+  const agendas = await execute(
+    agendasQuery,
+    {
+      limit: limit || 10,
+      cursor,
+    },
+    { serverSide },
+  );
 
   return agendas.agendas;
 }
@@ -113,7 +122,6 @@ export function createAgenda(input: AgendaInput) {
     },
     {
       serverSide: false,
-      headers: { Authorization: `Bearer ` },
     },
   );
 }

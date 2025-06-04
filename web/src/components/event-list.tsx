@@ -21,9 +21,6 @@ export function EventList() {
 
   return (
     <Container maxW={'md'} centerContent={true} my={8}>
-      {/* {data && */}
-      {/*   data.pages.length > 0 && */}
-      {/*   data.pages.map((d) => <EventCard key={d} agenda={d} my={4} />)} */}
       {data?.pages.map((group, i) => (
         <Fragment key={i}>
           {group?.map((agenda) => (
