@@ -131,6 +131,14 @@ export type CreateAgendaMutationVariables = Exact<{
 
 export type CreateAgendaMutation = { __typename?: 'Mutation', createAgenda: { __typename?: 'Agenda', name: string, description: string, startTime: any, endTime: any, venue: string } };
 
+export type UpdateAgendaMutationVariables = Exact<{
+  agendaId: Scalars['Int']['input'];
+  input: AgendaInput;
+}>;
+
+
+export type UpdateAgendaMutation = { __typename?: 'Mutation', updateAgenda?: { __typename?: 'Agenda', name: string, description: string, venue: string, endTime: any, startTime: any } | null };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -201,3 +209,14 @@ export const CreateAgendaDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<CreateAgendaMutation, CreateAgendaMutationVariables>;
+export const UpdateAgendaDocument = new TypedDocumentString(`
+    mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {
+  updateAgenda(agendaId: $agendaId, input: $input) {
+    name
+    description
+    venue
+    endTime
+    startTime
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateAgendaMutation, UpdateAgendaMutationVariables>;

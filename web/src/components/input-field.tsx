@@ -6,8 +6,9 @@ import { HTMLInputTypeAttribute } from 'react';
 type InputFieldProps = {
   name: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   type?: HTMLInputTypeAttribute;
+  required?: boolean;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -15,12 +16,13 @@ export const InputField: React.FC<InputFieldProps> = ({
   label,
   placeholder,
   type,
+  required,
 }) => {
   const [field, meta] = useField(name);
 
   return (
     <>
-      <Field.Root required invalid={!!meta.error}>
+      <Field.Root required={required} invalid={!!meta.error}>
         <Field.Label>{label}</Field.Label>
         <Input placeholder={placeholder} type={type} {...field} />
         {meta.error && <Field.ErrorText>{meta.error}</Field.ErrorText>}

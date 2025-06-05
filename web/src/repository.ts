@@ -97,8 +97,8 @@ const agendaDetailQuery = graphql(`
   }
 `);
 
-export async function getAgendaDetail(agendaId: number) {
-  const agenda = await execute(agendaDetailQuery, { agendaId });
+export async function getAgendaDetail(agendaId: number, serverSide = false) {
+  const agenda = await execute(agendaDetailQuery, { agendaId }, { serverSide });
   return agenda.agenda;
 }
 
@@ -118,6 +118,31 @@ export function createAgenda(input: AgendaInput) {
   return execute(
     createAgendaMutation,
     {
+      input,
+    },
+    {
+      serverSide: false,
+    },
+  );
+}
+
+export const updateAgendaMutation = graphql(`
+  mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {
+    updateAgenda(agendaId: $agendaId, input: $input) {
+      name
+      description
+      venue
+      endTime
+      startTime
+    }
+  }
+`);
+
+export function updateAgenda(agendaId: number, input: AgendaInput) {
+  return execute(
+    updateAgendaMutation,
+    {
+      agendaId,
       input,
     },
     {
