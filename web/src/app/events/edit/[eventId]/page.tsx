@@ -3,6 +3,8 @@ import React from 'react';
 import { getAgendaDetail } from '@nvl/repository';
 import AppBar from '@nvl/components/app-bar';
 import { EditEventForm } from '@nvl/components/edit-event-form';
+import { authClient } from '@nvl/auth/auth-client';
+import { redirect } from 'next/navigation';
 
 type EditEventProps = {
   params: Promise<{
@@ -11,6 +13,7 @@ type EditEventProps = {
 };
 
 export const EditEventPage = async ({ params }: EditEventProps) => {
+  const { data: session } = await authClient.getSession();
   const { eventId } = await params;
   const agenda = await getAgendaDetail(Number(eventId));
 
@@ -23,6 +26,10 @@ export const EditEventPage = async ({ params }: EditEventProps) => {
         </Container>
       </main>
     );
+  }
+
+  if (agenda.organizerId !== session?.user.id) {
+    redirect(`/no-access`);
   }
 
   return (
