@@ -21,13 +21,13 @@ const EventDetailItem: React.FC<EventDetailItemProps> = ({ title, text }) => {
 
 type AgendaDetailProps = {
   params: Promise<{
-    agendaId: string;
+    eventId: string;
   }>;
 };
 
 export default async function AgendaDetail({ params }: AgendaDetailProps) {
-  const { agendaId } = await params;
-  const agenda = await getAgendaDetail(Number(agendaId));
+  const { eventId } = await params;
+  const agenda = await getAgendaDetail(Number(eventId), true);
 
   if (!agenda) {
     return (
