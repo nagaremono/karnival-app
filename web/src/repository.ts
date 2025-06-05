@@ -167,7 +167,7 @@ export function deleteEvent(eventId: number) {
   return execute(
     deleteAgendaMutation,
     {
-      eventId,
+      agendaId: eventId,
     },
     {
       serverSide: false,
