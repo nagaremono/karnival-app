@@ -1,5 +1,5 @@
 'use client';
-import { Flex, IconButton, Link } from '@chakra-ui/react';
+import { Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 import { useSession } from '@nvl/auth/auth-client';
@@ -36,11 +36,8 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
           >
             <MdDeleteOutline />
           </IconButton>
-          <NextLink
-            href={{ pathname: '/events/edit/[eventId]', query: { eventId } }}
-          >
+          <NextLink href={`/events/edit/${eventId}`}>
             <IconButton
-              as={Link}
               mr={2}
               size="md"
               fontSize="1.6rem"
