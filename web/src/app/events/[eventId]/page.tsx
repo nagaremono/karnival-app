@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Container, Flex, List } from '@chakra-ui/react';
 import AppBar from '@nvl/components/app-bar';
+import { EditDeleteButtons } from '@nvl/components/edit-delete-event-buttons';
 import { getAgendaDetail } from '@nvl/repository';
 import { FiAtSign } from 'react-icons/fi';
 
@@ -102,10 +103,10 @@ export default async function AgendaDetail({ params }: AgendaDetailProps) {
                   timeStyle: 'short',
                 })}
               />
-              {/* <EditDeleteButtons */}
-              {/*   agendaId={agenda.id} */}
-              {/*   organizerId={agenda.organizerId} */}
-              {/* /> */}
+              <EditDeleteButtons
+                eventId={agenda.id}
+                organizerId={agenda.organizerId}
+              />
             </Box>
           </Box>
           <Box

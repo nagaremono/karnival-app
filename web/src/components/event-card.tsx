@@ -8,14 +8,17 @@ import {
   // Link,
   // Flex,
   BoxProps,
+  Separator,
 } from '@chakra-ui/react';
 import React from 'react';
+import EditDeleteButtons from './edit-delete-event-buttons';
 // import NextLink from 'next/link';
 // import { ParticipatingStatus } from './ParticipatingStatus';
 // import EditDeleteButtons from './EditDeleteButtons';
 
 export type EventCardProps = {
   agenda: {
+    id: number;
     name: string;
     organizer: {
       username: string;
@@ -24,6 +27,7 @@ export type EventCardProps = {
     venue: string;
     startTime: Date;
     endTime: Date;
+    organizerId: string;
   };
 } & BoxProps;
 
@@ -54,11 +58,8 @@ const EventCard = ({ agenda, ...boxProps }: EventCardProps) => {
       <Text mb={2} as="span" textStyle="l">
         Organized by <Badge size="md">{agenda.organizer.username}</Badge>
       </Text>
-      {/* <EditDeleteButtons */}
-      {/*   agendaId={agenda.id} */}
-      {/*   organizerId={agenda.organizerId} */}
-      {/* /> */}
-      {/* <Divider borderWidth="3px" /> */}
+      <EditDeleteButtons eventId={agenda.id} organizerId={agenda.organizerId} />
+      <Separator variant={'solid'} size={'md'} />
       <Grid
         mt={4}
         gap={2}

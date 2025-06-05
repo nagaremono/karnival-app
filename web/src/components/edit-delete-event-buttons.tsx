@@ -1,47 +1,36 @@
+'use client';
 import { Flex, IconButton, Link } from '@chakra-ui/react';
 import React from 'react';
-import { useDeleteAgendaMutation, useMeQuery } from '../generated/graphql';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { useSession } from '@nvl/auth/auth-client';
+import { MdDeleteOutline } from 'react-icons/md';
+import { FaEdit } from 'react-icons/fa';
 
 interface EditDeleteButtonsProps {
-  agendaId: number;
-  organizerId: number;
+  eventId: number;
+  organizerId: string;
 }
 
-const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
-  agendaId,
+export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
+  eventId,
   organizerId,
 }) => {
-  const { data } = useMeQuery();
-  const [deleteAgenda] = useDeleteAgendaMutation();
-  const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <Flex mt={2} width="100%" justifyContent="flex-end">
-      {data?.me?.id === organizerId ? (
+      {session?.user.id === organizerId && (
         <>
           <IconButton
             size="md"
             mr={2}
             fontSize="1.6rem"
             aria-label="Delete Event"
-            icon={<DeleteIcon />}
-            onClick={() => {
-              deleteAgenda({
-                variables: { agendaId },
-                update: (cache) => {
-                  cache.evict({ id: 'Agenda:' + agendaId });
-                },
-              });
-              if (router.asPath !== '/') {
-                router.push('/');
-              }
-            }}
-          />
+          >
+            <MdDeleteOutline />
+          </IconButton>
           <NextLink
-            href={{ pathname: '/event/edit/[id]', query: { id: agendaId } }}
+            href={{ pathname: '/events/edit/[eventId]', query: { eventId } }}
           >
             <IconButton
               as={Link}
@@ -49,11 +38,12 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
               size="md"
               fontSize="1.6rem"
               aria-label="Edit Event"
-              icon={<EditIcon />}
-            />
+            >
+              <FaEdit />
+            </IconButton>
           </NextLink>
         </>
-      ) : null}
+      )}
     </Flex>
   );
 };
