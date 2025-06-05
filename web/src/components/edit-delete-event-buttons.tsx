@@ -23,13 +23,11 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   };
 
   return (
-    <Flex mt={2} width="100%" justifyContent="flex-end">
+    <Flex mt={2} gapX={2} width="100%" justifyContent="flex-end">
       {session?.user.id === organizerId && (
         <>
           <IconButton
             size="md"
-            mr={2}
-            fontSize="1.6rem"
             aria-label="Delete Event"
             onClick={onDelete}
             loading={status === 'pending'}
@@ -37,12 +35,7 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
             <MdDeleteOutline />
           </IconButton>
           <NextLink href={`/events/edit/${eventId}`}>
-            <IconButton
-              mr={2}
-              size="md"
-              fontSize="1.6rem"
-              aria-label="Edit Event"
-            >
+            <IconButton size="md" aria-label="Edit Event">
               <FaEdit />
             </IconButton>
           </NextLink>
