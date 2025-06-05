@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import { useSession } from '@nvl/auth/auth-client';
 import { MdDeleteOutline } from 'react-icons/md';
 import { FaEdit } from 'react-icons/fa';
+import { useDeleteEvent } from '@nvl/hooks/use-delete-event';
 
 interface EditDeleteButtonsProps {
   eventId: number;
@@ -16,6 +17,10 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   organizerId,
 }) => {
   const { data: session } = useSession();
+  const { deleteEvent, status } = useDeleteEvent();
+  const onDelete = () => {
+    deleteEvent(eventId);
+  };
 
   return (
     <Flex mt={2} width="100%" justifyContent="flex-end">
@@ -26,6 +31,8 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
             mr={2}
             fontSize="1.6rem"
             aria-label="Delete Event"
+            onClick={onDelete}
+            loading={status === 'pending'}
           >
             <MdDeleteOutline />
           </IconButton>

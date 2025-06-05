@@ -19,12 +19,14 @@ type Documents = {
     "\n  query Agenda($agendaId: Int!) {\n    agenda(agendaId: $agendaId) {\n      id\n      organizerId\n      name\n      venue\n      description\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      participation {\n        userId\n        user {\n          username\n        }\n      }\n      isParticipating\n    }\n  }\n": typeof types.AgendaDocument,
     "\n  mutation CreateAgenda($input: AgendaInput!) {\n    createAgenda(input: $input) {\n      name\n      description\n      startTime\n      endTime\n      venue\n    }\n  }\n": typeof types.CreateAgendaDocument,
     "\n  mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {\n    updateAgenda(agendaId: $agendaId, input: $input) {\n      name\n      description\n      venue\n      endTime\n      startTime\n    }\n  }\n": typeof types.UpdateAgendaDocument,
+    "\n  mutation DeleteAgenda($agendaId: Int!) {\n    deleteAgenda(agendaId: $agendaId)\n  }\n": typeof types.DeleteAgendaDocument,
 };
 const documents: Documents = {
     "\n  query Agendas($limit: Int!, $cursor: String) {\n    agendas(limit: $limit, cursor: $cursor) {\n      id\n      name\n      description\n      organizerId\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      venue\n      isParticipating\n    }\n  }\n": types.AgendasDocument,
     "\n  query Agenda($agendaId: Int!) {\n    agenda(agendaId: $agendaId) {\n      id\n      organizerId\n      name\n      venue\n      description\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      participation {\n        userId\n        user {\n          username\n        }\n      }\n      isParticipating\n    }\n  }\n": types.AgendaDocument,
     "\n  mutation CreateAgenda($input: AgendaInput!) {\n    createAgenda(input: $input) {\n      name\n      description\n      startTime\n      endTime\n      venue\n    }\n  }\n": types.CreateAgendaDocument,
     "\n  mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {\n    updateAgenda(agendaId: $agendaId, input: $input) {\n      name\n      description\n      venue\n      endTime\n      startTime\n    }\n  }\n": types.UpdateAgendaDocument,
+    "\n  mutation DeleteAgenda($agendaId: Int!) {\n    deleteAgenda(agendaId: $agendaId)\n  }\n": types.DeleteAgendaDocument,
 };
 
 /**
@@ -43,6 +45,10 @@ export function graphql(source: "\n  mutation CreateAgenda($input: AgendaInput!)
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {\n    updateAgenda(agendaId: $agendaId, input: $input) {\n      name\n      description\n      venue\n      endTime\n      startTime\n    }\n  }\n"): typeof import('./graphql').UpdateAgendaDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DeleteAgenda($agendaId: Int!) {\n    deleteAgenda(agendaId: $agendaId)\n  }\n"): typeof import('./graphql').DeleteAgendaDocument;
 
 
 export function graphql(source: string) {

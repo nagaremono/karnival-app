@@ -156,3 +156,21 @@ export function updateEvent(eventId: number, input: EventInput) {
     },
   );
 }
+
+export const deleteAgendaMutation = graphql(`
+  mutation DeleteAgenda($agendaId: Int!) {
+    deleteAgenda(agendaId: $agendaId)
+  }
+`);
+
+export function deleteEvent(eventId: number) {
+  return execute(
+    deleteAgendaMutation,
+    {
+      eventId,
+    },
+    {
+      serverSide: false,
+    },
+  );
+}
