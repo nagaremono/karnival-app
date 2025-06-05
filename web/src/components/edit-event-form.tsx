@@ -3,7 +3,7 @@
 import { Container, Box, Flex, Button } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import InputField from './input-field';
-import { useUpdateAgenda } from '@nvl/hooks/use-update-agenda';
+import { useUpdateEvent } from '@nvl/hooks/use-update-event';
 import { useRouter } from 'next/navigation';
 import { DateTime } from 'luxon';
 
@@ -24,7 +24,7 @@ const InputDateTimeLocalFormat = "yyyy-MM-dd'T'HH:mm:ss";
 
 export const EditEventForm = (props: EditEventFormProps) => {
   const router = useRouter();
-  const { update, error } = useUpdateAgenda();
+  const { update, error } = useUpdateEvent();
 
   console.log({
     startTime: props.event.startTime,
@@ -46,7 +46,7 @@ export const EditEventForm = (props: EditEventFormProps) => {
 
   const onSubmit = (values: FormValues) => {
     update({
-      agendaId: props.event.id,
+      eventId: props.event.id,
       input: {
         name: values.name,
         description: values.description,

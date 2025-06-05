@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex, Button, Container } from '@chakra-ui/react';
-import { useCreateAgenda } from '@nvl/hooks/use-create-agenda';
+import { useCreateEvent } from '@nvl/hooks/use-create-event';
 import { Formik, Form } from 'formik';
 import InputField from './input-field';
 
@@ -14,7 +14,7 @@ type FormValues = {
 };
 
 export function NewEventForm() {
-  const { mutate } = useCreateAgenda();
+  const { mutate } = useCreateEvent();
   const onSubmit = (formValues: FormValues) => {
     mutate({
       ...formValues,

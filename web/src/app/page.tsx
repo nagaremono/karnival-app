@@ -5,13 +5,13 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { getAgendas } from '@nvl/repository';
+import { getEvents } from '@nvl/repository';
 
 export default async function Home() {
   const queryClient = new QueryClient();
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ['agendas'],
-    queryFn: ({ pageParam }) => getAgendas(10, pageParam, true),
+    queryKey: ['events'],
+    queryFn: ({ pageParam }) => getEvents(10, pageParam, true),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => {
       if (!lastPage) return null;

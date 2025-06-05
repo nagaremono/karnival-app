@@ -1,16 +1,18 @@
 import { AgendaInput } from '@nvl/graphql/graphql';
-import { updateAgenda } from '@nvl/repository';
+import { updateEvent } from '@nvl/repository';
 import { useMutation } from '@tanstack/react-query';
 
+type EventInput = AgendaInput;
+
 type Variables = {
-  agendaId: number;
-  input: AgendaInput;
+  eventId: number;
+  input: EventInput;
 };
 
-export function useUpdateAgenda() {
+export function useUpdateEvent() {
   const { mutate, isError, error, status } = useMutation({
     mutationFn: (variables: Variables) =>
-      updateAgenda(variables.agendaId, variables.input),
+      updateEvent(variables.eventId, variables.input),
   });
 
   return {

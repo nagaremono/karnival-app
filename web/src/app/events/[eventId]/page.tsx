@@ -1,7 +1,7 @@
 import { Box, Heading, Text, Container, Flex, List } from '@chakra-ui/react';
 import AppBar from '@nvl/components/app-bar';
 import { EditDeleteButtons } from '@nvl/components/edit-delete-event-buttons';
-import { getAgendaDetail } from '@nvl/repository';
+import { getEventDetail } from '@nvl/repository';
 import { FiAtSign } from 'react-icons/fi';
 
 type EventDetailItemProps = {
@@ -20,22 +20,22 @@ const EventDetailItem: React.FC<EventDetailItemProps> = ({ title, text }) => {
   );
 };
 
-type AgendaDetailProps = {
+type EventDetailProps = {
   params: Promise<{
     eventId: string;
   }>;
 };
 
-export default async function AgendaDetail({ params }: AgendaDetailProps) {
+export default async function EventDetail({ params }: EventDetailProps) {
   const { eventId } = await params;
-  const agenda = await getAgendaDetail(Number(eventId), true);
+  const event = await getEventDetail(Number(eventId), true);
 
-  if (!agenda) {
+  if (!event) {
     return (
       <main>
         <AppBar />
         <Container centerContent={true} p={8}>
-          <Text textStyle={'2xl'}>Agenda is not found</Text>
+          <Text textStyle={'2xl'}>Event is not found</Text>
         </Container>
       </main>
     );
@@ -74,22 +74,22 @@ export default async function AgendaDetail({ params }: AgendaDetailProps) {
             mb={6}
           >
             <Heading mb={4} as="h3" fontSize="1.8rem" textAlign="center">
-              {agenda.name}
+              {event.name}
             </Heading>
             {/* <ParticipatingStatus mb={2} agenda={.agenda} /> */}
             <Box>
               <EventDetailItem
                 title="Event Organizer"
-                text={agenda.organizer.username}
+                text={event.organizer.username}
               />
               <EventDetailItem
                 title="Event Description"
-                text={agenda.description}
+                text={event.description}
               />
-              <EventDetailItem title="Event Venue" text={agenda.venue} />
+              <EventDetailItem title="Event Venue" text={event.venue} />
               <EventDetailItem
                 title="Event Start"
-                text={new Date(agenda.startTime).toLocaleString('en-US', {
+                text={new Date(event.startTime).toLocaleString('en-US', {
                   timeZone: 'Asia/Jakarta',
                   dateStyle: 'full',
                   timeStyle: 'short',
@@ -97,15 +97,15 @@ export default async function AgendaDetail({ params }: AgendaDetailProps) {
               />
               <EventDetailItem
                 title="Event End"
-                text={new Date(agenda.endTime).toLocaleString('en-US', {
+                text={new Date(event.endTime).toLocaleString('en-US', {
                   timeZone: 'Asia/Jakarta',
                   dateStyle: 'full',
                   timeStyle: 'short',
                 })}
               />
               <EditDeleteButtons
-                eventId={agenda.id}
-                organizerId={agenda.organizerId}
+                eventId={event.id}
+                organizerId={event.organizerId}
               />
             </Box>
           </Box>
@@ -121,7 +121,7 @@ export default async function AgendaDetail({ params }: AgendaDetailProps) {
               Participants
             </Heading>
             <List.Root spaceX={2} spaceY={2}>
-              {agenda.participation.map((p) => {
+              {event.participation.map((p) => {
                 return (
                   <List.Item key={p.userId} pl={4} fontSize="1.2rem">
                     <List.Indicator as={FiAtSign} />

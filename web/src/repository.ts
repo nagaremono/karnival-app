@@ -38,6 +38,8 @@ export async function execute<
   return json.data as TResult;
 }
 
+type EventInput = AgendaInput;
+
 export const agendasQuery = graphql(`
   query Agendas($limit: Int!, $cursor: String) {
     agendas(limit: $limit, cursor: $cursor) {
@@ -56,7 +58,7 @@ export const agendasQuery = graphql(`
   }
 `);
 
-export async function getAgendas(
+export async function getEvents(
   limit?: number,
   cursor?: string,
   serverSide = false,
@@ -97,8 +99,12 @@ const agendaDetailQuery = graphql(`
   }
 `);
 
-export async function getAgendaDetail(agendaId: number, serverSide = false) {
-  const agenda = await execute(agendaDetailQuery, { agendaId }, { serverSide });
+export async function getEventDetail(eventId: number, serverSide = false) {
+  const agenda = await execute(
+    agendaDetailQuery,
+    { agendaId: eventId },
+    { serverSide },
+  );
   return agenda.agenda;
 }
 
@@ -114,7 +120,7 @@ export const createAgendaMutation = graphql(`
   }
 `);
 
-export function createAgenda(input: AgendaInput) {
+export function createEvent(input: EventInput) {
   return execute(
     createAgendaMutation,
     {
@@ -138,11 +144,11 @@ export const updateAgendaMutation = graphql(`
   }
 `);
 
-export function updateAgenda(agendaId: number, input: AgendaInput) {
+export function updateEvent(eventId: number, input: EventInput) {
   return execute(
     updateAgendaMutation,
     {
-      agendaId,
+      agendaId: eventId,
       input,
     },
     {

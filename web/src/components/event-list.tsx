@@ -1,6 +1,6 @@
 'use client';
 
-import { getAgendas } from '@nvl/repository';
+import { getEvents } from '@nvl/repository';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import EventCard from './event-card';
 import { Button, Container } from '@chakra-ui/react';
@@ -9,8 +9,8 @@ import { Fragment } from 'react';
 export function EventList() {
   const { data, fetchNextPage, isFetching, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ['agendas'],
-      queryFn: ({ pageParam }) => getAgendas(10, pageParam),
+      queryKey: ['events'],
+      queryFn: ({ pageParam }) => getEvents(10, pageParam),
       initialPageParam: undefined,
       getNextPageParam: (lastPage) => {
         if (!lastPage) return null;
@@ -23,9 +23,7 @@ export function EventList() {
     <Container maxW={'md'} centerContent={true} my={8}>
       {data?.pages.map((group, i) => (
         <Fragment key={i}>
-          {group?.map((agenda) => (
-            <EventCard key={agenda.id} agenda={agenda} />
-          ))}
+          {group?.map((event) => <EventCard key={event.id} event={event} />)}
         </Fragment>
       ))}
       <Button

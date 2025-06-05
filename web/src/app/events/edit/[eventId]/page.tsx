@@ -1,6 +1,6 @@
 import { Text, Container } from '@chakra-ui/react';
 import React from 'react';
-import { getAgendaDetail } from '@nvl/repository';
+import { getEventDetail } from '@nvl/repository';
 import AppBar from '@nvl/components/app-bar';
 import { EditEventForm } from '@nvl/components/edit-event-form';
 import { authClient } from '@nvl/auth/auth-client';
@@ -15,9 +15,9 @@ type EditEventProps = {
 export const EditEventPage = async ({ params }: EditEventProps) => {
   const { data: session } = await authClient.getSession();
   const { eventId } = await params;
-  const agenda = await getAgendaDetail(Number(eventId));
+  const event = await getEventDetail(Number(eventId));
 
-  if (!agenda) {
+  if (!event) {
     return (
       <main>
         <AppBar />
@@ -28,14 +28,14 @@ export const EditEventPage = async ({ params }: EditEventProps) => {
     );
   }
 
-  if (agenda.organizerId !== session?.user.id) {
+  if (event.organizerId !== session?.user.id) {
     redirect(`/no-access`);
   }
 
   return (
     <>
       <AppBar />
-      <EditEventForm event={agenda} />
+      <EditEventForm event={event} />
     </>
   );
 };

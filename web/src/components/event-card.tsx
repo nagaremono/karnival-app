@@ -17,7 +17,7 @@ import EditDeleteButtons from './edit-delete-event-buttons';
 // import EditDeleteButtons from './EditDeleteButtons';
 
 export type EventCardProps = {
-  agenda: {
+  event: {
     id: number;
     name: string;
     organizer: {
@@ -31,7 +31,7 @@ export type EventCardProps = {
   };
 } & BoxProps;
 
-const EventCard = ({ agenda, ...boxProps }: EventCardProps) => {
+const EventCard = ({ event, ...boxProps }: EventCardProps) => {
   return (
     <Box
       borderWidth="5px"
@@ -50,15 +50,15 @@ const EventCard = ({ agenda, ...boxProps }: EventCardProps) => {
       {/* > */}
       {/*   <Link> */}
       <Heading textStyle="xl" mb={2}>
-        {agenda.name}
+        {event.name}
       </Heading>
       {/*   </Link> */}
       {/* </NextLink> */}
 
       <Text mb={2} as="span" textStyle="l">
-        Organized by <Badge size="md">{agenda.organizer.username}</Badge>
+        Organized by <Badge size="md">{event.organizer.username}</Badge>
       </Text>
-      <EditDeleteButtons eventId={agenda.id} organizerId={agenda.organizerId} />
+      <EditDeleteButtons eventId={event.id} organizerId={event.organizerId} />
       <Separator variant={'solid'} size={'md'} />
       <Grid
         mt={4}
@@ -67,11 +67,11 @@ const EventCard = ({ agenda, ...boxProps }: EventCardProps) => {
         textStyle="md"
       >
         <Text gridColumn="1 / -1">
-          {agenda.description.slice(0, 150) +
-            (agenda.description.length > 150 ? '...' : '')}
+          {event.description.slice(0, 150) +
+            (event.description.length > 150 ? '...' : '')}
         </Text>
-        <Text gridColumn="1 / -1">Venue: {agenda.venue}</Text>
-        {[agenda.startTime, agenda.endTime].map((time, i) => {
+        <Text gridColumn="1 / -1">Venue: {event.venue}</Text>
+        {[event.startTime, event.endTime].map((time, i) => {
           return (
             <Text key={i}>
               Start:{' '}
