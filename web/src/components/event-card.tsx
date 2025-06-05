@@ -58,7 +58,6 @@ const EventCard = ({ event, ...boxProps }: EventCardProps) => {
       <Text mb={2} as="span" textStyle="l">
         Organized by <Badge size="md">{event.organizer.username}</Badge>
       </Text>
-      <EditDeleteButtons eventId={event.id} organizerId={event.organizerId} />
       <Separator variant={'solid'} size={'md'} />
       <Grid
         mt={4}
@@ -85,6 +84,7 @@ const EventCard = ({ event, ...boxProps }: EventCardProps) => {
         })}
       </Grid>
       {/* <ParticipatingStatus agenda={agenda} /> */}
+      <EditDeleteButtons eventId={event.id} organizerId={event.organizerId} />
     </Box>
   );
 };
