@@ -110,11 +110,16 @@ export class AgendaResolver {
   async agendas(
     @Arg('limit', () => Int) limit: number,
     @Arg('cursor', () => String, { nullable: true }) cursor: number | null,
+    @Arg('from', () => String, {
+      nullable: true,
+    })
+    from = new Date(),
   ): Promise<Agenda[]> {
     const actualLimit = Math.min(10, limit);
     let qb = dataSource.manager
       .createQueryBuilder(Agenda, 'agenda')
       .orderBy('agenda.startTime', 'ASC')
+      .where('agenda.startTime > :from', { from })
       .take(actualLimit);
 
     if (cursor) {
