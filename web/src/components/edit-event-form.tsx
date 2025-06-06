@@ -6,30 +6,32 @@ import InputField from './input-field';
 import { useUpdateEvent } from '@nvl/hooks/use-update-event';
 import { useRouter } from 'next/navigation';
 import { DateTime } from 'luxon';
+import { useSession } from '@nvl/auth/auth-client';
 
 type EditEventFormProps = {
   event: {
     id: number;
     name: string;
     description: string;
+    organizerId: string;
     startTime: string;
     endTime: string;
     venue: string;
   };
 };
 
-type FormValues = EditEventFormProps['event'];
+type FormValues = Omit<EditEventFormProps['event'], 'organizerId'>;
 
 const InputDateTimeLocalFormat = "yyyy-MM-dd'T'HH:mm:ss";
 
 export const EditEventForm = (props: EditEventFormProps) => {
   const router = useRouter();
   const { update, error } = useUpdateEvent();
+  const { data: session } = useSession();
 
-  console.log({
-    startTime: props.event.startTime,
-    endTime: props.event.endTime,
-  });
+  if (props.event.organizerId !== session?.user.id) {
+    router.push(`/no-access`);
+  }
 
   const initialValues = {
     id: props.event.id,

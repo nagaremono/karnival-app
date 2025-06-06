@@ -95,6 +95,7 @@ export type QueryAgendaArgs = {
 
 export type QueryAgendasArgs = {
   cursor?: InputMaybe<Scalars['String']['input']>;
+  from?: InputMaybe<Scalars['String']['input']>;
   limit: Scalars['Int']['input'];
 };
 
