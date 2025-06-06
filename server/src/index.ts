@@ -7,7 +7,7 @@ import { AgendaResolver } from './resolvers/agenda';
 import { createUserLoader } from './utils/createUserLoader';
 import { createParticipationLoader } from './utils/createParticipationLoader';
 import { ApolloServer } from '@apollo/server';
-import { buildSchema, GraphQLTimestamp } from 'type-graphql';
+import { buildSchema } from 'type-graphql';
 import { expressMiddleware } from '@apollo/server/express4';
 import { MyContext } from './types';
 import dataSource from './datasource';
@@ -35,12 +35,6 @@ const main = async () => {
     schema: await buildSchema({
       resolvers: [UserResolver, AgendaResolver],
       validate: false,
-      scalarsMap: [
-        {
-          type: Date,
-          scalar: GraphQLTimestamp,
-        },
-      ],
     }),
   });
   await apolloServer.start();
