@@ -1,9 +1,4 @@
-FROM node:14
-
-ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
+FROM node:22-alpine AS base
 
 WORKDIR /usr/src/app
 
@@ -12,14 +7,24 @@ COPY yarn.lock ./
 
 RUN yarn
 
-COPY . .
+FROM base AS builder
 
+WORKDIR /usr/src/app
+COPY . .
 RUN yarn build
 
-ENV NODE_ENV production
+FROM node:22-alpine
+
+WORKDIR /usr/src/app
+ENV NODE_ENV=production
+RUN chown node:node .
+USER node
+
+COPY package.json ./
+COPY yarn.lock ./
+COPY --from=builder /usr/src/app/node_modules/ node_modules
+COPY --from=builder /usr/src/app/dist/ dist
 
 EXPOSE 8080
 
 CMD [ "node", "dist/index.js" ]
-
-USER node
