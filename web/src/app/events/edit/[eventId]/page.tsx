@@ -10,7 +10,7 @@ type EditEventProps = {
   }>;
 };
 
-export const EditEventPage = async ({ params }: EditEventProps) => {
+export default async function EditEventPage({ params }: EditEventProps) {
   const { eventId } = await params;
   const event = await getEventDetail(Number(eventId));
 
@@ -31,6 +31,4 @@ export const EditEventPage = async ({ params }: EditEventProps) => {
       <EditEventForm event={event} />
     </>
   );
-};
-
-export default EditEventPage;
+}

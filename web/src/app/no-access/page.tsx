@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 const TWO_SECONDS = 2000;
 
-export const NoAccessPage = () => {
+export default function NoAccessPage() {
   const router = useRouter();
 
   useEffect(() => {
@@ -27,6 +27,4 @@ export const NoAccessPage = () => {
       </Container>
     </main>
   );
-};
-
-export default NoAccessPage;
+}
