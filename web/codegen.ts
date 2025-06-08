@@ -6,8 +6,12 @@ const config: CodegenConfig = {
   generates: {
     './src/graphql/': {
       preset: 'client',
+      presetConfig: {
+        fragmentMasking: false,
+      },
       config: {
         documentMode: 'string',
+        useTypeImports: true,
       },
     },
     './schema.graphql': {
