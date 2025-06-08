@@ -6,6 +6,7 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { getEvents } from '@nvl/repository';
+import { AgendasQuery } from '@nvl/graphql/graphql';
 
 export default async function Home() {
   const queryClient = new QueryClient();
@@ -13,7 +14,7 @@ export default async function Home() {
     queryKey: ['events'],
     queryFn: ({ pageParam }) => getEvents(10, pageParam, true),
     initialPageParam: undefined,
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: (lastPage: AgendasQuery['agendas']) => {
       if (!lastPage) return null;
       if (lastPage.length < 10) return null;
       return lastPage ? lastPage[lastPage.length - 1].startTime : null;
