@@ -7,6 +7,9 @@ export const dataSource = new DataSource({
   synchronize: false,
   entities: Entities,
   logging: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export default dataSource;
