@@ -3,10 +3,15 @@ import { Pool } from 'pg';
 
 export const auth = betterAuth({
   database: new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    ssl:
+      process.env.NODE_ENV === 'production'
+        ? { rejectUnauthorized: false }
+        : undefined,
   }),
   emailAndPassword: {
     enabled: true,
@@ -63,7 +68,5 @@ export const auth = betterAuth({
       updatedAt: 'updated_at',
     },
   },
-  trustedOrigins: ['http://localhost:3000'],
-  baseURL: 'http://localhost:4000',
-  basePath: '/api/auth',
+  trustedOrigins: [process.env.ORIGIN || ''],
 });

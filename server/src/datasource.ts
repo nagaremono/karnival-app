@@ -3,13 +3,19 @@ import { Entities } from './entities';
 
 export const dataSource = new DataSource({
   type: 'postgres',
-  url: process.env.DATABASE_URL,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  schema: process.env.DB_SCHEMA || 'public',
+  port: parseInt(process.env.DB_PORT || '5432', 10),
   synchronize: false,
   entities: Entities,
   logging: true,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: false }
+      : undefined,
 });
 
 export default dataSource;
