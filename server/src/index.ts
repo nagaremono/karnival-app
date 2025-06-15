@@ -54,7 +54,7 @@ const main = async () => {
   );
 
   app.get('/health', (_, res) => {
-    res.status(200);
+    res.sendStatus(200);
   });
 
   app.listen(parseInt(process.env.PORT), () => {
