@@ -11,7 +11,7 @@ export const dataSource = new DataSource({
   port: parseInt(process.env.DB_PORT || '5432', 10),
   synchronize: false,
   entities: Entities,
-  logging: true,
+  logging: process.env.NODE_ENV !== 'production',
   ssl:
     process.env.NODE_ENV === 'production'
       ? { rejectUnauthorized: false }
