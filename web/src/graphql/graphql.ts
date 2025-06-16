@@ -2,33 +2,20 @@
 import type { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T,
-> = { [_ in K]?: never };
-export type Incremental<T> =
-  | T
-  | {
-      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-    };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format. */
-  DateTimeISO: { input: any; output: any };
+  DateTimeISO: { input: any; output: any; }
 };
 
 export type Agenda = {
@@ -63,18 +50,22 @@ export type Mutation = {
   updateAgenda?: Maybe<Agenda>;
 };
 
+
 export type MutationCreateAgendaArgs = {
   input: AgendaInput;
 };
+
 
 export type MutationDeleteAgendaArgs = {
   agendaId: Scalars['Int']['input'];
 };
 
+
 export type MutationToggleParticipationArgs = {
   agendaId: Scalars['Int']['input'];
   isParticipating: Scalars['Boolean']['input'];
 };
+
 
 export type MutationUpdateAgendaArgs = {
   agendaId: Scalars['Int']['input'];
@@ -96,9 +87,11 @@ export type Query = {
   me?: Maybe<User>;
 };
 
+
 export type QueryAgendaArgs = {
   agendaId: Scalars['Int']['input'];
 };
+
 
 export type QueryAgendasArgs = {
   cursor?: InputMaybe<Scalars['String']['input']>;
@@ -122,88 +115,37 @@ export type AgendasQueryVariables = Exact<{
   cursor?: InputMaybe<Scalars['String']['input']>;
 }>;
 
-export type AgendasQuery = {
-  __typename?: 'Query';
-  agendas?: Array<{
-    __typename?: 'Agenda';
-    id: number;
-    name: string;
-    description: string;
-    organizerId: string;
-    startTime: any;
-    endTime: any;
-    venue: string;
-    isParticipating: boolean;
-    organizer: { __typename?: 'User'; username: string };
-  }> | null;
-};
+
+export type AgendasQuery = { __typename?: 'Query', agendas?: Array<{ __typename?: 'Agenda', id: number, name: string, description: string, organizerId: string, startTime: any, endTime: any, venue: string, isParticipating: boolean, organizer: { __typename?: 'User', username: string } }> | null };
 
 export type AgendaQueryVariables = Exact<{
   agendaId: Scalars['Int']['input'];
 }>;
 
-export type AgendaQuery = {
-  __typename?: 'Query';
-  agenda: {
-    __typename?: 'Agenda';
-    id: number;
-    organizerId: string;
-    name: string;
-    venue: string;
-    description: string;
-    startTime: any;
-    endTime: any;
-    isParticipating: boolean;
-    organizer: { __typename?: 'User'; username: string };
-    participation: Array<{
-      __typename?: 'Participation';
-      userId: string;
-      user?: { __typename?: 'User'; username: string } | null;
-    }>;
-  };
-};
+
+export type AgendaQuery = { __typename?: 'Query', agenda: { __typename?: 'Agenda', id: number, organizerId: string, name: string, venue: string, description: string, startTime: any, endTime: any, isParticipating: boolean, organizer: { __typename?: 'User', username: string }, participation: Array<{ __typename?: 'Participation', userId: string, user?: { __typename?: 'User', username: string } | null }> } };
 
 export type CreateAgendaMutationVariables = Exact<{
   input: AgendaInput;
 }>;
 
-export type CreateAgendaMutation = {
-  __typename?: 'Mutation';
-  createAgenda: {
-    __typename?: 'Agenda';
-    name: string;
-    description: string;
-    startTime: any;
-    endTime: any;
-    venue: string;
-  };
-};
+
+export type CreateAgendaMutation = { __typename?: 'Mutation', createAgenda: { __typename?: 'Agenda', name: string, description: string, startTime: any, endTime: any, venue: string } };
 
 export type UpdateAgendaMutationVariables = Exact<{
   agendaId: Scalars['Int']['input'];
   input: AgendaInput;
 }>;
 
-export type UpdateAgendaMutation = {
-  __typename?: 'Mutation';
-  updateAgenda?: {
-    __typename?: 'Agenda';
-    name: string;
-    description: string;
-    venue: string;
-    endTime: any;
-    startTime: any;
-  } | null;
-};
+
+export type UpdateAgendaMutation = { __typename?: 'Mutation', updateAgenda?: { __typename?: 'Agenda', name: string, description: string, venue: string, endTime: any, startTime: any } | null };
 
 export type DeleteAgendaMutationVariables = Exact<{
   agendaId: Scalars['Int']['input'];
 }>;
 
-export type DeleteAgendaMutation = {
-  __typename?: 'Mutation';
-  deleteAgenda: boolean;
-};
+
+export type DeleteAgendaMutation = { __typename?: 'Mutation', deleteAgenda: boolean };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -274,10 +216,7 @@ export const CreateAgendaDocument = new TypedDocumentString(`
     venue
   }
 }
-    `) as unknown as TypedDocumentString<
-  CreateAgendaMutation,
-  CreateAgendaMutationVariables
->;
+    `) as unknown as TypedDocumentString<CreateAgendaMutation, CreateAgendaMutationVariables>;
 export const UpdateAgendaDocument = new TypedDocumentString(`
     mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {
   updateAgenda(agendaId: $agendaId, input: $input) {
@@ -288,16 +227,9 @@ export const UpdateAgendaDocument = new TypedDocumentString(`
     startTime
   }
 }
-    `) as unknown as TypedDocumentString<
-  UpdateAgendaMutation,
-  UpdateAgendaMutationVariables
->;
+    `) as unknown as TypedDocumentString<UpdateAgendaMutation, UpdateAgendaMutationVariables>;
 export const DeleteAgendaDocument = new TypedDocumentString(`
     mutation DeleteAgenda($agendaId: Int!) {
   deleteAgenda(agendaId: $agendaId)
 }
-    `) as unknown as TypedDocumentString<
-  DeleteAgendaMutation,
-  DeleteAgendaMutationVariables
->;
-
+    `) as unknown as TypedDocumentString<DeleteAgendaMutation, DeleteAgendaMutationVariables>;
