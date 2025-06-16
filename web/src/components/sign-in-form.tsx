@@ -1,10 +1,11 @@
 'use client';
-import { Container, Flex, Button } from '@chakra-ui/react';
+import { Container, Flex, Button, Text } from '@chakra-ui/react';
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import InputField from './input-field';
 import { useSignIn } from '@nvl/hooks/use-sign-in';
 import { AuthErrorCode } from '@nvl/types/auth';
 import { useRouter } from 'next/navigation';
+import NextLink from 'next/link';
 
 type FormValues = {
   email: string;
@@ -85,6 +86,12 @@ export function SignInForm() {
           </Form>
         )}
       </Formik>
+      <Flex>
+        <Text>Don&apos;t have an account?&nbsp;</Text>
+        <NextLink href={'/auth/sign-up'}>
+          <Text textDecor={'underline'}>Sign Up</Text>
+        </NextLink>
+      </Flex>
     </Container>
   );
 }
