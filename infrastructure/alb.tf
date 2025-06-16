@@ -53,10 +53,6 @@ module "alb" {
     }
   }
 
-  # access_logs = {
-  #   bucket = "my-alb-logs"
-  # }
-
   listeners = {
     ex-http-https-redirect = {
       port     = 80

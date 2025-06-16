@@ -171,17 +171,7 @@ module "server_service" {
         }
       ],
       readonly_root_filesystem : true,
-      log_configuration : {
-        logDriver : "awslogs",
-        options : {
-          awslogs-group : "/ecs/knvl-server",
-          mode : "non-blocking",
-          awslogs-create-group : "true",
-          max-buffer-size : "25m",
-          awslogs-region : "ap-southeast-1",
-          awslogs-stream-prefix : "ecs"
-        },
-      },
+      cloudwatch_log_group_retention_in_days = 7
     }
 
   }
@@ -321,17 +311,7 @@ module "web_service" {
         },
       ],
       readonly_root_filesystem : true,
-      log_configuration : {
-        logDriver : "awslogs",
-        options : {
-          awslogs-group : "/ecs/knvl-web",
-          mode : "non-blocking",
-          awslogs-create-group : "true",
-          max-buffer-size : "25m",
-          awslogs-region : "ap-southeast-1",
-          awslogs-stream-prefix : "ecs"
-        },
-      },
+      cloudwatch_log_group_retention_in_days = 7
     }
   }
 
