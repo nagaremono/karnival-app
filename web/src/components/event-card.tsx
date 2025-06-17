@@ -5,15 +5,14 @@ import {
   // Divider,
   Grid,
   Text,
-  // Link,
   // Flex,
   BoxProps,
   Separator,
 } from '@chakra-ui/react';
 import React from 'react';
 import EditDeleteButtons from './edit-delete-event-buttons';
-// import NextLink from 'next/link';
-// import { ParticipatingStatus } from './ParticipatingStatus';
+import NextLink from 'next/link';
+import { ParticipatingStatus } from './participating-status';
 // import EditDeleteButtons from './EditDeleteButtons';
 
 export type EventCardProps = {
@@ -24,6 +23,7 @@ export type EventCardProps = {
       username: string;
     };
     description: string;
+    isParticipating: boolean;
     venue: string;
     startTime: Date;
     endTime: Date;
@@ -32,6 +32,7 @@ export type EventCardProps = {
 } & BoxProps;
 
 const EventCard = ({ event, ...boxProps }: EventCardProps) => {
+  console.log({ event });
   return (
     <Box
       borderWidth="5px"
@@ -42,19 +43,11 @@ const EventCard = ({ event, ...boxProps }: EventCardProps) => {
       color="#EFECCA"
       {...boxProps}
     >
-      {/* <NextLink */}
-      {/*   href={{ */}
-      {/*     pathname: '/event/[id]', */}
-      {/*     query: { id: agenda?.id.toString() }, */}
-      {/*   }} */}
-      {/* > */}
-      {/*   <Link> */}
-      <Heading textStyle="xl" mb={2}>
-        {event.name}
-      </Heading>
-      {/*   </Link> */}
-      {/* </NextLink> */}
-
+      <NextLink href={'/events/' + event.id}>
+        <Heading textStyle="xl" mb={2}>
+          {event.name}
+        </Heading>
+      </NextLink>
       <Text mb={2} as="span" textStyle="l">
         Organized by <Badge size="md">{event.organizer.username}</Badge>
       </Text>
@@ -83,7 +76,7 @@ const EventCard = ({ event, ...boxProps }: EventCardProps) => {
           );
         })}
       </Grid>
-      {/* <ParticipatingStatus agenda={agenda} /> */}
+      <ParticipatingStatus event={event} />
       <EditDeleteButtons eventId={event.id} organizerId={event.organizerId} />
     </Box>
   );

@@ -58,6 +58,8 @@ export const agendasQuery = graphql(`
   }
 `);
 
+export type GetEventsResult = ReturnType<typeof getEvents>;
+
 export async function getEvents(
   limit?: number,
   cursor?: string,
@@ -166,6 +168,24 @@ export const deleteAgendaMutation = graphql(`
 export function deleteEvent(eventId: number) {
   return execute(
     deleteAgendaMutation,
+    {
+      agendaId: eventId,
+    },
+    {
+      serverSide: false,
+    },
+  );
+}
+
+export const toggleParticipationMutation = graphql(`
+  mutation toggleParticipation($agendaId: Int!) {
+    toggleParticipation(agendaId: $agendaId)
+  }
+`);
+
+export function toggleParticipation(eventId: number) {
+  return execute(
+    toggleParticipationMutation,
     {
       agendaId: eventId,
     },
