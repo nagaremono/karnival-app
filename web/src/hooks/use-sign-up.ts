@@ -1,5 +1,5 @@
 'use client';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authClient } from '@nvl/auth/auth-client';
 import { useRouter } from 'next/navigation';
 
@@ -10,7 +10,7 @@ type SignUpParams = {
 };
 
 export function useSignUp() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const signUp = async (params: SignUpParams) => {
     const res = await authClient.signUp.email({
       email: params.email,

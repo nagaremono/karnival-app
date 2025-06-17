@@ -1,5 +1,5 @@
 'use client';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authClient } from '@nvl/auth/auth-client';
 
 type SignInParams = {
@@ -8,7 +8,7 @@ type SignInParams = {
 };
 
 export function useSignIn() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const signIn = async (params: SignInParams) => {
     const res = await authClient.signIn.email({
       email: params.email,

@@ -1,10 +1,10 @@
 'use client';
 
 import { deleteEvent } from '@nvl/repository';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useDeleteEvent() {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { mutate, isError, status, reset, error } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
