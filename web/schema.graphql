@@ -34,7 +34,7 @@ scalar DateTimeISO
 type Mutation {
   createAgenda(input: AgendaInput!): Agenda!
   deleteAgenda(agendaId: Int!): Boolean!
-  toggleParticipation(agendaId: Int!, isParticipating: Boolean!): Boolean!
+  toggleParticipation(agendaId: Int!): Boolean!
   updateAgenda(agendaId: Int!, input: AgendaInput!): Agenda
 }
 

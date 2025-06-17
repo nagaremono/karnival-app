@@ -63,7 +63,6 @@ export type MutationDeleteAgendaArgs = {
 
 export type MutationToggleParticipationArgs = {
   agendaId: Scalars['Int']['input'];
-  isParticipating: Scalars['Boolean']['input'];
 };
 
 
@@ -146,6 +145,13 @@ export type DeleteAgendaMutationVariables = Exact<{
 
 
 export type DeleteAgendaMutation = { __typename?: 'Mutation', deleteAgenda: boolean };
+
+export type ToggleParticipationMutationVariables = Exact<{
+  agendaId: Scalars['Int']['input'];
+}>;
+
+
+export type ToggleParticipationMutation = { __typename?: 'Mutation', toggleParticipation: boolean };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -233,3 +239,8 @@ export const DeleteAgendaDocument = new TypedDocumentString(`
   deleteAgenda(agendaId: $agendaId)
 }
     `) as unknown as TypedDocumentString<DeleteAgendaMutation, DeleteAgendaMutationVariables>;
+export const ToggleParticipationDocument = new TypedDocumentString(`
+    mutation toggleParticipation($agendaId: Int!) {
+  toggleParticipation(agendaId: $agendaId)
+}
+    `) as unknown as TypedDocumentString<ToggleParticipationMutation, ToggleParticipationMutationVariables>;

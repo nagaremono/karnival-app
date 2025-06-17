@@ -20,6 +20,7 @@ type Documents = {
     "\n  mutation CreateAgenda($input: AgendaInput!) {\n    createAgenda(input: $input) {\n      name\n      description\n      startTime\n      endTime\n      venue\n    }\n  }\n": typeof types.CreateAgendaDocument,
     "\n  mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {\n    updateAgenda(agendaId: $agendaId, input: $input) {\n      name\n      description\n      venue\n      endTime\n      startTime\n    }\n  }\n": typeof types.UpdateAgendaDocument,
     "\n  mutation DeleteAgenda($agendaId: Int!) {\n    deleteAgenda(agendaId: $agendaId)\n  }\n": typeof types.DeleteAgendaDocument,
+    "\n  mutation toggleParticipation($agendaId: Int!) {\n    toggleParticipation(agendaId: $agendaId)\n  }\n": typeof types.ToggleParticipationDocument,
 };
 const documents: Documents = {
     "\n  query Agendas($limit: Int!, $cursor: String) {\n    agendas(limit: $limit, cursor: $cursor) {\n      id\n      name\n      description\n      organizerId\n      startTime\n      endTime\n      organizer {\n        username\n      }\n      venue\n      isParticipating\n    }\n  }\n": types.AgendasDocument,
@@ -27,6 +28,7 @@ const documents: Documents = {
     "\n  mutation CreateAgenda($input: AgendaInput!) {\n    createAgenda(input: $input) {\n      name\n      description\n      startTime\n      endTime\n      venue\n    }\n  }\n": types.CreateAgendaDocument,
     "\n  mutation UpdateAgenda($agendaId: Int!, $input: AgendaInput!) {\n    updateAgenda(agendaId: $agendaId, input: $input) {\n      name\n      description\n      venue\n      endTime\n      startTime\n    }\n  }\n": types.UpdateAgendaDocument,
     "\n  mutation DeleteAgenda($agendaId: Int!) {\n    deleteAgenda(agendaId: $agendaId)\n  }\n": types.DeleteAgendaDocument,
+    "\n  mutation toggleParticipation($agendaId: Int!) {\n    toggleParticipation(agendaId: $agendaId)\n  }\n": types.ToggleParticipationDocument,
 };
 
 /**
@@ -49,6 +51,10 @@ export function graphql(source: "\n  mutation UpdateAgenda($agendaId: Int!, $inp
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation DeleteAgenda($agendaId: Int!) {\n    deleteAgenda(agendaId: $agendaId)\n  }\n"): typeof import('./graphql').DeleteAgendaDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation toggleParticipation($agendaId: Int!) {\n    toggleParticipation(agendaId: $agendaId)\n  }\n"): typeof import('./graphql').ToggleParticipationDocument;
 
 
 export function graphql(source: string) {

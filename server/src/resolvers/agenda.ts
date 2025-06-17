@@ -64,28 +64,29 @@ export class AgendaResolver {
   @Mutation(() => Boolean)
   async toggleParticipation(
     @Arg('agendaId', () => Int) agendaId: number,
-    @Arg('isParticipating') isParticipating: boolean,
     @Ctx() { req }: MyContext,
   ) {
     if (!req.user.id) {
       return false;
     }
-
-    if (isParticipating) {
-      await dataSource
-        .createQueryBuilder()
-        .delete()
-        .from(Participation)
-        .where('"userId" = :userId and "agendaId" = :agendaId', {
-          userId: req.user.id,
-          agendaId,
-        })
-        .execute();
-    } else {
-      await Participation.create({
+    const repo = dataSource.manager.getRepository(Participation);
+    const pariticipation = await repo.findOne({
+      where: {
         agendaId,
         userId: req.user.id,
-      }).save();
+      },
+    });
+
+    if (pariticipation) {
+      await repo.delete({
+        userId: req.user.id,
+        agendaId,
+      });
+    } else {
+      await Participation.save({
+        agendaId,
+        userId: req.user.id,
+      });
     }
 
     return true;
