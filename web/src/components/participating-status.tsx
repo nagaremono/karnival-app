@@ -27,7 +27,7 @@ export const ParticipatingStatus = ({ event }: ParticipatingStatusProps) => {
   };
 
   return (
-    <Flex mt={2} justifyContent="flex-end">
+    <Flex mt={2}>
       {event.isParticipating && (
         <>
           <Badge

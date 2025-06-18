@@ -5,7 +5,7 @@ import {
   // Divider,
   Grid,
   Text,
-  // Flex,
+  Flex,
   BoxProps,
   Separator,
 } from '@chakra-ui/react';
@@ -32,7 +32,6 @@ export type EventCardProps = {
 } & BoxProps;
 
 const EventCard = ({ event, ...boxProps }: EventCardProps) => {
-  console.log({ event });
   return (
     <Box
       borderWidth="5px"
@@ -76,8 +75,10 @@ const EventCard = ({ event, ...boxProps }: EventCardProps) => {
           );
         })}
       </Grid>
-      <ParticipatingStatus event={event} />
-      <EditDeleteButtons eventId={event.id} organizerId={event.organizerId} />
+      <Flex my={2} justifyContent={'space-between'}>
+        <ParticipatingStatus event={event} />
+        <EditDeleteButtons eventId={event.id} organizerId={event.organizerId} />
+      </Flex>
     </Box>
   );
 };

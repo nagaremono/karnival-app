@@ -23,7 +23,7 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   };
 
   return (
-    <Flex mt={2} gapX={2} width="100%" justifyContent="flex-end">
+    <Flex mt={2} gapX={2}>
       {session?.user.id === organizerId && (
         <>
           <IconButton
