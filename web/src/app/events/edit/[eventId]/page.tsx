@@ -1,8 +1,8 @@
-import { Text, Container } from '@chakra-ui/react';
 import React from 'react';
 import { getEventDetail } from '@nvl/repository';
 import AppBar from '@nvl/components/app-bar';
 import { EditEventForm } from '@nvl/components/edit-event-form';
+import EventNotFoundCard from '@nvl/components/event-not-found-notify';
 
 type EditEventProps = {
   params: Promise<{
@@ -14,21 +14,10 @@ export default async function EditEventPage({ params }: EditEventProps) {
   const { eventId } = await params;
   const event = await getEventDetail(Number(eventId));
 
-  if (!event) {
-    return (
-      <main>
-        <AppBar />
-        <Container centerContent={true} p={8}>
-          <Text textStyle={'2xl'}>Event is not found</Text>
-        </Container>
-      </main>
-    );
-  }
-
   return (
-    <>
+    <main>
       <AppBar />
-      <EditEventForm event={event} />
-    </>
+      {event ? <EditEventForm event={event} /> : <EventNotFoundCard />}
+    </main>
   );
 }

@@ -107,7 +107,7 @@ export async function getEventDetail(eventId: number, serverSide = false) {
     { agendaId: eventId },
     { serverSide },
   );
-  return agenda.agenda;
+  return agenda?.agenda;
 }
 
 export const createAgendaMutation = graphql(`
