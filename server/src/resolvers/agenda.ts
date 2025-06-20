@@ -171,10 +171,12 @@ export class AgendaResolver {
     @Arg('agendaId', () => Int) agendaId: number,
     @Ctx() { req }: MyContext,
   ): Promise<boolean> {
-    await Participation.delete({ agendaId });
-    await dataSource.manager.delete(Agenda, {
-      id: agendaId,
-      organizerId: req.user.id,
+    await dataSource.manager.transaction(async (tx) => {
+      await tx.delete(Participation, { agendaId });
+      await tx.delete(Agenda, {
+        id: agendaId,
+        organizerId: req.user.id,
+      });
     });
 
     return true;
