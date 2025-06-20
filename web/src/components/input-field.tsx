@@ -1,5 +1,5 @@
 'use client';
-import { Input, Field } from '@chakra-ui/react';
+import { Input, Field, Textarea } from '@chakra-ui/react';
 import { useField } from 'formik';
 import { HTMLInputTypeAttribute } from 'react';
 
@@ -9,6 +9,7 @@ type InputFieldProps = {
   placeholder?: string;
   type?: HTMLInputTypeAttribute;
   required?: boolean;
+  textArea?: boolean;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -17,6 +18,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   type,
   required,
+  textArea,
 }) => {
   const [field, meta] = useField(name);
 
@@ -24,7 +26,11 @@ export const InputField: React.FC<InputFieldProps> = ({
     <>
       <Field.Root required={required} invalid={!!meta.error}>
         <Field.Label>{label}</Field.Label>
-        <Input placeholder={placeholder} type={type} {...field} />
+        {textArea ? (
+          <Textarea placeholder={placeholder} {...field} />
+        ) : (
+          <Input placeholder={placeholder} type={type} {...field} />
+        )}
         {meta.error && <Field.ErrorText>{meta.error}</Field.ErrorText>}
       </Field.Root>
     </>

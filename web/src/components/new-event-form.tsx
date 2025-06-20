@@ -74,6 +74,7 @@ export function NewEventForm() {
               name="description"
               label="Description"
               placeholder="Event description..."
+              textArea={true}
             />
             <InputField
               name="venue"
