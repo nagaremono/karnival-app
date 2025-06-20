@@ -56,20 +56,17 @@ export default async function EventDetail({ params }: EventDetailProps) {
   return (
     <main>
       <AppBar />
-      <Container>
-        <Heading mt={6} mb={10} w={['90%', '80%']} mx="auto">
+      <Container centerContent={true}>
+        <Heading my={8} w={['90%', '80%']} color="baseText" fontSize={24}>
           Event Details
         </Heading>
-        <Flex
-          mx="auto"
-          w={['90%', '80%']}
-          wrap={['wrap']}
-          justifyContent="space-evenly"
-        >
+        <Flex w={['100%', '80%']} wrap={['wrap']} justifyContent="space-evenly">
           <Box
-            boxShadow="0px 0px 14px 1px #2B2559"
             p={4}
-            border="5px solid #7785AC"
+            bg="baseColor"
+            color="baseText"
+            border="5px solid"
+            borderColor="cardBorder"
             width={['90%', '80%', '50%']}
             mb={6}
           >
@@ -103,29 +100,40 @@ export default async function EventDetail({ params }: EventDetailProps) {
                   timeStyle: 'short',
                 })}
               />
+            </Box>
+            <Flex justifyContent={'end'}>
               <EditDeleteButtons
                 eventId={event.id}
                 organizerId={event.organizerId}
               />
-            </Box>
+            </Flex>
           </Box>
           <Box
             width={['90%', '80%', '30%']}
             p={4}
             mb={6}
-            boxShadow="0px 0px 14px 1px #2B2559"
-            border="5px solid #A5E6BA"
+            bg="baseColor"
+            color="baseText"
+            border="5px solid"
+            borderColor="cardBorder"
             height="max-content"
           >
             <Heading w="100%" as="h3" mb={2} fontSize="1.8rem">
               Participants
             </Heading>
-            <List.Root spaceX={2} spaceY={2}>
+            <List.Root spaceY={1} variant={'plain'}>
               {event.participation.map((p) => {
                 return (
-                  <List.Item key={p.userId} pl={4} fontSize="1.2rem">
-                    <List.Indicator as={FiAtSign} />
-                    {p.user?.username || ''}
+                  <List.Item
+                    key={p.userId}
+                    fontSize="1.2rem"
+                    fontWeight="semibold"
+                    color={{ base: 'navyBlue', _dark: 'royalBlueLight' }}
+                  >
+                    <List.Indicator asChild mx={0}>
+                      <FiAtSign />
+                    </List.Indicator>
+                    <Text>{p.user?.username || ''}</Text>
                   </List.Item>
                 );
               })}

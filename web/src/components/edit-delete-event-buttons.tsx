@@ -31,11 +31,18 @@ export const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
             aria-label="Delete Event"
             onClick={onDelete}
             loading={status === 'pending'}
+            colorPalette={'red'}
+            variant={'subtle'}
           >
             <MdDeleteOutline />
           </IconButton>
           <NextLink href={`/events/edit/${eventId}`}>
-            <IconButton size="md" aria-label="Edit Event">
+            <IconButton
+              size="md"
+              aria-label="Edit Event"
+              colorPalette={'border'}
+              variant={'subtle'}
+            >
               <FaEdit />
             </IconButton>
           </NextLink>

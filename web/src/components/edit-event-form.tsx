@@ -71,7 +71,7 @@ export const EditEventForm = (props: EditEventFormProps) => {
   };
 
   return (
-    <Container>
+    <Container centerContent={true} mt={4}>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Box w="40%" minW="300px" mx="auto">
@@ -111,8 +111,8 @@ export const EditEventForm = (props: EditEventFormProps) => {
                   mt={6}
                   type="submit"
                   loading={isSubmitting}
-                  color="#f3f3f3"
-                  bg="#130487"
+                  color="babyBlue"
+                  bg="royalBlueDark"
                   _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
                 >
                   Update Event

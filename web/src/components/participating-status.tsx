@@ -35,7 +35,7 @@ export const ParticipatingStatus = ({ event }: ParticipatingStatusProps) => {
             alignItems="center"
             px="10px"
             fontSize="1rem"
-            colorScheme="green"
+            colorPalette="green"
             mx={2}
           >
             Participating
@@ -52,7 +52,12 @@ export const ParticipatingStatus = ({ event }: ParticipatingStatusProps) => {
         </>
       )}
       {!event.isParticipating && (
-        <Button onClick={onParticipateClick} loading={isPending}>
+        <Button
+          onClick={onParticipateClick}
+          loading={isPending}
+          colorPalette={'gray'}
+          variant={'subtle'}
+        >
           Participate
         </Button>
       )}

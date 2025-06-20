@@ -36,10 +36,11 @@ const EventCard = ({ event, ...boxProps }: EventCardProps) => {
     <Box
       borderWidth="5px"
       borderStyle="solid"
-      borderColor="#2b2559"
+      borderColor="cardBorder"
       boxShadow="md"
       p={4}
-      color="#EFECCA"
+      color="baseText"
+      bg="baseColor"
       {...boxProps}
     >
       <NextLink href={'/events/' + event.id}>

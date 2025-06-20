@@ -57,7 +57,7 @@ export function SignUpForm() {
   };
 
   return (
-    <Container mt={4}>
+    <Container mt={4} centerContent={true}>
       <Formik
         initialValues={{
           username: '',
@@ -93,8 +93,8 @@ export function SignUpForm() {
               <Button
                 mt={6}
                 type="submit"
-                color="#f3f3f3"
-                bg="#130487"
+                color="babyBlue"
+                bg="royalBlueDark"
                 _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
               >
                 Sign Up
