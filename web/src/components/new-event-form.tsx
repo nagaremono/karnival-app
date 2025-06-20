@@ -1,9 +1,12 @@
 'use client';
 
-import { Flex, Button, Container } from '@chakra-ui/react';
+import { Flex, Button, Container, Text, Spinner } from '@chakra-ui/react';
 import { useCreateEvent } from '@nvl/hooks/use-create-event';
 import { Formik, Form } from 'formik';
 import InputField from './input-field';
+import { useRouter } from 'next/navigation';
+import { useSession } from '@nvl/auth/auth-client';
+import { useEffect } from 'react';
 
 type FormValues = {
   name: string;
@@ -13,7 +16,11 @@ type FormValues = {
   venue: string;
 };
 
+const ONE_SECONDS = 1000;
+
 export function NewEventForm() {
+  const router = useRouter();
+  const { data: session } = useSession();
   const { mutate } = useCreateEvent();
   const onSubmit = (formValues: FormValues) => {
     mutate({
@@ -22,6 +29,27 @@ export function NewEventForm() {
       endTime: new Date(formValues.endTime).toISOString(),
     });
   };
+
+  useEffect(() => {
+    if (!session?.session) {
+      setTimeout(() => {
+        router.replace(
+          '/auth/sign-in?next=' + encodeURIComponent('/events/new'),
+        );
+      }, ONE_SECONDS);
+    }
+  }, [router, session]);
+
+  if (!session?.session) {
+    return (
+      <Container mt={4} centerContent={true}>
+        <Spinner size="lg" color="colorPalette.600" colorPalette={'blue'} />
+        <Text textStyle={'xl'} my={4}>
+          You are not logged in, redirecting...
+        </Text>
+      </Container>
+    );
+  }
 
   return (
     <Container mt={4}>
