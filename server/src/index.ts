@@ -24,7 +24,7 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.ORIGIN,
+      origin: (process.env.ORIGIN || '').split(','),
       methods: ['GET', 'POST'],
     }),
   );

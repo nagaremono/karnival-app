@@ -68,5 +68,5 @@ export const auth = betterAuth({
       updatedAt: 'updated_at',
     },
   },
-  trustedOrigins: [process.env.ORIGIN || ''],
+  trustedOrigins: (process.env.ORIGIN || '').split(','),
 });
