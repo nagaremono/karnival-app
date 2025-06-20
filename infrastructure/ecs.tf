@@ -84,7 +84,7 @@ module "server_service" {
   network_mode = "awsvpc"
 
   cpu    = 256
-  memory = 2048
+  memory = 1024
 
   // Switch when ready
   create = true
@@ -115,7 +115,7 @@ module "server_service" {
       name : "knvl-server",
       image : var.server_image,
       cpu    = 256
-      memory = 2048
+      memory = 1024
       port_mappings : [
         {
           name : "${local.server_container_name}-${local.server_container_port}-tcp",
@@ -250,7 +250,7 @@ module "web_service" {
   network_mode = "awsvpc"
 
   cpu    = 256
-  memory = 2048
+  memory = 1024
 
   // Switch when ready
   create = true
@@ -281,7 +281,7 @@ module "web_service" {
       name : "knvl-web",
       image : var.web_image,
       cpu    = 256
-      memory = 2048
+      memory = 1024
       port_mappings : [
         {
           name : "${local.web_container_name}-${local.web_container_port}-tcp",
