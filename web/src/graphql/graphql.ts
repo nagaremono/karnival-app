@@ -129,7 +129,7 @@ export type CreateAgendaMutationVariables = Exact<{
 }>;
 
 
-export type CreateAgendaMutation = { __typename?: 'Mutation', createAgenda: { __typename?: 'Agenda', name: string, description: string, startTime: any, endTime: any, venue: string } };
+export type CreateAgendaMutation = { __typename?: 'Mutation', createAgenda: { __typename?: 'Agenda', id: number, name: string, description: string, startTime: any, endTime: any, venue: string } };
 
 export type UpdateAgendaMutationVariables = Exact<{
   agendaId: Scalars['Int']['input'];
@@ -215,6 +215,7 @@ export const AgendaDocument = new TypedDocumentString(`
 export const CreateAgendaDocument = new TypedDocumentString(`
     mutation CreateAgenda($input: AgendaInput!) {
   createAgenda(input: $input) {
+    id
     name
     description
     startTime

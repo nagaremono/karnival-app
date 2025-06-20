@@ -113,6 +113,7 @@ export async function getEventDetail(eventId: number, serverSide = false) {
 export const createAgendaMutation = graphql(`
   mutation CreateAgenda($input: AgendaInput!) {
     createAgenda(input: $input) {
+      id
       name
       description
       startTime
