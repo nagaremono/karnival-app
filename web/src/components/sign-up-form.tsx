@@ -1,5 +1,5 @@
 'use client';
-import { Container, Flex, Button } from '@chakra-ui/react';
+import { Box, Container, Flex, Button } from '@chakra-ui/react';
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import InputField from './input-field';
 import { AuthErrorCode } from '@nvl/types/auth';
@@ -68,39 +68,50 @@ export function SignUpForm() {
         onSubmit={onSubmit}
         validationSchema={SignUpSchema}
       >
-        {() => (
-          <Form>
-            <InputField name="username" label="Username" placeholder="" />
-            <InputField
-              name="email"
-              label="Email"
-              placeholder=""
-              type="email"
-            />
-            <InputField
-              name="password"
-              label="Password"
-              placeholder=""
-              type="password"
-            />
-            <InputField
-              name="repeatPassword"
-              label="Repeat Password"
-              placeholder=""
-              type="password"
-            />
-            <Flex justify="center">
-              <Button
-                mt={6}
-                type="submit"
-                color="babyBlue"
-                bg="royalBlueDark"
-                _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
-              >
-                Sign Up
-              </Button>
-            </Flex>
-          </Form>
+        {({ isSubmitting }) => (
+          <Box w={{ base: '4/5', sm: '1/2', md: '2/5', lg: '1/5' }}>
+            <Form>
+              <InputField
+                name="username"
+                label="Username"
+                placeholder=""
+                mb={8}
+              />
+              <InputField
+                name="email"
+                label="Email"
+                placeholder=""
+                type="email"
+                mb={8}
+              />
+              <InputField
+                name="password"
+                label="Password"
+                placeholder=""
+                type="password"
+                mb={8}
+              />
+              <InputField
+                name="repeatPassword"
+                label="Repeat Password"
+                placeholder=""
+                type="password"
+                mb={8}
+              />
+              <Flex justify="center">
+                <Button
+                  mt={6}
+                  type="submit"
+                  color="babyBlue"
+                  bg="royalBlueDark"
+                  _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
+                  loading={isSubmitting}
+                >
+                  Sign Up
+                </Button>
+              </Flex>
+            </Form>
+          </Box>
         )}
       </Formik>
     </Container>

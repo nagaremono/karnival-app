@@ -1,5 +1,5 @@
 'use client';
-import { Container, Flex, Button, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Button, Text } from '@chakra-ui/react';
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import InputField from './input-field';
 import { useSignIn } from '@nvl/hooks/use-sign-in';
@@ -58,35 +58,40 @@ export function SignInForm() {
         }}
         onSubmit={onSubmit}
       >
-        {() => (
-          <Form>
-            <InputField
-              name="email"
-              label="Email"
-              placeholder=""
-              type="email"
-            />
-            <InputField
-              name="password"
-              label="Password"
-              placeholder=""
-              type="password"
-            />
-            <Flex justify="center">
-              <Button
-                mt={6}
-                type="submit"
-                color="babyBlue"
-                bg="royalBlueDark"
-                _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
-              >
-                Sign In
-              </Button>
-            </Flex>
-          </Form>
+        {({ isSubmitting }) => (
+          <Box w={{ base: '4/5', sm: '1/2', md: '2/5', lg: '1/5' }}>
+            <Form>
+              <InputField
+                name="email"
+                label="Email"
+                placeholder=""
+                type="email"
+                mb={8}
+              />
+              <InputField
+                name="password"
+                label="Password"
+                placeholder=""
+                type="password"
+                mb={8}
+              />
+              <Flex justify="center">
+                <Button
+                  mt={6}
+                  type="submit"
+                  color="babyBlue"
+                  bg="royalBlueDark"
+                  _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
+                  loading={isSubmitting}
+                >
+                  Sign In
+                </Button>
+              </Flex>
+            </Form>
+          </Box>
         )}
       </Formik>
-      <Flex>
+      <Flex mt={4}>
         <Text>Don&apos;t have an account?&nbsp;</Text>
         <NextLink href={'/auth/sign-up'}>
           <Text textDecor={'underline'}>Sign Up</Text>

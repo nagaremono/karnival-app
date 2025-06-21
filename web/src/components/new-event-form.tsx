@@ -64,7 +64,7 @@ export function NewEventForm() {
         onSubmit={onSubmit}
       >
         {({ isSubmitting }) => (
-          <Box w={{ base: '4/5', sm: '3/5', md: '2/5' }}>
+          <Box mt={4} w={{ base: '4/5', sm: '3/5', md: '2/5' }}>
             <Form>
               <InputField
                 name="name"
