@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, Button, Container, Text, Spinner } from '@chakra-ui/react';
+import { Box, Flex, Button, Container, Text, Spinner } from '@chakra-ui/react';
 import { useCreateEvent } from '@nvl/hooks/use-create-event';
 import { Formik, Form } from 'formik';
 import InputField from './input-field';
@@ -63,48 +63,56 @@ export function NewEventForm() {
         }}
         onSubmit={onSubmit}
       >
-        {() => (
-          <Form>
-            <InputField
-              name="name"
-              label="Event Name"
-              placeholder="Event name..."
-            />
-            <InputField
-              name="description"
-              label="Description"
-              placeholder="Event description..."
-              textArea={true}
-            />
-            <InputField
-              name="venue"
-              label="Venue"
-              placeholder="Event venue..."
-            />
-            <InputField
-              name="startTime"
-              label="Event Start"
-              placeholder="Starts at..."
-              type="datetime-local"
-            />
-            <InputField
-              name="endTime"
-              label="Event End"
-              placeholder="Ends at..."
-              type="datetime-local"
-            />
-            <Flex justify="center">
-              <Button
-                mt={6}
-                type="submit"
-                color="babyBlue"
-                bg="royalBlueDark"
-                _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
-              >
-                Create New Event
-              </Button>
-            </Flex>
-          </Form>
+        {({ isSubmitting }) => (
+          <Box w={{ base: '4/5', sm: '3/5', md: '2/5' }}>
+            <Form>
+              <InputField
+                name="name"
+                label="Event Name"
+                placeholder="Event name..."
+                mb={4}
+              />
+              <InputField
+                name="description"
+                label="Description"
+                placeholder="Event description..."
+                textArea={true}
+                mb={4}
+              />
+              <InputField
+                name="venue"
+                label="Venue"
+                placeholder="Event venue..."
+                mb={4}
+              />
+              <InputField
+                name="startTime"
+                label="Event Start"
+                placeholder="Starts at..."
+                type="datetime-local"
+                mb={4}
+              />
+              <InputField
+                name="endTime"
+                label="Event End"
+                placeholder="Ends at..."
+                type="datetime-local"
+                mb={4}
+              />
+              <Flex justify="center">
+                <Button
+                  mt={6}
+                  type="submit"
+                  color="babyBlue"
+                  bg="royalBlueDark"
+                  _hover={{ backgroundColor: '#93a0c7', color: '#000' }}
+                  loading={isSubmitting}
+                >
+                  Create New Event
+                </Button>
+              </Flex>
+            </Form>
+          </Box>
         )}
       </Formik>
     </Container>
