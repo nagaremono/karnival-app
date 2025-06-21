@@ -3,7 +3,7 @@
 import { getEvents } from '@nvl/repository';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import EventCard from './event-card';
-import { Button, Container } from '@chakra-ui/react';
+import { Button, Container, Grid } from '@chakra-ui/react';
 import { Fragment } from 'react';
 
 export function EventList() {
@@ -20,12 +20,21 @@ export function EventList() {
     });
 
   return (
-    <Container maxW={'md'} centerContent={true} my={8}>
-      {data?.pages.map((group, i) => (
-        <Fragment key={i}>
-          {group?.map((event) => <EventCard key={event.id} event={event} />)}
-        </Fragment>
-      ))}
+    <Container
+      maxW={{ base: 'sm', md: 'lg', lg: '4xl', xl: '5xl' }}
+      centerContent={true}
+      my={8}
+    >
+      <Grid
+        gap={{ base: 6, xl: 8 }}
+        templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }}
+      >
+        {data?.pages.map((group, i) => (
+          <Fragment key={i}>
+            {group?.map((event) => <EventCard key={event.id} event={event} />)}
+          </Fragment>
+        ))}
+      </Grid>
       <Button
         my={8}
         textStyle={'lg'}
