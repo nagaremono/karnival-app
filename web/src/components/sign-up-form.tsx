@@ -100,7 +100,6 @@ export function SignUpForm() {
               />
               <Flex justify="center">
                 <Button
-                  mt={6}
                   type="submit"
                   color="babyBlue"
                   bg="royalBlueDark"

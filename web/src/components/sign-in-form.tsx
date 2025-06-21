@@ -77,7 +77,6 @@ export function SignInForm() {
               />
               <Flex justify="center">
                 <Button
-                  mt={6}
                   type="submit"
                   color="babyBlue"
                   bg="royalBlueDark"
@@ -92,7 +91,7 @@ export function SignInForm() {
         )}
       </Formik>
       <Flex mt={4}>
-        <Text>Don&apos;t have an account?&nbsp;</Text>
+        <Text mb={2}>Don&apos;t have an account?&nbsp;</Text>
         <NextLink href={'/auth/sign-up'}>
           <Text textDecor={'underline'}>Sign Up</Text>
         </NextLink>
