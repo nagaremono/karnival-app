@@ -8,7 +8,7 @@ import { createUserLoader } from './utils/createUserLoader';
 import { createParticipationLoader } from './utils/createParticipationLoader';
 import { ApolloServer } from '@apollo/server';
 import { buildSchema } from 'type-graphql';
-import { expressMiddleware } from '@apollo/server/express4';
+import { expressMiddleware } from '@as-integrations/express4';
 import { MyContext } from './types';
 import dataSource from './datasource';
 import { toNodeHandler } from 'better-auth/node';
